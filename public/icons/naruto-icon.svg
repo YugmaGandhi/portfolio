@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Face -->
+  <circle cx="50" cy="50" r="45" fill="#FFD700"/>
+  
+  <!-- Hair -->
+  <path fill="#FFD700" d="M20 30
+    C 20 30, 35 10, 50 10
+    C 65 10, 80 30, 80 30
+    L 75 40
+    C 75 40, 60 25, 50 25
+    C 40 25, 25 40, 25 40
+    Z"/>
+  
+  <!-- Headband -->
+  <rect x="15" y="25" width="70" height="15" fill="#4169E1"/>
+  <circle cx="50" cy="32" r="5" fill="#FF8614"/>
+  
+  <!-- Whiskers -->
+  <path stroke="#FF8614" stroke-width="2" d="M25 45 L 35 45 M25 50 L 35 50 M25 55 L 35 55"/>
+  <path stroke="#FF8614" stroke-width="2" d="M65 45 L 75 45 M65 50 L 75 50 M65 55 L 75 55"/>
+  
+  <!-- Eyes -->
+  <circle cx="35" cy="45" r="5" fill="#4169E1"/>
+  <circle cx="65" cy="45" r="5" fill="#4169E1"/>
+  
+  <!-- Smile -->
+  <path fill="none" stroke="#FF8614" stroke-width="2" d="M40 60
+    C 40 70, 60 70, 60 60"/>
+</svg> 
