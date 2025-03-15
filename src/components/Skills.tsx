@@ -3,20 +3,21 @@ import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
 import { ThemeState } from '../redux/slices/themeSlice';
 import { 
-  Code, Storage, Cloud, Security, Speed, Devices, 
+  Code, Storage, Cloud, Speed, 
   BugReport, Architecture, CollectionsBookmark,
-  DataObject, Web, Language
+  Web, Api, Security,
+  Search, Dataset, Storage as StorageIcon,
+  IntegrationInstructions
 } from '@mui/icons-material';
 import React from 'react';
 
 interface SkillProps {
   name: string;
-  icon: string;
   level: number;
   index: number;
 }
 
-const SkillCard = ({ name, icon, level, index }: SkillProps) => {
+const SkillCard = ({ name, level, index }: SkillProps) => {
   const muiTheme = useTheme();
   const { isDarkMode } = useAppSelector((state) => state.theme);
 
@@ -24,20 +25,34 @@ const SkillCard = ({ name, icon, level, index }: SkillProps) => {
     switch (name) {
       case "React.js":
         return <Web sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
-      case "Babylon.js":
-        return <DataObject sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
       case "Node.js":
         return <Storage sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Express.js":
+        return <Speed sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "MongoDB":
+        return <Dataset sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
       case "TypeScript":
         return <Code sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
-      case "Redux":
-        return <Storage sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
       case "Azure DevOps":
         return <Cloud sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
-      case "React Hook Form":
+      case "CI/CD Pipelines":
         return <Architecture sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
-      case "Material UI":
-        return <Devices sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Git/GitHub":
+        return <IntegrationInstructions sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "AI Indexing":
+        return <Search sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Semantic Search":
+        return <Search sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Azure AI Search":
+        return <Search sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Cosmos DB":
+        return <StorageIcon sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Azure Storage":
+        return <StorageIcon sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "REST APIs":
+        return <Api sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
+      case "Authentication":
+        return <Security sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
       default:
         return <CollectionsBookmark sx={{ fontSize: 40, color: muiTheme.palette.primary.main }} />;
     }
@@ -131,47 +146,74 @@ const Skills = () => {
   const { isDarkMode } = useAppSelector((state) => state.theme) as ThemeState;
   const muiTheme = useTheme();
 
+  // Main top skill cards
   const skillsData = [
     {
       name: "React.js",
-      icon: "/icons/react.svg",
       level: 95,
     },
     {
-      name: "Babylon.js",
-      icon: "/icons/babylon.svg",
-      level: 90,
-    },
-    {
       name: "Node.js",
-      icon: "/icons/node.svg",
-      level: 85,
+      level: 90,
     },
     {
       name: "TypeScript",
-      icon: "/icons/typescript.svg",
       level: 90,
     },
     {
-      name: "Redux",
-      icon: "/icons/redux.svg",
+      name: "MongoDB",
       level: 85,
     },
     {
       name: "Azure DevOps",
-      icon: "/icons/azure.svg",
-      level: 80,
+      level: 85,
     },
     {
-      name: "React Hook Form",
-      icon: "/icons/form.svg",
+      name: "REST APIs",
       level: 90,
     },
     {
-      name: "Material UI",
-      icon: "/icons/mui.svg",
+      name: "Cosmos DB",
+      level: 80,
+    },
+    {
+      name: "Azure AI Search",
       level: 85,
     },
+  ];
+
+  // Skill categories for the sections below
+  const skillCategories = [
+    {
+      title: "Full-Stack Development",
+      icon: <Code />,
+      skills: ["React.js", "Node.js", "Express.js", "MongoDB", "TypeScript", "Babylon.js"]
+    },
+    {
+      title: "Cloud & DevOps",
+      icon: <Cloud />,
+      skills: ["Azure DevOps", "Azure Portal", "CI/CD Pipelines", "Git/GitHub"]
+    },
+    {
+      title: "AI & Search",
+      icon: <Search />,
+      skills: ["AI Indexing", "Semantic Search", "Azure AI Search"]
+    },
+    {
+      title: "Storage & Databases",
+      icon: <Dataset />,
+      skills: ["Cosmos DB", "Azure Blobs", "Azure Queues", "Azure Tables"]
+    },
+    {
+      title: "Backend Services",
+      icon: <Api />,
+      skills: ["REST APIs", "Authentication", "Authorization"]
+    },
+    {
+      title: "Testing & Development",
+      icon: <BugReport />,
+      skills: ["Unit Testing", "Integration Testing", "Agile Development"]
+    }
   ];
 
   return (
@@ -301,8 +343,8 @@ const Skills = () => {
             color="text.secondary"
             sx={{ mb: 6, maxWidth: 700, mx: 'auto' }}
           >
-            My expertise includes modern frontend and backend technologies with a focus on creating 
-            efficient and scalable applications.
+            My expertise includes modern full-stack development, cloud services, AI solutions, and DevOps practices
+            with a focus on creating efficient and scalable applications.
           </Typography>
         </motion.div>
 
@@ -311,7 +353,6 @@ const Skills = () => {
             <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
               <SkillCard
                 name={skill.name}
-                icon={skill.icon}
                 level={skill.level}
                 index={index}
               />
@@ -331,7 +372,7 @@ const Skills = () => {
               mt: 6,
               p: 4,
               borderRadius: 2,
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
+              backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(10px)',
               position: 'relative',
               overflow: 'hidden',
@@ -350,45 +391,83 @@ const Skills = () => {
             }}
           >
             <Box sx={{ position: 'relative', zIndex: 1 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 4 }}>
                 <Speed sx={{ color: muiTheme.palette.primary.main }} />
                 <Typography variant="h5" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary }}>
-                  Additional Skills
+                  Core Skill Areas
                 </Typography>
               </Box>
 
-              <Grid container spacing={2} sx={{ mt: 2 }}>
-                {[
-                  { name: "Express.js", icon: <Storage /> },
-                  { name: "REST APIs", icon: <Architecture /> },
-                  { name: "CI/CD Pipelines", icon: <Speed /> },
-                  { name: "Git/GitHub", icon: <Code /> },
-                  { name: "Cosmos DB", icon: <Storage /> },
-                  { name: "Azure Services", icon: <Cloud /> },
-                  { name: "Testing", icon: <BugReport /> },
-                  { name: "Agile Development", icon: <Architecture /> },
-                ].map((skill, index) => (
-                  <Grid item xs={6} sm={4} md={3} key={index}>
-                    <Paper
-                      sx={{
-                        py: 1.5,
-                        px: 2,
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        border: '1px solid',
-                        borderColor: 'rgba(255, 255, 255, 0.1)',
-                        borderRadius: 2,
-                      }}
+              <Grid container spacing={3}>
+                {skillCategories.map((category, index) => (
+                  <Grid item xs={12} sm={6} md={4} key={index}>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      viewport={{ once: true }}
                     >
-                      {React.cloneElement(skill.icon, { 
-                        sx: { fontSize: 20, color: muiTheme.palette.primary.main }
-                      })}
-                      <Typography variant="body2" sx={{ color: muiTheme.palette.text.primary }}>
-                        {skill.name}
-                      </Typography>
-                    </Paper>
+                      <Paper
+                        elevation={2}
+                        sx={{
+                          p: 2,
+                          height: '100%',
+                          backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.5)' : 'rgba(255, 255, 255, 0.7)',
+                          borderRadius: 2,
+                          position: 'relative',
+                          overflow: 'hidden',
+                          '&::before': {
+                            content: '""',
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '3px',
+                            background: `linear-gradient(90deg, 
+                              ${muiTheme.palette.primary.main}, 
+                              ${muiTheme.palette.primary.light})`,
+                            zIndex: 1,
+                          },
+                        }}
+                      >
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                          {React.cloneElement(category.icon, { 
+                            sx: { fontSize: 24, color: muiTheme.palette.primary.main }
+                          })}
+                          <Typography variant="h6" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary }}>
+                            {category.title}
+                          </Typography>
+                        </Box>
+                        
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          {category.skills.map((skill, skillIndex) => (
+                            <Paper
+                              key={skillIndex}
+                              sx={{
+                                py: 1,
+                                px: 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                                backgroundColor: isDarkMode ? 'rgba(40, 40, 40, 0.8)' : 'rgba(245, 245, 245, 0.8)',
+                                borderRadius: 1,
+                                border: '1px solid',
+                                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                              }}
+                            >
+                              <Typography 
+                                variant="body2" 
+                                sx={{ 
+                                  color: muiTheme.palette.text.primary,
+                                  fontWeight: skillsData.some(s => s.name === skill) ? 'bold' : 'normal'
+                                }}
+                              >
+                                {skill}
+                              </Typography>
+                            </Paper>
+                          ))}
+                        </Box>
+                      </Paper>
+                    </motion.div>
                   </Grid>
                 ))}
               </Grid>
