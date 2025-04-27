@@ -36,8 +36,7 @@ const fadeIn = keyframes`
 `;
 
 const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps) => {
-  // State for active/focused layer
-  const [activeLayer, setActiveLayer] = useState<string | null>(null);
+  const [hoveredLayer, setHoveredLayer] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   
   // Start animations after component mounts
@@ -48,72 +47,10 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
     return () => clearTimeout(timer);
   }, []);
   
-  // Layer configuration with fixed positions
-  const layerConfig = {
-    frontend: { top: 25, height: 80, zIndex: 5 },
-    state: { top: 115, height: 80, zIndex: 4 },
-    api: { top: 205, height: 80, zIndex: 3 },
-    services: { top: 295, height: 80, zIndex: 2 },
-    storage: { top: 385, height: 80, zIndex: 1 }
-  };
-
-  // Common styles for layer boxes with fixed positioning
-  const getLayerStyle = (layer: string) => ({
-    position: 'absolute',
-    top: layerConfig[layer as keyof typeof layerConfig].top,
-    left: '50%',
-    transform: activeLayer === layer ? 
-      'translateX(-50%) translateY(-8px)' : 
-      'translateX(-50%)',
-    width: (() => {
-      switch(layer) {
-        case 'frontend': return '92%';
-        case 'state': return '84%';
-        case 'api': return '76%';
-        case 'services': return '68%';
-        case 'storage': return '60%';
-        default: return '70%';
-      }
-    })(),
-    height: layerConfig[layer as keyof typeof layerConfig].height,
-    borderRadius: 3,
-    p: 2,
-    backgroundColor: isDarkMode ? 
-      alpha(getLayerColors(layer).bgDark, activeLayer === layer ? 0.95 : 0.85) : 
-      alpha(getLayerColors(layer).bgLight, activeLayer === layer ? 0.95 : 0.85),
-    border: '1px solid',
-    borderColor: getLayerColors(layer).border,
-    zIndex: activeLayer === layer ? 20 : layerConfig[layer as keyof typeof layerConfig].zIndex,
-    boxShadow: activeLayer === layer ? 
-      `0 12px 24px ${alpha('#000', 0.15)}, 0 8px 20px ${alpha(getLayerColors(layer).shadow, 0.4)}` : 
-      `0 4px 12px ${alpha('#000', 0.1)}`,
-    transition: 'all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1)',
-    cursor: 'pointer',
-    animation: !activeLayer && isVisible ? `${floatUpDown} 8s ease-in-out infinite` : 'none',
-    animationDelay: (() => {
-      switch(layer) {
-        case 'frontend': return '0s';
-        case 'state': return '1s';
-        case 'api': return '2s';
-        case 'services': return '3s';
-        case 'storage': return '4s';
-        default: return '0s';
-      }
-    })(),
-    opacity: isVisible ? 1 : 0,
-    '&:hover': {
-      transform: 'translateX(-50%) translateY(-8px)',
-      boxShadow: `0 15px 30px ${alpha('#000', 0.2)}, 0 8px 25px ${alpha(getLayerColors(layer).shadow, 0.5)}`,
-      backgroundColor: isDarkMode ? 
-        alpha(getLayerColors(layer).bgDark, 0.95) : 
-        alpha(getLayerColors(layer).bgLight, 0.95),
-      zIndex: 20,
-    },
-  });
-
   // Highlight colors based on theme
   const getLayerColors = (layerKey: string) => {
-    const isActive = activeLayer === layerKey;
+    // Use activeLayer if set, else hoveredLayer
+    const isActive = hoveredLayer === layerKey;
     
     const colors = {
       cloud: {
@@ -193,55 +130,6 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
     { name: "Queue Storage", description: "Messaging queue for reliable message delivery between components" }
   ];
 
-  // Style for connection lines
-  const getConnectionStyle = (fromLayer: string, toLayer: string, position: 'left' | 'right' | 'center') => {
-    const fromTop = layerConfig[fromLayer as keyof typeof layerConfig].top + layerConfig[fromLayer as keyof typeof layerConfig].height;
-    const toTop = layerConfig[toLayer as keyof typeof layerConfig].top;
-    const height = toTop - fromTop;
-    
-    return {
-      position: 'absolute',
-      top: fromTop,
-      ...(position === 'left' ? { left: '35%' } : 
-         position === 'right' ? { right: '35%' } : 
-         { left: '50%', transform: 'translateX(-50%)' }),
-      width: 2,
-      height: height,
-      backgroundImage: `linear-gradient(to bottom, ${getLayerColors(fromLayer).text}, ${getLayerColors(toLayer).text})`,
-      opacity: (activeLayer === fromLayer || activeLayer === toLayer) ? 0.9 : 0.5,
-      transition: 'opacity 0.3s ease',
-      zIndex: 1,
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        bottom: -4,
-        left: -4,
-        width: 10,
-        height: 10,
-        borderRadius: '50%',
-        backgroundColor: getLayerColors(toLayer).text,
-        opacity: activeLayer === toLayer ? 1 : 0.7,
-        transition: 'all 0.3s ease',
-        transform: activeLayer === toLayer ? 'scale(1.3)' : 'scale(1)',
-        boxShadow: activeLayer === toLayer ? `0 0 10px ${getLayerColors(toLayer).text}` : 'none'
-      },
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        top: -4,
-        left: -4,
-        width: 10,
-        height: 10,
-        borderRadius: '50%',
-        backgroundColor: getLayerColors(fromLayer).text,
-        opacity: activeLayer === fromLayer ? 1 : 0.7,
-        transition: 'all 0.3s ease',
-        transform: activeLayer === fromLayer ? 'scale(1.3)' : 'scale(1)',
-        boxShadow: activeLayer === fromLayer ? `0 0 10px ${getLayerColors(fromLayer).text}` : 'none'
-      }
-    };
-  };
-
   // Style for the inner components (React UI, 3D Canvas, etc.)
   const getInnerComponentStyle = (layerKey: string, isActive: boolean) => ({
     border: '1px solid',
@@ -270,43 +158,174 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
     },
   });
 
+  // SVG cloud background
+  const CloudBackground = () => (
+    <svg
+      width="100%"
+      height="220"
+      viewBox="0 0 900 220"
+      style={{ position: 'absolute', top: 0, left: 0, zIndex: 0, pointerEvents: 'none' }}
+      aria-hidden="true"
+    >
+      <defs>
+        <linearGradient id="cloudGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={isDarkMode ? '#1e2a3a' : '#e6f2fc'} stopOpacity="0.7" />
+          <stop offset="100%" stopColor={isDarkMode ? '#162635' : '#b3e0ff'} stopOpacity="0.3" />
+        </linearGradient>
+        <filter id="cloudBlur" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="18" />
+        </filter>
+      </defs>
+      <ellipse
+        cx="450"
+        cy="110"
+        rx="420"
+        ry="90"
+        fill="url(#cloudGradient)"
+        filter="url(#cloudBlur)"
+      />
+    </svg>
+  );
+
+  // --- Reusable LayerInnerItem component ---
+  const LayerInnerItem = ({
+    title,
+    subtitle,
+    tooltip,
+    sx,
+    onMouseEnter,
+    onMouseLeave,
+    children
+  }: {
+    title: string;
+    subtitle?: string;
+    tooltip?: string;
+    sx?: any;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
+    children?: React.ReactNode;
+  }) => (
+    <Tooltip title={tooltip || ''} arrow placement="top">
+      <Box sx={sx} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
+        <Typography variant="caption" fontWeight="bold">
+          {title}
+        </Typography>
+        {subtitle && (
+          <Typography variant="caption" sx={{ fontSize: '0.65rem' }}>
+            {subtitle}
+          </Typography>
+        )}
+        {children}
+      </Box>
+    </Tooltip>
+  );
+
+  // --- Reusable LayerCard component ---
+  const LayerCard = ({
+    icon,
+    title,
+    subtitle,
+    color,
+    width,
+    background,
+    borderColor,
+    shadow,
+    animation,
+    hovered,
+    onMouseEnter,
+    onMouseLeave,
+    children
+  }: {
+    icon: React.ReactNode;
+    title: string;
+    subtitle?: string;
+    color: string;
+    width: string;
+    background: string;
+    borderColor: string;
+    shadow: string;
+    animation: string;
+    hovered: boolean;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
+    children: React.ReactNode;
+  }) => (
+    <Paper elevation={0} sx={{
+      width,
+      borderRadius: 3,
+      p: 2,
+      background,
+      backdropFilter: 'blur(6px)',
+      border: '1px solid',
+      borderColor,
+      boxShadow: `0 4px 24px ${shadow}`,
+      transition: 'all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1)',
+      cursor: 'pointer',
+      opacity: 1,
+      animation,
+      '&:hover': {
+        boxShadow: `0 15px 30px ${shadow}`,
+        background,
+        zIndex: 20,
+        transform: hovered ? 'perspective(600px) rotateY(6deg) scale(1.03)' : undefined,
+      },
+    }}
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    >
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
+        <Typography variant="subtitle2" fontWeight="bold" sx={{ color, display: 'flex', alignItems: 'center', gap: 0.8 }}>
+          {icon} {title}
+        </Typography>
+        {hovered && subtitle && (
+          <Typography variant="caption" sx={{ color }}>
+            {subtitle}
+          </Typography>
+        )}
+      </Box>
+      {children}
+    </Paper>
+  );
+
   return (
-    <Box sx={{ 
-      position: 'relative', 
-      width: '100%', 
-      height: 520,
+    <Box sx={{
+      width: '100%',
       my: 2,
       overflow: 'visible',
       px: { xs: 0.5, sm: 1 },
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: 2,
+      position: 'relative',
+      minHeight: 420,
     }}>
+      {/* Animated SVG cloud background */}
+      <CloudBackground />
       {/* Azure Cloud Environment - Outer Wrapper */}
-      <Box 
+      <Box
         sx={{
-          position: 'absolute',
-          top: 0,
-          left: '50%',
-          transform: 'translateX(-50%)',
           width: '98%',
-          height: 505,
           borderRadius: 4,
           border: '2px dashed',
           borderColor: getLayerColors('cloud').border,
-          backgroundColor: 'transparent',
-          zIndex: 0,
+          background: isDarkMode
+            ? 'rgba(22,38,53,0.7)'
+            : 'rgba(230,242,252,0.7)',
+          backdropFilter: 'blur(8px)', // Glassmorphism
+          boxShadow: '0 8px 32px 0 rgba(31,38,135,0.15)',
+          zIndex: 2,
           opacity: isVisible ? 1 : 0,
           transition: 'all 0.5s ease-in, opacity 0.5s ease-in',
           cursor: 'pointer',
-          '&:hover': {
-            borderColor: getLayerColors('cloud').text,
-            boxShadow: `0 0 40px ${alpha(getLayerColors('cloud').shadow, 0.15)}`,
-          },
+          mb: 2,
+          position: 'relative',
         }}
-        onClick={() => setActiveLayer(activeLayer === 'cloud' ? null : 'cloud')}
-        onMouseEnter={() => !activeLayer && setActiveLayer('cloud')}
-        onMouseLeave={() => !activeLayer && setActiveLayer(null)}
+        onMouseEnter={() => setHoveredLayer('cloud')}
+        onMouseLeave={() => setHoveredLayer(null)}
       >
         {/* Azure Label */}
-        <Tooltip 
+        <Tooltip
           title={
             <Box sx={{ p: 1 }}>
               <Typography variant="subtitle2" fontWeight="bold">Azure Cloud Environment</Typography>
@@ -345,250 +364,185 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
             </Typography>
           </Box>
         </Tooltip>
-      </Box>
-      
-      {/* Connection Lines */}
-      {isVisible && (
-        <>
-          <Box sx={getConnectionStyle('frontend', 'state', 'left')} />
-          <Box sx={getConnectionStyle('frontend', 'state', 'right')} />
-          <Box sx={getConnectionStyle('state', 'api', 'center')} />
-          <Box sx={getConnectionStyle('api', 'services', 'center')} />
-          <Box sx={getConnectionStyle('services', 'storage', 'center')} />
-        </>
-      )}
-
-      {/* Frontend Layer */}
-      <Paper elevation={0} sx={getLayerStyle('frontend')} 
-             onClick={() => setActiveLayer(activeLayer === 'frontend' ? null : 'frontend')}
-             onMouseEnter={() => !activeLayer && setActiveLayer('frontend')}
-             onMouseLeave={() => !activeLayer && setActiveLayer(null)}>
+        {/* Stack layers vertically inside the cloud wrapper */}
         <Box sx={{
           display: 'flex',
-          justifyContent: 'space-between',
+          flexDirection: 'column',
           alignItems: 'center',
-          mb: 1.5,
-        }}>
-          <Typography variant="subtitle2" fontWeight="bold" sx={{ 
-            color: getLayerColors('frontend').text, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 0.8,
-          }}>
-            <Code fontSize="small" /> Frontend Layer
-          </Typography>
-          {activeLayer === 'frontend' && (
-            <Typography variant="caption" sx={{ color: getLayerColors('frontend').text }}>
-              User Interface
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
-          <Tooltip title="UI components built with React and Material UI" arrow placement="top">
-            <Box sx={{ ...getInnerComponentStyle('frontend', activeLayer === 'frontend'), flex: 1 }}>
-              <Typography variant="caption" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary }}>
-                React UI
-              </Typography>
-              <Typography variant="caption" sx={{ fontSize: '0.65rem', color: muiTheme.palette.text.secondary }}>
-                UI Components
-              </Typography>
-            </Box>
-          </Tooltip>
-          <Tooltip title="3D rendering engine for 2D/3D visualization" arrow placement="top">
-            <Box sx={{ ...getInnerComponentStyle('frontend', activeLayer === 'frontend'), flex: 1 }}>
-              <Typography variant="caption" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary }}>
-                3D Canvas
-              </Typography>
-              <Typography variant="caption" sx={{ fontSize: '0.65rem', color: muiTheme.palette.text.secondary }}>
-                3D Visualization
-              </Typography>
-            </Box>
-          </Tooltip>
-        </Box>
-      </Paper>
-
-      {/* State Management Layer */}
-      <Paper elevation={0} sx={getLayerStyle('state')}
-             onClick={() => setActiveLayer(activeLayer === 'state' ? null : 'state')}
-             onMouseEnter={() => !activeLayer && setActiveLayer('state')}
-             onMouseLeave={() => !activeLayer && setActiveLayer(null)}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
-        }}>
-          <Typography variant="subtitle2" fontWeight="bold" sx={{ 
-            color: getLayerColors('state').text, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 0.8,
-          }}>
-            <DataObject fontSize="small" /> State Management
-          </Typography>
-          {activeLayer === 'state' && (
-            <Typography variant="caption" sx={{ color: getLayerColors('state').text }}>
-              Data Flow Control
-            </Typography>
-          )}
-        </Box>
-        <Tooltip title="Global state management for consistent data access" arrow placement="top">
-          <Box sx={{ 
-            ...getInnerComponentStyle('state', activeLayer === 'state'),
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            px: 2
-          }}>
-            <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
-              Redux Store
-            </Typography>
-            <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
-              Context API
-            </Typography>
-            <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
-              Toolkit
-            </Typography>
-          </Box>
-        </Tooltip>
-      </Paper>
-
-      {/* API Layer */}
-      <Paper elevation={0} sx={getLayerStyle('api')}
-             onClick={() => setActiveLayer(activeLayer === 'api' ? null : 'api')}
-             onMouseEnter={() => !activeLayer && setActiveLayer('api')}
-             onMouseLeave={() => !activeLayer && setActiveLayer(null)}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
-        }}>
-          <Typography variant="subtitle2" fontWeight="bold" sx={{ 
-            color: getLayerColors('api').text, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 0.8,
-          }}>
-            <SettingsEthernet fontSize="small" /> API Layer
-          </Typography>
-          {activeLayer === 'api' && (
-            <Typography variant="caption" sx={{ color: getLayerColors('api').text }}>
-              Business Logic
-            </Typography>
-          )}
-        </Box>
-        <Tooltip title="Backend APIs handling business logic and data processing" arrow placement="top">
-          <Box sx={{ ...getInnerComponentStyle('api', activeLayer === 'api') }}>
-            <Typography variant="body2" fontWeight="medium" sx={{ color: muiTheme.palette.text.primary }}>
-              RESTful APIs
-            </Typography>
-          </Box>
-        </Tooltip>
-      </Paper>
-
-      {/* Services Layer */}
-      <Paper elevation={0} sx={getLayerStyle('services')}
-             onClick={() => setActiveLayer(activeLayer === 'services' ? null : 'services')}
-             onMouseEnter={() => !activeLayer && setActiveLayer('services')}
-             onMouseLeave={() => !activeLayer && setActiveLayer(null)}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
-        }}>
-          <Typography variant="subtitle2" fontWeight="bold" sx={{ 
-            color: getLayerColors('services').text, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 0.8,
-          }}>
-            <Cloud fontSize="small" /> Cloud Services
-          </Typography>
-          {activeLayer === 'services' && (
-            <Typography variant="caption" sx={{ color: getLayerColors('services').text }}>
-              Infrastructure
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ 
-          display: 'flex',
-          justifyContent: 'space-between',
           gap: 2,
+          width: '100%',
+          py: 4,
         }}>
-          {['App Services', 'Functions', 'Authentication'].map((service, index) => (
-            <Tooltip
-              key={index}
-              title={
-                index === 0 ? "Web hosting and app scaling services" :
-                index === 1 ? "Serverless function execution" :
-                "User authentication and authorization"
-              }
-              arrow
-              placement="top"
-            >
+          {/* Frontend Layer */}
+          <LayerCard
+            icon={<Code fontSize="small" />}
+            title="Frontend Layer"
+            subtitle="User Interface"
+            color={getLayerColors('frontend').text}
+            width="92%"
+            background={isDarkMode ? 'rgba(51,38,22,0.6)' : 'rgba(255,245,235,0.6)'}
+            borderColor={getLayerColors('frontend').border}
+            shadow={alpha('#000', 0.12)}
+            animation={`${floatUpDown} 3.5s ease-in-out infinite`}
+            hovered={hoveredLayer === 'frontend'}
+            onMouseEnter={() => setHoveredLayer('frontend')}
+            onMouseLeave={() => setHoveredLayer(null)}
+          >
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+              <LayerInnerItem
+                title="React UI"
+                subtitle="UI Components"
+                tooltip="UI components built with React and Material UI"
+                sx={{ ...getInnerComponentStyle('frontend', hoveredLayer === 'frontend'), flex: 1 }}
+              />
+              <LayerInnerItem
+                title="3D Canvas"
+                subtitle="3D Visualization"
+                tooltip="3D rendering engine for 2D/3D visualization"
+                sx={{ ...getInnerComponentStyle('frontend', hoveredLayer === 'frontend'), flex: 1 }}
+              />
+            </Box>
+          </LayerCard>
+          {/* State Management Layer */}
+          <LayerCard
+            icon={<DataObject fontSize="small" />}
+            title="State Management"
+            subtitle="Data Flow Control"
+            color={getLayerColors('state').text}
+            width="84%"
+            background={isDarkMode ? 'rgba(42,25,48,0.6)' : 'rgba(247,235,250,0.6)'}
+            borderColor={getLayerColors('state').border}
+            shadow={alpha('#000', 0.12)}
+            animation={`${floatUpDown} 3.7s ease-in-out infinite`}
+            hovered={hoveredLayer === 'state'}
+            onMouseEnter={() => setHoveredLayer('state')}
+            onMouseLeave={() => setHoveredLayer(null)}
+          >
+            <Tooltip title="Global state management for consistent data access" arrow placement="top">
               <Box sx={{ 
-                ...getInnerComponentStyle('services', activeLayer === 'services'), 
-                flex: 1,
+                ...getInnerComponentStyle('state', hoveredLayer === 'state'),
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                px: 2
               }}>
-                <Typography variant="caption" fontWeight="medium" sx={{ color: muiTheme.palette.text.secondary }}>
-                  {service}
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
+                  Redux Store
+                </Typography>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
+                  Context API
+                </Typography>
+                <Typography variant="caption" sx={{ fontSize: '0.75rem', fontWeight: 'medium', color: muiTheme.palette.text.secondary }}>
+                  Toolkit
                 </Typography>
               </Box>
             </Tooltip>
-          ))}
-        </Box>
-      </Paper>
-
-      {/* Storage Layer */}
-      <Paper elevation={0} sx={getLayerStyle('storage')}
-             onClick={() => setActiveLayer(activeLayer === 'storage' ? null : 'storage')}
-             onMouseEnter={() => !activeLayer && setActiveLayer('storage')}
-             onMouseLeave={() => !activeLayer && setActiveLayer(null)}>
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
-        }}>
-          <Typography variant="subtitle2" fontWeight="bold" sx={{ 
-            color: getLayerColors('storage').text, 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 0.8,
-          }}>
-            <Storage fontSize="small" /> Data Storage
-          </Typography>
-          {activeLayer === 'storage' && (
-            <Typography variant="caption" sx={{ color: getLayerColors('storage').text }}>
-              Persistence Layer
-            </Typography>
-          )}
-        </Box>
-        <Box sx={{ 
-          display: 'flex',
-          justifyContent: 'space-between',
-          gap: 2,
-        }}>
-          {storageOptions.map((storage, index) => (
-            <Tooltip key={index} title={storage.description} arrow placement="top">
-              <Box 
-                sx={{ 
-                  ...getInnerComponentStyle('storage', activeLayer === 'storage'),
-                  flex: 1,
-                }}
-              >
-                <Typography variant="caption" fontWeight="medium" sx={{ color: muiTheme.palette.text.secondary }}>
-                  {storage.name}
+          </LayerCard>
+          {/* API Layer */}
+          <LayerCard
+            icon={<SettingsEthernet fontSize="small" />}
+            title="API Layer"
+            subtitle="Business Logic"
+            color={getLayerColors('api').text}
+            width="76%"
+            background={isDarkMode ? 'rgba(21,45,54,0.6)' : 'rgba(230,248,255,0.6)'}
+            borderColor={getLayerColors('api').border}
+            shadow={alpha('#000', 0.12)}
+            animation={`${floatUpDown} 3.9s ease-in-out infinite`}
+            hovered={hoveredLayer === 'api'}
+            onMouseEnter={() => setHoveredLayer('api')}
+            onMouseLeave={() => setHoveredLayer(null)}
+          >
+            <Tooltip title="Backend APIs handling business logic and data processing" arrow placement="top">
+              <Box sx={{ ...getInnerComponentStyle('api', hoveredLayer === 'api') }}>
+                <Typography variant="body2" fontWeight="medium" sx={{ color: muiTheme.palette.text.primary }}>
+                  RESTful APIs
                 </Typography>
               </Box>
             </Tooltip>
-          ))}
+          </LayerCard>
+          {/* Services Layer */}
+          <LayerCard
+            icon={<Cloud fontSize="small" />}
+            title="Cloud Services"
+            subtitle="Infrastructure"
+            color={getLayerColors('services').text}
+            width="68%"
+            background={isDarkMode ? 'rgba(22,38,53,0.6)' : 'rgba(230,242,252,0.6)'}
+            borderColor={getLayerColors('services').border}
+            shadow={alpha('#000', 0.12)}
+            animation={`${floatUpDown} 4.1s ease-in-out infinite`}
+            hovered={hoveredLayer === 'services'}
+            onMouseEnter={() => setHoveredLayer('services')}
+            onMouseLeave={() => setHoveredLayer(null)}
+          >
+            <Box sx={{ 
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 2,
+            }}>
+              {['App Services', 'Functions', 'Authentication'].map((service, index) => (
+                <Tooltip
+                  key={index}
+                  title={
+                    index === 0 ? "Web hosting and app scaling services" :
+                    index === 1 ? "Serverless function execution" :
+                    "User authentication and authorization"
+                  }
+                  arrow
+                  placement="top"
+                >
+                  <Box sx={{ 
+                    ...getInnerComponentStyle('services', hoveredLayer === 'services'), 
+                    flex: 1,
+                  }}>
+                    <Typography variant="caption" fontWeight="medium" sx={{ color: muiTheme.palette.text.secondary }}>
+                      {service}
+                    </Typography>
+                  </Box>
+                </Tooltip>
+              ))}
+            </Box>
+          </LayerCard>
+          {/* Storage Layer */}
+          <LayerCard
+            icon={<Storage fontSize="small" />}
+            title="Data Storage"
+            subtitle="Persistence Layer"
+            color={getLayerColors('storage').text}
+            width="60%"
+            background={isDarkMode ? 'rgba(26,46,27,0.6)' : 'rgba(232,245,233,0.6)'}
+            borderColor={getLayerColors('storage').border}
+            shadow={alpha('#000', 0.12)}
+            animation={`${floatUpDown} 4.3s ease-in-out infinite`}
+            hovered={hoveredLayer === 'storage'}
+            onMouseEnter={() => setHoveredLayer('storage')}
+            onMouseLeave={() => setHoveredLayer(null)}
+          >
+            <Box sx={{ 
+              display: 'flex',
+              justifyContent: 'space-between',
+              gap: 2,
+            }}>
+              {storageOptions.map((storage, index) => (
+                <Tooltip key={index} title={storage.description} arrow placement="top">
+                  <Box 
+                    sx={{ 
+                      ...getInnerComponentStyle('storage', hoveredLayer === 'storage'),
+                      flex: 1,
+                    }}
+                  >
+                    <Typography variant="caption" fontWeight="medium" sx={{ color: muiTheme.palette.text.secondary }}>
+                      {storage.name}
+                    </Typography>
+                  </Box>
+                </Tooltip>
+              ))}
+            </Box>
+          </LayerCard>
         </Box>
-      </Paper>
-      
+      </Box>
       {/* Info notice */}
       <Box sx={{
         position: 'absolute',
@@ -609,4 +563,4 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
   );
 };
 
-export default ArchitectureDiagram; 
+export default ArchitectureDiagram;
