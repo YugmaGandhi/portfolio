@@ -1,8 +1,22 @@
-import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme } from '@mui/material';
-import { GitHub, Launch, Code, WebAsset, Star, Visibility } from '@mui/icons-material';
+import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme, Collapse, Badge, Divider } from '@mui/material';
+import { GitHub, Launch, Code, WebAsset, Star, Visibility, Work, Business, ExpandMore, ExpandLess, Architecture } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
 import { ThemeState } from '../redux/slices/themeSlice';
+import { useState } from 'react';
+import ArchitectureDiagram from './ArchitectureDiagram';
+
+interface ProjectData {
+  name: string;
+  description: string;
+  tags: string[];
+  image: string;
+  source_code_link: string;
+  live_demo_link?: string;
+  type: 'personal' | 'professional';
+  company?: string;
+  techStack?: {category: string; items: string[]}[];
+}
 
 interface ProjectCardProps {
   name: string;
@@ -182,35 +196,320 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
   );
 };
 
+// New component for professional projects
+interface ProfessionalProjectCardProps {
+  name: string;
+  description: string;
+  tags: string[];
+  image: string;
+  company: string;
+  techStack: {category: string; items: string[]}[];
+  index: number;
+}
+
+const ProfessionalProjectCard = ({ name, description, tags, image, company, techStack, index }: ProfessionalProjectCardProps) => {
+  const { isDarkMode } = useAppSelector((state) => state.theme);
+  const muiTheme = useTheme();
+  const [expanded, setExpanded] = useState(false);
+  const [showArchitecture, setShowArchitecture] = useState(false);
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
+
+  const handleArchitectureClick = () => {
+    setShowArchitecture(!showArchitecture);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      viewport={{ once: true }}
+      style={{ height: '100%', display: 'flex' }}
+    >
+      <Card
+        sx={{
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'relative',
+          overflow: 'hidden',
+          borderRadius: 2,
+          backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+          backdropFilter: 'blur(10px)',
+          transition: 'transform 0.3s',
+          border: '1px solid',
+          borderColor: isDarkMode
+            ? 'rgba(255, 111, 0, 0.2)'
+            : 'rgba(255, 158, 64, 0.2)',
+          '&:hover': {
+            transform: 'translateY(-5px)',
+            borderColor: isDarkMode
+              ? 'rgba(255, 111, 0, 0.5)'
+              : 'rgba(255, 158, 64, 0.5)',
+            '&::before': {
+              opacity: 1,
+            },
+          },
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundImage: `radial-gradient(circle at 30% 20%, ${isDarkMode ? 'rgba(255, 111, 0, 0.05)' : 'rgba(255, 158, 64, 0.05)'}, transparent 50%)`,
+            opacity: 0.5,
+            zIndex: 0,
+            transition: 'opacity 0.3s',
+          },
+        }}
+      >
+        {/* Project Image */}
+        <Box sx={{ position: 'relative' }}>
+          <CardMedia
+            component="img"
+            height="200"
+            image={image}
+            alt={name}
+            sx={{
+              objectFit: 'cover',
+              borderBottom: '1px solid',
+              borderColor: isDarkMode
+                ? 'rgba(255, 111, 0, 0.2)'
+                : 'rgba(255, 158, 64, 0.2)',
+              filter: isDarkMode ? 'brightness(0.8)' : 'none'
+            }}
+          />
+          
+          {/* Professional Project Badge */}
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 8,
+              right: 8,
+              backgroundColor: muiTheme.palette.secondary.main,
+              color: '#fff',
+              py: 0.5,
+              px: 1.5,
+              borderRadius: 1,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 0.5,
+              boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+            }}
+          >
+            <Business fontSize="small" />
+            <Typography variant="caption" fontWeight="bold">
+              Professional Project
+            </Typography>
+          </Box>
+        </Box>
+        
+        {/* Content */}
+        <CardContent sx={{ 
+          flexGrow: 1, 
+          position: 'relative',
+          zIndex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 3
+        }}>
+          <Typography 
+            variant="h6" 
+            component="h3" 
+            fontWeight="bold" 
+            gutterBottom
+            sx={{ color: muiTheme.palette.text.primary }}
+          >
+            {name}
+          </Typography>
+          
+          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+            <Work sx={{ color: muiTheme.palette.secondary.main, fontSize: 18, mr: 1 }} />
+            <Typography variant="body2" sx={{ fontStyle: 'italic', color: muiTheme.palette.text.secondary }}>
+              {company}
+            </Typography>
+          </Box>
+          
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              mb: 2,
+              flexGrow: 1,
+              color: muiTheme.palette.text.secondary
+            }}
+          >
+            {description}
+          </Typography>
+
+          {/* Architecture Diagram Button */}
+          <Box sx={{ mb: 1 }}>
+            <Button 
+              onClick={handleArchitectureClick}
+              size="small"
+              endIcon={showArchitecture ? <ExpandLess /> : <ExpandMore />}
+              sx={{ 
+                textTransform: 'none',
+                color: muiTheme.palette.secondary.main,
+                mb: 1
+              }}
+            >
+              {showArchitecture ? "Hide Architecture" : "View Architecture"}
+            </Button>
+            
+            <Collapse in={showArchitecture} timeout="auto" unmountOnExit>
+              <Box sx={{ mb: 2 }}>
+                <ArchitectureDiagram isDarkMode={isDarkMode} muiTheme={muiTheme} />
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textAlign: 'center', mt: 1, fontSize: '0.7rem' }}>
+                  Complex data flow between React components and Babylon.js canvas with 2D/3D elements and file format support
+                </Typography>
+              </Box>
+            </Collapse>
+          </Box>
+          
+          {/* Expandable Tech Stack Section */}
+          <Box sx={{ mb: 1 }}>
+            <Button 
+              onClick={handleExpandClick}
+              size="small"
+              endIcon={expanded ? <ExpandLess /> : <ExpandMore />}
+              sx={{ 
+                textTransform: 'none',
+                color: muiTheme.palette.primary.main,
+                mb: 1
+              }}
+            >
+              {expanded ? "Hide Tech Stack" : "View Tech Stack"}
+            </Button>
+            
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <Box sx={{ 
+                backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0.8)' : 'rgba(245, 245, 245, 0.8)',
+                borderRadius: 1,
+                p: 1.5,
+                mb: 2
+              }}>
+                {techStack.map((category, idx) => (
+                  <Box key={idx} sx={{ mb: idx < techStack.length - 1 ? 1.5 : 0 }}>
+                    <Typography variant="caption" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                      <Architecture fontSize="small" sx={{ color: muiTheme.palette.primary.main }} />
+                      {category.category}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
+                      {category.items.map((item, itemIdx) => (
+                        <Chip
+                          key={itemIdx}
+                          label={item}
+                          size="small"
+                          sx={{
+                            backgroundColor: isDarkMode
+                              ? 'rgba(255, 111, 0, 0.15)'
+                              : 'rgba(255, 158, 64, 0.15)',
+                            color: muiTheme.palette.text.primary,
+                            fontSize: '0.7rem',
+                          }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </Collapse>
+          </Box>
+          
+          {/* Tags */}
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 'auto' }}>
+            {tags.map((tag) => (
+              <Chip
+                key={tag}
+                label={tag}
+                size="small"
+                sx={{
+                  backgroundColor: isDarkMode
+                    ? 'rgba(255, 111, 0, 0.1)'
+                    : 'rgba(255, 158, 64, 0.1)',
+                  color: muiTheme.palette.primary.main,
+                  borderRadius: 1,
+                }}
+              />
+            ))}
+          </Box>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+};
+
 const Projects = () => {
   const { isDarkMode } = useAppSelector((state) => state.theme);
   const muiTheme = useTheme();
 
-  const projects = [
+  const projects: ProjectData[] = [
     {
-      name: "3D Portfolio Website",
-      description: "A modern portfolio website featuring 3D animations, interactive elements, and responsive design. Built with React, Three.js, and Material UI.",
-      tags: ["React", "Three.js", "Material UI", "Framer Motion"],
-      image: "/images/projects/portfolio.jpg",
-      source_code_link: "https://github.com/yourusername/portfolio",
-      live_demo_link: "https://yourportfolio.com",
+      name: "Document Semantic Search",
+      description: "Custom document search engine with natural language processing capabilities. Built with React and TensorFlow.js for intelligent semantic text analysis and retrieval across document collections.",
+      tags: ["React", "Material UI", "TensorFlow.js", "NLP", "State Management"],
+      image: "/images/projects/portfolio.jpg", 
+      source_code_link: "https://github.com/yourusername/semantic-search",
+      live_demo_link: "https://semantic-search-demo.com",
+      type: "personal"
     },
     {
-      name: "E-Commerce Platform",
-      description: "Full-stack e-commerce platform with user authentication, product management, and payment integration using Stripe.",
-      tags: ["React", "Node.js", "MongoDB", "Stripe"],
+      name: "Money Management App",
+      description: "Personal finance application with budget tracking, expense categorization, and visualization tools to help users manage their finances effectively.",
+      tags: ["React", "TypeScript", "Material UI", "Chart.js"],
       image: "/images/projects/ecommerce.jpg",
-      source_code_link: "https://github.com/yourusername/ecommerce",
-      live_demo_link: "https://yourecommerce.com",
+      source_code_link: "https://github.com/yourusername/money-management",
+      live_demo_link: "https://money-management-app.com",
+      type: "personal"
     },
     {
-      name: "Task Management App",
-      description: "Collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.",
-      tags: ["React", "Firebase", "Material UI", "Redux"],
+      name: "Cloud Play Creator",
+      description: "Professional 3D visualization platform enabling users to create, manipulate and export interactive cloud-based 3D scenes. Features include real-time collaboration, 2D/3D rendering with DXF and GLB file support, and dynamic document generation.",
+      tags: ["React", "Babylon.js", ".NET", "Azure", "Cosmos DB"],
       image: "/images/projects/taskapp.jpg",
-      source_code_link: "https://github.com/yourusername/taskapp",
-    },
+      source_code_link: "", // Empty but required by the type
+      company: "Ansibyte Code LLP",
+      techStack: [
+        {
+          category: "Frontend",
+          items: ["React.js", "TypeScript", "Babylon.js", "Blueprint.js", "React Hook Form"]
+        },
+        {
+          category: "3D/2D Capabilities",
+          items: ["DXF Import", "GLB Models", "Position Accuracy", "Lines", "Rectangles", "Polygons"]
+        },
+        {
+          category: "Backend",
+          items: [".NET Core", "RESTful APIs", "Azure Services", "Authentication"]
+        },
+        {
+          category: "Database & Storage",
+          items: ["Cosmos DB", "Azure Blob Storage", "Queue Storage", "Table Storage"]
+        },
+        {
+          category: "Document Generation",
+          items: ["jsPDF", "HTML Canvas", "Custom PDF Templates"]
+        },
+        {
+          category: "State Management",
+          items: ["Redux", "Redux Toolkit", "Context API"]
+        }
+      ],
+      type: "professional"
+    }
   ];
+
+  // Filter personal and professional projects
+  const personalProjects = projects.filter(project => project.type === "personal");
+  const professionalProjects = projects.filter(project => project.type === "professional") as Array<ProjectData & {
+    company: string;
+    techStack: {category: string; items: string[]}[];
+  }>;
 
   return (
     <Box
@@ -289,9 +588,10 @@ const Projects = () => {
           />
         </motion.div>
 
-        <Grid container spacing={4} alignItems="stretch">
-          {projects.map((project, index) => (
-            <Grid item xs={12} md={4} key={index} sx={{ display: 'flex' }}>
+        {/* Personal Projects Section */}
+        <Grid container spacing={4} alignItems="stretch" justifyContent="center">
+          {personalProjects.map((project, index) => (
+            <Grid item xs={12} sm={10} md={6} lg={5} key={index} sx={{ display: 'flex' }}>
               <ProjectCard
                 name={project.name}
                 description={project.description}
@@ -304,6 +604,49 @@ const Projects = () => {
             </Grid>
           ))}
         </Grid>
+
+        {/* Professional Projects Section */}
+        {professionalProjects.length > 0 && (
+          <Box sx={{ mt: 6 }}>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Typography
+                variant="h4"
+                align="center"
+                fontWeight="bold"
+                gutterBottom
+                sx={{ 
+                  color: muiTheme.palette.text.primary, 
+                  position: 'relative', 
+                  zIndex: 1,
+                  mb: 3
+                }}
+              >
+                Professional <Box component="span" sx={{ color: muiTheme.palette.secondary.main }}>Experience</Box>
+              </Typography>
+            </motion.div>
+
+            <Grid container spacing={4} alignItems="stretch" justifyContent="center">
+              {professionalProjects.map((project, index) => (
+                <Grid item xs={12} sm={10} md={8} key={index} sx={{ display: 'flex' }}>
+                  <ProfessionalProjectCard
+                    name={project.name}
+                    description={project.description}
+                    tags={project.tags}
+                    image={project.image}
+                    company={project.company}
+                    techStack={project.techStack}
+                    index={index}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 50 }}
