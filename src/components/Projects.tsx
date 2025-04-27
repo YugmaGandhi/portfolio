@@ -1,8 +1,7 @@
-import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme, Collapse, Badge, Divider } from '@mui/material';
-import { GitHub, Launch, Code, WebAsset, Star, Visibility, Work, Business, ExpandMore, ExpandLess, Architecture } from '@mui/icons-material';
+import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme, Collapse } from '@mui/material';
+import { GitHub, Launch, Work, Business, ExpandMore, ExpandLess, Architecture } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
-import { ThemeState } from '../redux/slices/themeSlice';
 import { useState } from 'react';
 import ArchitectureDiagram from './ArchitectureDiagram';
 
@@ -103,6 +102,7 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
             href={source_code_link}
             target="_blank"
             rel="noopener noreferrer"
+            disabled //once you have a link, remove this line
             sx={{
               position: 'absolute',
               top: 8,
@@ -126,6 +126,7 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
               href={live_demo_link}
               target="_blank"
               rel="noopener noreferrer"
+              disabled //once you have a link, remove this line
               sx={{
                 position: 'absolute',
                 top: 8,
@@ -453,7 +454,7 @@ const Projects = () => {
       name: "Document Semantic Search",
       description: "Custom document search engine with natural language processing capabilities. Built with React and TensorFlow.js for intelligent semantic text analysis and retrieval across document collections.",
       tags: ["React", "Material UI", "TensorFlow.js", "NLP", "State Management"],
-      image: "/images/projects/portfolio.jpg", 
+      image: "/images/projects/SemanticSearch.png", 
       source_code_link: "https://github.com/yourusername/semantic-search",
       live_demo_link: "https://semantic-search-demo.com",
       type: "personal"
@@ -471,7 +472,7 @@ const Projects = () => {
       name: "Cloud Play Creator",
       description: "Professional 3D visualization platform enabling users to create, manipulate and export interactive cloud-based 3D scenes. Features include real-time collaboration, 2D/3D rendering with DXF and GLB file support, and dynamic document generation.",
       tags: ["React", "Babylon.js", ".NET", "Azure", "Cosmos DB"],
-      image: "/images/projects/taskapp.jpg",
+      image: "/images/projects/CloudPlayCreator.png",
       source_code_link: "", // Empty but required by the type
       company: "Ansibyte Code LLP",
       techStack: [

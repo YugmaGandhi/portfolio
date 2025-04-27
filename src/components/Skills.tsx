@@ -154,15 +154,15 @@ const Skills = () => {
     },
     {
       name: "Node.js",
-      level: 90,
+      level: 70,
     },
     {
       name: "TypeScript",
-      level: 90,
+      level: 70,
     },
     {
       name: "MongoDB",
-      level: 85,
+      level: 60,
     },
     {
       name: "Azure DevOps",
@@ -178,7 +178,7 @@ const Skills = () => {
     },
     {
       name: "Azure AI Search",
-      level: 85,
+      level: 70,
     },
   ];
 

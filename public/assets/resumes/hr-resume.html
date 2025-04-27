@@ -78,7 +78,9 @@
             display: flex;
             justify-content: center;
             flex-wrap: wrap;
-            gap: 0.8rem;
+            gap: 1.2rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 0.7rem;
             font-size: 0.75rem;
         }
         
@@ -86,6 +88,11 @@
             display: flex;
             align-items: center;
             gap: 0.2rem;
+        }
+        
+        .company-location span:first-child {
+            font-weight: bold;
+            color: var(--secondary-color);
         }
         
         /* Section styling */
@@ -286,28 +293,37 @@
                 font-size: 9pt;
                 line-height: 1.3;
             }
-            
             @page {
                 size: A4;
                 margin: 0.4in;
             }
-            
+            .section,
+            .experience-item,
+            .education-item,
+            .cert-item,
+            .education-container,
+            .certification-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .skills-container,
+            .education-cert-container {
+                flex-wrap: wrap;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
             .skills-section {
                 page-break-after: avoid;
             }
-
             .experience-container {
                 margin-top: 0.5rem;
             }
-
-            .education-cert-container {
-                page-break-inside: avoid;
-            }
-
             .header {
                 page-break-after: avoid;
             }
-            
+            .footer {
+                page-break-before: avoid;
+            }
             .print-button {
                 display: none;
             }
@@ -320,7 +336,6 @@
         <h2 class="title">Senior Software Developer</h2>
         <div class="contact-info">
             <div class="contact-item">
-                <span>📧</span>
                 <a href="mailto:Yugmagandhi1805@gmail.com">Yugmagandhi1805@gmail.com</a>
             </div>
             <div class="contact-item">
@@ -332,7 +347,6 @@
                 <span>Gujarat, India</span>
             </div>
             <div class="contact-item">
-                <span>🔗</span>
                 <a href="https://linkedin.com/in/yugma-gandhi">linkedin.com/in/yugma-gandhi</a>
             </div>
         </div>
@@ -389,31 +403,33 @@
             </div>
             <div class="company-location">
                 <span>Ansibyte Code LLP</span>
-                <span>Remote</span>
+                <span>Ahmedabad, Gujarat</span>
             </div>
             <ul class="responsibilities">
-                <li>Led development of an interactive 3D platform that improved client engagement by 35% and reduced customer support requests by 20%</li>
-                <li>Successfully managed the migration of frontend libraries to their latest versions, increasing application performance by 20%</li>
-                <li>Mentored two junior developers, increasing their productivity by 40% within three months</li>
-                <li>Streamlined the deployment process by implementing CI/CD pipelines, reducing deployment time by 45%</li>
-                <li>Facilitated effective communication between technical and non-technical stakeholders, resulting in high client satisfaction</li>
+                <li>Architected a new application from scratch, including technology stack selection and system design.</li>
+                <li>Led the development and performance optimization of the Cloud Play Creator project (Babylon.js, React, React Hook Form, Blueprint.js, React Router DOM).</li>
+                <li>Upgraded the entire frontend stack, conducted extensive R&D on performance bottlenecks, and implemented solutions that significantly improved application speed and stability.</li>
+                <li>Identified and removed a core engine bottleneck library, replacing it with custom code that improved engine performance by 98%.</li>
+                <li>Updated Azure CI/CD pipelines, and managed deployments using Azure DevOps for robust and automated delivery.</li>
+                <li>Performed multiple performance audits, resolved critical bugs, and refactored large codebases for maintainability and efficiency.</li>
+                <li>Mentored and managed junior developers, conducted knowledge-sharing sessions, and provided technical guidance to freshers.</li>
             </ul>
         </div>
         
         <div class="experience-item">
             <div class="job-title-container">
-                <span class="job-title">Software Developer</span>
+                <span class="job-title">Systems Engineer</span>
                 <span class="job-period">Jul 2022 - Sep 2023</span>
             </div>
             <div class="company-location">
                 <span>Infosys</span>
-                <span>Gujarat, India</span>
+                <span>Pune, India (Remote)</span>
             </div>
             <ul class="responsibilities">
-                <li>Developed backend services that supported over 5,000 daily active users with 99.9% uptime</li>
-                <li>Collaborated with cross-functional teams to identify and implement solutions that reduced API response times by 25%</li>
-                <li>Actively participated in Agile ceremonies, contributing to process improvements that increased team velocity</li>
-                <li>Maintained comprehensive documentation that reduced knowledge transfer time by 40%</li>
+                <li>Developed and maintained Node.js RESTful APIs for an Employee Management System project.</li>
+                <li>Designed and implemented several MongoDB data models to support business requirements.</li>
+                <li>Resolved backend issues, improving system reliability and performance.</li>
+                <li>Collaborated with cross-functional teams to deliver scalable backend solutions.</li>
             </ul>
         </div>
     </div>
@@ -454,4 +470,4 @@
         <span class="print-button-tooltip">Print Resume</span>
     </button>
 </body>
-</html> 
+</html>
