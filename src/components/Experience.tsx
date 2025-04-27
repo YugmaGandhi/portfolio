@@ -12,7 +12,7 @@ const experienceData = [
     points: [
       "Working on Cloud Play Creator project built with React.js and Babylon.js",
       "Migrated entire frontend libraries to their latest versions including React, React Hook Form, Blueprint.js, and Babylon.js",
-      "Leading client calls and mentoring two team members",
+      "Leading client calls and mentoring team members",
       "Built CI/CD pipelines for frontend in Azure",
       "Provided internal and external training on various technologies"
     ],

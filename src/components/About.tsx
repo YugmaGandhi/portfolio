@@ -160,11 +160,11 @@ const About = () => {
                 </Typography>
                 
                 <Typography variant="body1" paragraph sx={{ color: muiTheme.palette.text.primary }}>
-                  With over 3 years of development experience, I specialize in creating engaging and responsive web applications. My expertise includes front-end frameworks like React, back-end technologies such as Node.js, and 3D visualization libraries like Babylon.js.
+                  With 2 years and 10 months of development experience, I specialize in building efficient and scalable web applications. I enjoy solving complex problems and bringing ideas to life through clean, efficient code, focusing on robust logic and system architecture.
                 </Typography>
                 
                 <Typography variant="body1" paragraph sx={{ color: muiTheme.palette.text.primary }}>
-                  I enjoy solving complex problems and turning ideas into reality through clean, efficient code. My approach combines technical excellence with a keen eye for design and user experience.
+                My expertise includes back-end technologies like Node.js, front-end frameworks like React, and 3D visualization with Babylon.js.
                 </Typography>
                 
                 <Box sx={{ mt: 3 }}>
