@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest  # You can use self-hosted if you prefer, but `ubuntu-latest` is commonly used
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -27,7 +27,6 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          npm install gh-pages --save-dev
-          npm run deploy
+          npm run deploy  # This will run the 'deploy' script from your package.json which handles deployment
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authorize the deployment
