@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="onePiecePattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+      <!-- Mini Jolly Roger -->
+      <circle cx="25" cy="25" r="20" fill="#E61C2B" fill-opacity="0.1"/>
+      <path fill="#E61C2B" fill-opacity="0.1" d="M25 10
+        C 32 10, 37 17, 37 25
+        C 37 33, 32 40, 25 40
+        C 18 40, 13 33, 13 25
+        C 13 17, 18 10, 25 10
+        M 18 22
+        L 22 22
+        L 22 28
+        L 18 28
+        Z
+        M 28 22
+        L 32 22
+        L 32 28
+        L 28 28
+        Z
+        M 18 32
+        C 18 32, 25 37, 32 32" />
+      
+      <!-- Anchor -->
+      <path fill="#E61C2B" fill-opacity="0.1" d="M75 15
+        L 80 20
+        L 77 23
+        L 75 21
+        L 73 23
+        L 70 20
+        Z
+        M 75 20
+        L 75 35
+        M 65 35
+        L 85 35
+        M 65 30
+        C 65 30, 75 40, 85 30" />
+    </pattern>
+  </defs>
+  
+  <rect x="0" y="0" width="200" height="200" fill="url(#onePiecePattern)" />
+</svg> 

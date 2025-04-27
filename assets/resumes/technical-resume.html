@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yugma N. Gandhi - Technical Resume</title>
+    <script>
+        // Initialize after the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add print button functionality
+            document.getElementById('printButton').addEventListener('click', function() {
+                window.print();
+            });
+        });
+    </script>
+    <style>
+        :root {
+            --primary-color: #FF6F00; /* Darker Naruto orange for technical theme */
+            --secondary-color: #1565C0; /* Darker Rasengan blue */
+            --text-color: #333;
+            --light-gray: #f5f5f5;
+            --medium-gray: #ddd;
+            --dark-gray: #555;
+            --code-background: #f5f7fa;
+            --code-border: #e4e7eb;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: white;
+            color: var(--text-color);
+            line-height: 1.4;
+            max-width: 8.27in; /* A4 width */
+            margin: 0 auto;
+            padding: 0.3in;
+            font-size: 9pt; /* Smaller base font size for print */
+        }
+        
+        /* Header section with tech-inspired design */
+        .header {
+            position: relative;
+            margin-bottom: 0.6rem;
+            padding-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            border-bottom: none;
+        }
+        
+        .header:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+        
+        .name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.1rem;
+            position: relative;
+        }
+        
+        .name:after {
+            content: '_';
+            color: var(--secondary-color);
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        .title {
+            font-size: 0.9rem;
+            color: var(--secondary-color);
+            margin-bottom: 0.4rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 0.7rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        
+        /* Section styling with tech elements */
+        .section {
+            margin-bottom: 0.7rem;
+            position: relative;
+            page-break-inside: avoid;
+        }
+        
+        .section-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 0.3rem;
+            padding-bottom: 0.1rem;
+            border-bottom: 2px solid var(--primary-color);
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+        
+        /* Technical summary section with code-like styling */
+        .summary {
+            margin-bottom: 0.5rem;
+            text-align: justify;
+            line-height: 1.4;
+            padding: 0.5rem;
+            background-color: var(--code-background);
+            border-left: 4px solid var(--secondary-color);
+            border-radius: 0 4px 4px 0;
+            font-size: 8.5pt;
+        }
+        
+        /* Skills section with visual meters */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+        
+        .skill-category {
+            flex: 1;
+            min-width: 160px;
+        }
+        
+        .skill-category-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.3rem;
+            font-family: 'Courier New', monospace;
+            border-left: 3px solid var(--secondary-color);
+            padding-left: 0.3rem;
+            font-size: 0.85rem;
+        }
+        
+        .skill-item {
+            margin-bottom: 0.3rem;
+        }
+        
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.1rem;
+            font-size: 0.8rem;
+        }
+        
+        .skill-bar {
+            height: 5px;
+            background-color: var(--medium-gray);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .skill-level {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 3px;
+        }
+        
+        /* Experience section with tech styling */
+        .experience-container {
+            margin-top: 0.5rem;
+        }
+        
+        .experience-item {
+            margin-bottom: 0.6rem;
+            padding: 0.5rem;
+            border-left: 3px solid var(--secondary-color);
+            background-color: var(--light-gray);
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .job-title-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.1rem;
+        }
+        
+        .job-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+        
+        .job-period {
+            color: var(--dark-gray);
+            font-size: 0.75rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .company-location {
+            display: flex;
+            justify-content: space-between;
+            font-style: italic;
+            margin-bottom: 0.2rem;
+            font-size: 0.8rem;
+        }
+        
+        .company-location span:first-child {
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+        
+        .responsibilities {
+            list-style-type: none;
+            font-size: 0.8rem;
+        }
+        
+        .responsibilities li {
+            margin-bottom: 0.2rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+        
+        .responsibilities li:before {
+            content: ">";
+            color: var(--secondary-color);
+            position: absolute;
+            left: 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        /* Projects section with card styling */
+        .projects-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            page-break-before: avoid;
+        }
+        
+        .project-item {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 0.6rem;
+            padding: 0.5rem;
+            border: 1px solid var(--medium-gray);
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+        
+        .project-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.2rem;
+            font-size: 0.9rem;
+        }
+        
+        .project-tech {
+            font-style: italic;
+            background-color: var(--code-background);
+            padding: 0.15rem 0.3rem;
+            border-radius: 3px;
+            border: 1px solid var(--code-border);
+            margin-bottom: 0.2rem;
+            font-size: 0.75rem;
+            font-family: 'Courier New', monospace;
+            color: var(--secondary-color);
+        }
+        
+        /* Education and Certifications */
+        .education-item, .cert-item {
+            margin-bottom: 0.4rem;
+            padding: 0.2rem;
+            border-left: 2px solid var(--primary-color);
+            padding-left: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .education-cert-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .education-container, .certification-container {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 0.7rem;
+            padding-top: 0.5rem;
+            border-top: 2px solid var(--primary-color);
+            font-size: 0.75rem;
+            color: var(--dark-gray);
+            font-family: 'Courier New', monospace;
+            page-break-before: avoid;
+        }
+        
+        /* Print button */
+        .print-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .print-button:hover {
+            background-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+        
+        .print-button-tooltip {
+            position: absolute;
+            right: 60px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+        }
+        
+        .print-button:hover .print-button-tooltip {
+            opacity: 1;
+        }
+        
+        @media print {
+            body {
+                padding: 0.3in;
+                background-color: white;
+                font-size: 9pt;
+                line-height: 1.3;
+            }
+            @page {
+                size: A4;
+                margin: 0.4in;
+            }
+            .section,
+            .experience-item,
+            .project-item,
+            .education-item,
+            .cert-item,
+            .education-container,
+            .certification-container {
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .projects-container,
+            .education-cert-container,
+            .skills-container {
+                flex-wrap: wrap;
+                break-inside: avoid;
+                page-break-inside: avoid;
+            }
+            .skills-section {
+                page-break-after: avoid;
+            }
+            .experience-container {
+                margin-top: 0.5rem;
+            }
+            .header {
+                page-break-after: avoid;
+            }
+            .footer {
+                page-break-before: avoid;
+            }
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="name">Yugma N. Gandhi</h1>
+        <h2 class="title">// Senior Software Developer</h2>
+        <div class="contact-info" style="gap: 1.2rem; border-left: 3px solid var(--primary-color); padding-left: 0.7rem;">
+            <div class="contact-item">
+                <a href="mailto:Yugmagandhi1805@gmail.com" style="text-decoration: none; color: inherit; font-weight: 500;">Yugmagandhi1805@gmail.com</a>
+            </div>
+            <div class="contact-item">
+                <span>9586063713</span>
+            </div>
+            <div class="contact-item">
+                <span>Gujarat, India</span>
+            </div>
+            <div class="contact-item">
+                <a href="https://linkedin.com/in/yugma-gandhi" style="text-decoration: none; color: var(--secondary-color); font-weight: 500;">linkedin.com/in/yugma-gandhi</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">TECHNICAL PROFILE</h2>
+        <div class="summary">
+            <p>Senior Software Developer with expertise in React.js and Babylon.js for frontend, and Node.js with Express.js for backend development. Over 2 years of experience building interactive web applications with a focus on 3D visualizations and responsive UIs. Proficient in implementing CI/CD pipelines, Azure cloud services, and leading development teams.</p>
+        </div>
+    </div>
+
+    <div class="section skills-section">
+        <h2 class="section-title">TECHNICAL SKILLS</h2>
+        <div class="skills-container">
+            <div class="skill-category">
+                <h3 class="skill-category-title">Frontend Technologies</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>React.js</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 90%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Babylon.js</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 85%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>TypeScript</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h3 class="skill-category-title">Backend Technologies</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Node.js</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Express.js</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>RESTful APIs</span>
+                        <span>Advanced</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h3 class="skill-category-title">DevOps & Cloud</h3>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Azure DevOps</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>CI/CD Pipelines</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="skill-item">
+                    <div class="skill-name">
+                        <span>Azure Services</span>
+                        <span>Intermediate</span>
+                    </div>
+                    <div class="skill-bar">
+                        <div class="skill-level" style="width: 65%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section experience-container">
+        <h2 class="section-title">PROFESSIONAL EXPERIENCE</h2>
+        
+        <div class="experience-item">
+            <div class="job-title-container">
+                <span class="job-title">Senior Software Developer</span>
+                <span class="job-period">Sep 2023 - Present</span>
+            </div>
+            <div class="company-location">
+                <span>Ansibyte Code LLP</span>
+                <span>Ahmedabad, Gujarat</span>
+            </div>
+            <ul class="responsibilities">
+                <li>Contributed to the development and optimization of the Cloud Play Creator project (Babylon.js, React, React Hook Form, Blueprint.js, React Router DOM).</li>
+                <li>Upgraded the entire frontend stack, conducted extensive R&D on performance bottlenecks, and implemented solutions that significantly improved application speed and stability.</li>
+                <li>Identified and removed a core engine bottleneck library, replacing it with custom code that improved engine performance by 98%.</li>
+                <li>Updated Azure CI/CD pipelines, and managed deployments using Azure DevOps for robust and automated delivery.</li>
+                <li>Performed multiple performance audits, resolved critical bugs, and refactored large codebases for maintainability and efficiency.</li>
+                <li>Architected and developed other applications from scratch, selecting appropriate frameworks and technologies to meet project requirements.</li>
+                <li>Mentored and managed junior developers, conducted knowledge-sharing sessions, and provided technical guidance to freshers.</li>
+            </ul>
+        </div>
+        
+        <div class="experience-item">
+            <div class="job-title-container">
+                <span class="job-title">Software Developer</span>
+                <span class="job-period">Jul 2022 - Sep 2023</span>
+            </div>
+            <div class="company-location">
+                <span>Infosys</span>
+                <span>Pune, India (Remote)</span>
+            </div>
+            <ul class="responsibilities">
+                <li>Developed and maintained Node.js RESTful APIs for an Employee Management System project.</li>
+                <li>Designed and implemented multiple MongoDB data models to support complex business requirements.</li>
+                <li>Resolved critical backend issues, improving system reliability and performance.</li>
+                <li>Collaborated with cross-functional teams to deliver scalable backend solutions.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">KEY PROJECTS</h2>
+        <div class="projects-container">
+            <div class="project-item">
+                <div class="project-title">Cloud Play Creator</div>
+                <div class="project-tech">React.js, Babylon.js, TypeScript, Azure Services</div>
+                <p>A 3D visualization platform enabling users to create and manipulate interactive cloud-based 3D scenes with real-time collaboration and asset management.</p>
+                <p><strong>Achievements:</strong> Optimized 3D rendering, designed responsive UI components, integrated cloud storage</p>
+            </div>
+            
+            <div class="project-item">
+                <div class="project-title">Expense Manager</div>
+                <div class="project-tech">React, Redux, Material UI, TypeScript</div>
+                <p>A responsive expense tracking application with budget management, data visualization, and reporting capabilities.</p>
+                <p><strong>Achievements:</strong> Implemented Redux state management, created reusable form components, designed responsive UI</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="education-cert-container">
+        <div class="section education
+            <h2 class="section-title">EDUCATION</h2>
+            <div class="education-item">
+                <div class="job-title-container">
+                    <span class="job-title">B.Tech, Mechanical Engineering</span>
+                    <span class="job-period">2021</span>
+                </div>
+                <div class="company-location">
+                    <span>Gandhinagar Institute of Technology</span>
+                    <span>CGPA: 8.99/10</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section certification-container">
+            <h2 class="section-title">CERTIFICATIONS</h2>
+            <div class="cert-item">
+                <span>Microsoft Azure Administrator (AZ-104)</span>
+            </div>
+            <div class="cert-item">
+                <span>Microsoft Azure Fundamentals (AZ-900)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>{ Technical Resume | Yugma N. Gandhi | Senior Software Developer }</p>
+    </div>
+    
+    <!-- Print button -->
+    <button id="printButton" class="print-button">
+        🖨️
+        <span class="print-button-tooltip">Print Resume</span>
+    </button>
+</body>
+</html>
