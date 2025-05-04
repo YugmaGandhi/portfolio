@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme, Tooltip, Zoom, keyframes, Paper, alpha } from '@mui/material';
+import { Box, Typography, Tooltip, Zoom, keyframes, Paper, alpha } from '@mui/material';
 import { Cloud, Code, DataObject, SettingsEthernet, Storage, Info } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
 
@@ -17,22 +17,10 @@ const layerDescriptions = {
   storage: "Database and storage solutions for structured and unstructured data persistence."
 };
 
-// Animation keyframes
-const pulse = keyframes`
-  0% { opacity: 0.8; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.03); }
-  100% { opacity: 0.8; transform: scale(1); }
-`;
-
 const floatUpDown = keyframes`
   0% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
   100% { transform: translateY(0); }
-`;
-
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
 `;
 
 const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps) => {
@@ -131,7 +119,7 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
   ];
 
   // Style for the inner components (React UI, 3D Canvas, etc.)
-  const getInnerComponentStyle = (layerKey: string, isActive: boolean) => ({
+  const getInnerComponentStyle = (layerKey: string) => ({
     border: '1px solid',
     borderColor: isDarkMode ? 
       alpha(getLayerColors(layerKey).text, 0.3) : 
@@ -393,13 +381,13 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
                 title="React UI"
                 subtitle="UI Components"
                 tooltip="UI components built with React and Material UI"
-                sx={{ ...getInnerComponentStyle('frontend', hoveredLayer === 'frontend'), flex: 1 }}
+                sx={{ ...getInnerComponentStyle('frontend'), flex: 1 }}
               />
               <LayerInnerItem
                 title="3D Canvas"
                 subtitle="3D Visualization"
                 tooltip="3D rendering engine for 2D/3D visualization"
-                sx={{ ...getInnerComponentStyle('frontend', hoveredLayer === 'frontend'), flex: 1 }}
+                sx={{ ...getInnerComponentStyle('frontend'), flex: 1 }}
               />
             </Box>
           </LayerCard>
@@ -420,7 +408,7 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
           >
             <Tooltip title="Global state management for consistent data access" arrow placement="top">
               <Box sx={{ 
-                ...getInnerComponentStyle('state', hoveredLayer === 'state'),
+                ...getInnerComponentStyle('state'),
                 display: 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-between',
@@ -455,7 +443,7 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
             onMouseLeave={() => setHoveredLayer(null)}
           >
             <Tooltip title="Backend APIs handling business logic and data processing" arrow placement="top">
-              <Box sx={{ ...getInnerComponentStyle('api', hoveredLayer === 'api') }}>
+              <Box sx={{ ...getInnerComponentStyle('api') }}>
                 <Typography variant="body2" fontWeight="medium" sx={{ color: muiTheme.palette.text.primary }}>
                   RESTful APIs
                 </Typography>
@@ -494,7 +482,7 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
                   placement="top"
                 >
                   <Box sx={{ 
-                    ...getInnerComponentStyle('services', hoveredLayer === 'services'), 
+                    ...getInnerComponentStyle('services'), 
                     flex: 1,
                   }}>
                     <Typography variant="caption" fontWeight="medium" sx={{ color: muiTheme.palette.text.secondary }}>
@@ -529,7 +517,7 @@ const ArchitectureDiagram = ({ isDarkMode, muiTheme }: ArchitectureDiagramProps)
                 <Tooltip key={index} title={storage.description} arrow placement="top">
                   <Box 
                     sx={{ 
-                      ...getInnerComponentStyle('storage', hoveredLayer === 'storage'),
+                      ...getInnerComponentStyle('storage'),
                       flex: 1,
                     }}
                   >

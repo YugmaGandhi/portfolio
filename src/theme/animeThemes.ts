@@ -1,4 +1,4 @@
-import { createTheme, ThemeOptions, Theme } from '@mui/material/styles';
+import { createTheme, Theme } from '@mui/material/styles';
 
 // Unified Anime Theme Colors
 const animeColors = {

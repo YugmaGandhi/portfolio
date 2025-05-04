@@ -3,10 +3,16 @@ import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
 import { ThemeState } from '../redux/slices/themeSlice';
 import { Person } from '@mui/icons-material';
+import { differenceInMonths } from 'date-fns';
 
 const About = () => {
   const { isDarkMode } = useAppSelector((state) => state.theme) as ThemeState;
   const muiTheme = useTheme();
+
+  const experienceMonths = differenceInMonths(new Date(), new Date(2022, 6));
+
+  const experienceYears = Math.floor(experienceMonths / 12);
+  const remainingMonths = experienceMonths % 12;
 
   return (
     <Box
@@ -158,9 +164,9 @@ const About = () => {
                 }}>
                   Full Stack Developer
                 </Typography>
-                
+
                 <Typography variant="body1" paragraph sx={{ color: muiTheme.palette.text.primary }}>
-                  With 2 years and 10 months of development experience, I specialize in building efficient and scalable web applications. I enjoy solving complex problems and bringing ideas to life through clean, efficient code, focusing on robust logic and system architecture.
+                  With {experienceYears} {experienceYears === 1 ? 'year' : 'years'} and {remainingMonths} {remainingMonths === 1 ? 'month' : 'months'} of development experience, I specialize in building efficient and scalable web applications. I enjoy solving complex problems and bringing ideas to life through clean, efficient code, focusing on robust logic and system architecture.
                 </Typography>
                 
                 <Typography variant="body1" paragraph sx={{ color: muiTheme.palette.text.primary }}>
