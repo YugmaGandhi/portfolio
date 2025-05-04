@@ -1,4 +1,11 @@
-import { ThemeState } from '../redux/slices/themeSlice';
+export interface ThemeState {
+  isDarkMode: boolean;
+  primaryColor: string; // Added this property
+  secondaryColor: string; // Ensure other properties like this exist
+  accentColor: string;
+  fontStyle: string;
+  animeCharacter: string;
+}
 
 // Function to generate CSS variables from theme
 export const generateCSSVariables = (theme: ThemeState): Record<string, string> => {

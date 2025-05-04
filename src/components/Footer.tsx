@@ -1,6 +1,5 @@
 import { Box, Container, Typography, Grid, IconButton, useTheme } from '@mui/material';
 import { GitHub, LinkedIn } from '@mui/icons-material';
-import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
 import { ThemeState } from '../redux/slices/themeSlice';
 
@@ -81,7 +80,7 @@ const Footer = () => {
                 </IconButton>
                 <IconButton
                   component="a"
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/yugma18/"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
