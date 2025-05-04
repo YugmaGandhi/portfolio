@@ -27,6 +27,7 @@ jobs:
 
       - name: Deploy to GitHub Pages
         run: |
-          npm run deploy  # This will run the 'deploy' script from your package.json which handles deployment
+          npm install gh-pages --save-dev
+          npm run deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub token to authorize the deployment
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
