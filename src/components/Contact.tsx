@@ -60,8 +60,8 @@ const Contact = () => {
       sx={{
         py: 10,
         background: isDarkMode 
-          ? 'linear-gradient(to bottom, #1C1C1C, #121212)' 
-          : 'linear-gradient(to bottom, #F5F5F5, #FAFAFA)',
+          ? 'linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95))'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(255, 255, 255, 0.95))',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -71,8 +71,10 @@ const Contact = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: 'radial-gradient(circle at 20% 30%, rgba(103, 58, 183, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(103, 58, 183, 0.05) 0%, transparent 50%)',
-          pointerEvents: 'none'
+          backgroundImage: isDarkMode
+            ? 'radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)'
+            : 'radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(129, 140, 248, 0.05) 0%, transparent 50%)',
+          pointerEvents: 'none',
         },
         '&::after': {
           content: '""',
@@ -84,7 +86,7 @@ const Contact = () => {
           height: '100%',
           backgroundImage: `url('/icons/anime-pattern.svg')`,
           backgroundSize: '600px',
-          opacity: 0.02,
+          opacity: 0.015,
           pointerEvents: 'none',
           animation: 'floatBackground 60s linear infinite',
         },
@@ -151,113 +153,261 @@ const Contact = () => {
                   p: 4,
                   height: '100%',
                   borderRadius: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                  backgroundColor: isDarkMode 
+                    ? 'rgba(31, 41, 55, 0.8)'
+                    : 'rgba(255, 255, 255, 0.8)',
                   backdropFilter: 'blur(10px)',
                   position: 'relative',
                   overflow: 'hidden',
+                  border: '1px solid',
+                  borderColor: isDarkMode
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.5)'
+                      : 'rgba(96, 165, 250, 0.5)',
+                    boxShadow: isDarkMode
+                      ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                      : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
+                  },
                   '&::before': {
                     content: '""',
                     position: 'absolute',
                     top: 0,
-                    right: 0,
-                    bottom: 0,
                     left: 0,
-                    background: 'radial-gradient(circle at top right, rgba(103, 58, 183, 0.1), transparent 70%)',
-                    zIndex: 0,
-                  }
+                    right: 0,
+                    height: '4px',
+                    background: `linear-gradient(90deg, 
+                      ${muiTheme.palette.primary.main}, 
+                      ${muiTheme.palette.secondary.main})`,
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                  },
+                  '&:hover::before': {
+                    opacity: 1,
+                  },
                 }}
               >
                 <Box sx={{ position: 'relative', zIndex: 1 }}>
-                  <Typography variant="h5" fontWeight="bold" gutterBottom>
+                  <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: muiTheme.palette.text.primary }}>
                     Contact Information
                   </Typography>
                   
                   <Box sx={{ mt: 4 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                    {/* Email Box */}
+                    <Box 
+                      sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        mb: 3,
+                        p: 2,
+                        borderRadius: 2,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                          transform: 'translateY(-2px)',
+                        },
+                      }}
+                    >
                       <IconButton 
                         sx={{ 
-                          mr: 2, 
-                          backgroundColor: isDarkMode 
-                            ? 'rgba(103, 58, 183, 0.1)' 
-                            : 'rgba(149, 117, 205, 0.1)',
+                          mr: 2,
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                          color: '#fff',
+                          '&:hover': {
+                            background: isDarkMode
+                              ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                              : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                          },
                         }}
                       >
-                        <EmailIcon color="primary" />
+                        <EmailIcon />
                       </IconButton>
                       <Box>
                         <Typography variant="body2" color="text.secondary">
                           Email
                         </Typography>
-                        <Typography variant="body1">
+                        <Typography variant="body1" sx={{ color: muiTheme.palette.text.primary }}>
                           Yugmagandhi1805@gmail.com
                         </Typography>
                       </Box>
                     </Box>
                     
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                    {/* Phone Box */}
+                    <Box 
+                      sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        mb: 3,
+                        p: 2,
+                        borderRadius: 2,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                          transform: 'translateY(-2px)',
+                        },
+                      }}
+                    >
                       <IconButton 
                         sx={{ 
-                          mr: 2, 
-                          backgroundColor: isDarkMode 
-                            ? 'rgba(103, 58, 183, 0.1)' 
-                            : 'rgba(149, 117, 205, 0.1)',
+                          mr: 2,
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                          color: '#fff',
+                          '&:hover': {
+                            background: isDarkMode
+                              ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                              : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                          },
                         }}
                       >
-                        <PhoneIcon color="primary" />
+                        <PhoneIcon />
                       </IconButton>
                       <Box>
                         <Typography variant="body2" color="text.secondary">
                           Phone
                         </Typography>
-                        <Typography variant="body1">
+                        <Typography variant="body1" sx={{ color: muiTheme.palette.text.primary }}>
                           +91 9586063713
                         </Typography>
                       </Box>
                     </Box>
                     
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                    {/* Location Box */}
+                    <Box 
+                      sx={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        mb: 3,
+                        p: 2,
+                        borderRadius: 2,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                          transform: 'translateY(-2px)',
+                        },
+                      }}
+                    >
                       <IconButton 
                         sx={{ 
-                          mr: 2, 
-                          backgroundColor: isDarkMode 
-                            ? 'rgba(103, 58, 183, 0.1)' 
-                            : 'rgba(149, 117, 205, 0.1)',
+                          mr: 2,
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                          color: '#fff',
+                          '&:hover': {
+                            background: isDarkMode
+                              ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                              : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                          },
                         }}
                       >
-                        <LocationOnIcon color="primary" />
+                        <LocationOnIcon />
                       </IconButton>
                       <Box>
                         <Typography variant="body2" color="text.secondary">
                           Location
                         </Typography>
-                        <Typography variant="body1">
+                        <Typography variant="body1" sx={{ color: muiTheme.palette.text.primary }}>
                           Gujarat, India
                         </Typography>
                       </Box>
                     </Box>
                   </Box>
                   
-                  <Box sx={{ mt: 4, display: 'flex', gap: 2 }}>
+                  {/* Social Links */}
+                  <Box sx={{ 
+                    mt: 4, 
+                    display: 'flex', 
+                    gap: 2,
+                    p: 2,
+                    borderRadius: 2,
+                    backgroundColor: isDarkMode 
+                      ? 'rgba(31, 41, 55, 0.4)'
+                      : 'rgba(255, 255, 255, 0.7)',
+                    border: '1px solid',
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.1)'
+                      : 'rgba(96, 165, 250, 0.1)',
+                  }}>
                     <IconButton 
                       component="a" 
                       href="https://github.com/yourname" 
                       target="_blank"
                       sx={{ 
-                        backgroundColor: isDarkMode 
-                          ? 'rgba(103, 58, 183, 0.1)' 
-                          : 'rgba(149, 117, 205, 0.1)',
+                        background: isDarkMode
+                          ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                          : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                        color: '#fff',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                        },
                       }}
                     >
                       <GitHubIcon />
                     </IconButton>
                     <IconButton 
                       component="a" 
-                      href="https://linkedin.com/in/yourname" 
+                      href="https://www.linkedin.com/in/yugma18/" 
                       target="_blank"
                       sx={{ 
-                        backgroundColor: isDarkMode 
-                          ? 'rgba(103, 58, 183, 0.1)' 
-                          : 'rgba(149, 117, 205, 0.1)',
+                        background: isDarkMode
+                          ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                          : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                        color: '#fff',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                        },
                       }}
                     >
                       <LinkedInIcon />
@@ -281,11 +431,45 @@ const Contact = () => {
                 sx={{
                   p: 4,
                   borderRadius: 2,
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                  backgroundColor: isDarkMode 
+                    ? 'rgba(31, 41, 55, 0.8)'
+                    : 'rgba(255, 255, 255, 0.8)',
                   backdropFilter: 'blur(10px)',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  border: '1px solid',
+                  borderColor: isDarkMode
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.5)'
+                      : 'rgba(96, 165, 250, 0.5)',
+                    boxShadow: isDarkMode
+                      ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                      : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
+                  },
+                  '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    height: '4px',
+                    background: `linear-gradient(90deg, 
+                      ${muiTheme.palette.primary.main}, 
+                      ${muiTheme.palette.secondary.main})`,
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                  },
+                  '&:hover::before': {
+                    opacity: 1,
+                  },
                 }}
               >
-                <Typography variant="h5" fontWeight="bold" gutterBottom>
+                <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ color: muiTheme.palette.text.primary }}>
                   Send Me a Message
                 </Typography>
                 
@@ -320,10 +504,18 @@ const Contact = () => {
                         variant="outlined"
                         sx={{
                           '& .MuiOutlinedInput-root': {
+                            backgroundColor: isDarkMode 
+                              ? 'rgba(31, 41, 55, 0.4)'
+                              : 'rgba(255, 255, 255, 0.7)',
                             '& fieldset': {
-                              borderColor: 'rgba(255, 255, 255, 0.1)',
+                              borderColor: isDarkMode
+                                ? 'rgba(37, 99, 235, 0.2)'
+                                : 'rgba(96, 165, 250, 0.2)',
                             },
                             '&:hover fieldset': {
+                              borderColor: muiTheme.palette.primary.main,
+                            },
+                            '&.Mui-focused fieldset': {
                               borderColor: muiTheme.palette.primary.main,
                             },
                           },
@@ -342,10 +534,18 @@ const Contact = () => {
                         variant="outlined"
                         sx={{
                           '& .MuiOutlinedInput-root': {
+                            backgroundColor: isDarkMode 
+                              ? 'rgba(31, 41, 55, 0.4)'
+                              : 'rgba(255, 255, 255, 0.7)',
                             '& fieldset': {
-                              borderColor: 'rgba(255, 255, 255, 0.1)',
+                              borderColor: isDarkMode
+                                ? 'rgba(37, 99, 235, 0.2)'
+                                : 'rgba(96, 165, 250, 0.2)',
                             },
                             '&:hover fieldset': {
+                              borderColor: muiTheme.palette.primary.main,
+                            },
+                            '&.Mui-focused fieldset': {
                               borderColor: muiTheme.palette.primary.main,
                             },
                           },
@@ -365,10 +565,18 @@ const Contact = () => {
                         variant="outlined"
                         sx={{
                           '& .MuiOutlinedInput-root': {
+                            backgroundColor: isDarkMode 
+                              ? 'rgba(31, 41, 55, 0.4)'
+                              : 'rgba(255, 255, 255, 0.7)',
                             '& fieldset': {
-                              borderColor: 'rgba(255, 255, 255, 0.1)',
+                              borderColor: isDarkMode
+                                ? 'rgba(37, 99, 235, 0.2)'
+                                : 'rgba(96, 165, 250, 0.2)',
                             },
                             '&:hover fieldset': {
+                              borderColor: muiTheme.palette.primary.main,
+                            },
+                            '&.Mui-focused fieldset': {
                               borderColor: muiTheme.palette.primary.main,
                             },
                           },
@@ -387,6 +595,19 @@ const Contact = () => {
                           px: 4,
                           position: 'relative',
                           overflow: 'hidden',
+                          background: isDarkMode
+                            ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                            : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            transform: 'translateY(-2px)',
+                            background: isDarkMode
+                              ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                              : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                            boxShadow: `0 6px 20px ${isDarkMode 
+                              ? 'rgba(37, 99, 235, 0.4)'
+                              : 'rgba(96, 165, 250, 0.4)'}`,
+                          },
                         }}
                       >
                         {loading ? 'Sending...' : 'Send Message'}
@@ -403,4 +624,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;
