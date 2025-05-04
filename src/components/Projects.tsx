@@ -463,7 +463,7 @@ const Projects = () => {
       name: "Money Management App",
       description: "Personal finance application with budget tracking, expense categorization, and visualization tools to help users manage their finances effectively.",
       tags: ["React", "TypeScript", "Material UI", "Chart.js"],
-      image: "/images/projects/ecommerce.jpg",
+      image: "/images/projects/ecommerce.png",
       source_code_link: "https://github.com/yourusername/money-management",
       live_demo_link: "https://money-management-app.com",
       type: "personal"
