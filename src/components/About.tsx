@@ -20,8 +20,8 @@ const About = () => {
       sx={{
         py: 10,
         background: isDarkMode 
-          ? 'linear-gradient(to bottom, #1A1A1A, #252525)' 
-          : 'linear-gradient(to bottom, #F5F5F5, #FAFAFA)',
+          ? 'linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95))'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(255, 255, 255, 0.95))',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -31,10 +31,32 @@ const About = () => {
           left: 0,
           right: 0,
           bottom: 0,
+          backgroundImage: isDarkMode
+            ? 'radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)'
+            : 'radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(129, 140, 248, 0.05) 0%, transparent 50%)',
+          pointerEvents: 'none',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100%',
+          height: '100%',
           backgroundImage: `url('/icons/anime-pattern.svg')`,
           backgroundSize: '600px',
-          opacity: 0.03,
+          opacity: 0.015,
           pointerEvents: 'none',
+          animation: 'floatBackground 60s linear infinite',
+        },
+        '@keyframes floatBackground': {
+          '0%': {
+            backgroundPosition: '0 0',
+          },
+          '100%': {
+            backgroundPosition: '600px 600px',
+          },
         },
       }}
     >
@@ -91,17 +113,29 @@ const About = () => {
                     width: 250,
                     height: 250,
                     borderRadius: 3,
-                    boxShadow: `0 10px 30px 0 ${isDarkMode 
-                      ? 'rgba(0, 0, 0, 0.5)' 
-                      : 'rgba(0, 0, 0, 0.1)'}`,
+                    boxShadow: isDarkMode
+                      ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                      : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
                     border: '4px solid',
-                    borderColor: muiTheme.palette.primary.main,
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.5)'
+                      : 'rgba(96, 165, 250, 0.5)',
                     zIndex: 2,
                     position: 'relative',
                     background: isDarkMode
                       ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
                       : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
                     fontSize: '5rem',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    '&:hover': {
+                      transform: 'scale(1.02)',
+                      boxShadow: isDarkMode
+                        ? '0 15px 35px -10px rgba(37, 99, 235, 0.4)'
+                        : '0 15px 35px -10px rgba(96, 165, 250, 0.4)',
+                      borderColor: isDarkMode
+                        ? 'rgba(37, 99, 235, 0.8)'
+                        : 'rgba(96, 165, 250, 0.8)',
+                    },
                   }}
                 >
                   <Person fontSize="inherit" />
@@ -114,10 +148,13 @@ const About = () => {
                     bottom: -15,
                     right: { xs: 'auto', md: 50 },
                     border: '2px solid',
-                    borderColor: muiTheme.palette.info.main,
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.2)'
+                      : 'rgba(96, 165, 250, 0.2)',
                     borderRadius: 3,
                     zIndex: 1,
                     display: { xs: 'none', sm: 'block' },
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   }}
                 />
               </Box>
@@ -135,21 +172,42 @@ const About = () => {
                 elevation={4}
                 sx={{
                   p: 4,
-                  borderRadius: 3,
-                  backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+                  borderRadius: 2,
+                  backgroundColor: isDarkMode 
+                    ? 'rgba(31, 41, 55, 0.8)'
+                    : 'rgba(255, 255, 255, 0.8)',
                   backdropFilter: 'blur(10px)',
                   position: 'relative',
                   overflow: 'hidden',
+                  border: '1px solid',
+                  borderColor: isDarkMode
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.5)'
+                      : 'rgba(96, 165, 250, 0.5)',
+                    boxShadow: isDarkMode
+                      ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                      : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
+                  },
                   '&::before': {
                     content: '""',
                     position: 'absolute',
                     top: 0,
                     left: 0,
-                    height: '100%',
-                    width: '4px',
-                    background: `linear-gradient(to bottom, ${muiTheme.palette.primary.main}, ${muiTheme.palette.info.main})`,
-                    borderTopLeftRadius: 3,
-                    borderBottomLeftRadius: 3,
+                    right: 0,
+                    height: '4px',
+                    background: `linear-gradient(90deg, 
+                      ${muiTheme.palette.primary.main}, 
+                      ${muiTheme.palette.secondary.main})`,
+                    opacity: 0,
+                    transition: 'opacity 0.3s ease',
+                  },
+                  '&:hover::before': {
+                    opacity: 1,
                   },
                 }}
               >
@@ -176,7 +234,27 @@ const About = () => {
                 <Box sx={{ mt: 3 }}>
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ 
+                        mb: 2,
+                        p: 2,
+                        borderRadius: 1,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                        },
+                      }}>
                         <Typography variant="body2" fontWeight="medium" color="text.secondary">
                           Name:
                         </Typography>
@@ -185,7 +263,27 @@ const About = () => {
                         </Typography>
                       </Box>
                       
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ 
+                        mb: 2,
+                        p: 2,
+                        borderRadius: 1,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                        },
+                      }}>
                         <Typography variant="body2" fontWeight="medium" color="text.secondary">
                           Email:
                         </Typography>
@@ -196,7 +294,27 @@ const About = () => {
                     </Grid>
                     
                     <Grid item xs={12} sm={6}>
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ 
+                        mb: 2,
+                        p: 2,
+                        borderRadius: 1,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                        },
+                      }}>
                         <Typography variant="body2" fontWeight="medium" color="text.secondary">
                           Phone:
                         </Typography>
@@ -205,7 +323,27 @@ const About = () => {
                         </Typography>
                       </Box>
                       
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ 
+                        mb: 2,
+                        p: 2,
+                        borderRadius: 1,
+                        backgroundColor: isDarkMode 
+                          ? 'rgba(31, 41, 55, 0.4)'
+                          : 'rgba(255, 255, 255, 0.7)',
+                        border: '1px solid',
+                        borderColor: isDarkMode
+                          ? 'rgba(37, 99, 235, 0.1)'
+                          : 'rgba(96, 165, 250, 0.1)',
+                        transition: 'all 0.2s ease',
+                        '&:hover': {
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.3)'
+                            : 'rgba(96, 165, 250, 0.3)',
+                        },
+                      }}>
                         <Typography variant="body2" fontWeight="medium" color="text.secondary">
                           Location:
                         </Typography>
@@ -225,4 +363,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;

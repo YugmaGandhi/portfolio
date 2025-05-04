@@ -40,8 +40,8 @@ const Experience = () => {
       sx={{
         py: 10,
         background: isDarkMode 
-          ? 'linear-gradient(to bottom, #1A1A1A, #252525)' 
-          : 'linear-gradient(to bottom, #F5F5F5, #FAFAFA)',
+          ? 'linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95))'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(255, 255, 255, 0.95))',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -51,10 +51,32 @@ const Experience = () => {
           left: 0,
           right: 0,
           bottom: 0,
+          backgroundImage: isDarkMode
+            ? 'radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)'
+            : 'radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(129, 140, 248, 0.05) 0%, transparent 50%)',
+          pointerEvents: 'none',
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '100%',
+          height: '100%',
           backgroundImage: `url('/icons/anime-pattern.svg')`,
           backgroundSize: '600px',
-          opacity: 0.03,
+          opacity: 0.015,
           pointerEvents: 'none',
+          animation: 'floatBackground 60s linear infinite',
+        },
+        '@keyframes floatBackground': {
+          '0%': {
+            backgroundPosition: '0 0',
+          },
+          '100%': {
+            backgroundPosition: '600px 600px',
+          },
         },
       }}
     >
@@ -103,24 +125,41 @@ const Experience = () => {
                     height: '100%',
                     borderRadius: 2,
                     backgroundColor: isDarkMode 
-                      ? 'rgba(35, 35, 35, 0.8)' 
+                      ? 'rgba(31, 41, 55, 0.8)'
                       : 'rgba(255, 255, 255, 0.8)',
                     backdropFilter: 'blur(10px)',
-                    borderTop: `4px solid ${muiTheme.palette.primary.main}`,
+                    border: '1px solid',
+                    borderColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.2)'
+                      : 'rgba(96, 165, 250, 0.2)',
                     position: 'relative',
                     overflow: 'hidden',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    '&:hover': {
+                      transform: 'translateY(-5px)',
+                      borderColor: isDarkMode
+                        ? 'rgba(37, 99, 235, 0.5)'
+                        : 'rgba(96, 165, 250, 0.5)',
+                      boxShadow: isDarkMode
+                        ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                        : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
+                    },
                     '&::before': {
                       content: '""',
                       position: 'absolute',
                       top: 0,
-                      right: 0,
-                      bottom: 0,
                       left: 0,
-                      background: isDarkMode
-                        ? 'radial-gradient(circle at top right, rgba(255, 111, 0, 0.1), transparent 70%)'
-                        : 'radial-gradient(circle at top right, rgba(255, 158, 64, 0.1), transparent 70%)',
-                      zIndex: 0,
-                    }
+                      right: 0,
+                      height: '4px',
+                      background: `linear-gradient(90deg, 
+                        ${muiTheme.palette.primary.main}, 
+                        ${muiTheme.palette.secondary.main})`,
+                      opacity: 0,
+                      transition: 'opacity 0.3s ease',
+                    },
+                    '&:hover::before': {
+                      opacity: 1,
+                    },
                   }}
                 >
                   <Box sx={{ position: 'relative', zIndex: 1 }}>
@@ -134,9 +173,13 @@ const Experience = () => {
                         px: 2,
                         py: 0.5, 
                         mb: 2,
-                        borderRadius: 5,
-                        backgroundColor: muiTheme.palette.primary.main,
-                        color: '#fff'
+                        borderRadius: 1,
+                        background: isDarkMode
+                          ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                          : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                        boxShadow: `0 2px 8px ${isDarkMode 
+                          ? 'rgba(37, 99, 235, 0.3)'
+                          : 'rgba(96, 165, 250, 0.3)'}`,
                       }}
                     >
                       <Typography variant="body2" fontWeight="medium">
