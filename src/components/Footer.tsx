@@ -80,7 +80,7 @@ const Footer = () => {
                 </IconButton>
                 <IconButton
                   component="a"
-                  href="https://linkedin.com/in/yourusername"
+                  href="https://www.linkedin.com/in/yugma18/"
                   target="_blank"
                   rel="noopener noreferrer"
                   size="small"
