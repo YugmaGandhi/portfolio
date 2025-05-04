@@ -2,46 +2,41 @@ import { createTheme, Theme } from '@mui/material/styles';
 
 // Unified Anime Theme Colors
 const animeColors = {
-  // Naruto inspired colors
   energy: {
-    main: '#FF6F00', // Brighter Naruto orange (outfit)
-    light: '#FF9E40', // Lighter orange (Nine-Tails chakra)
-    dark: '#E65100', // Darker orange (Kurama)
+    main: '#2563eb',    // Professional blue
+    light: '#60a5fa',   // Lighter blue
+    dark: '#1d4ed8',    // Darker blue
   },
-  // Death Note inspired (death note red/black)
-  shadow: {
-    main: '#C62828', // Death Note red
-    light: '#E53935',
-    dark: '#B71C1C',
-  },
-  // Solo Leveling inspired (purple magic)
   power: {
-    main: '#673AB7', // Solo Leveling purple/magic
-    light: '#9575CD',
-    dark: '#512DA8',
+    main: '#6366f1',    // Indigo
+    light: '#818cf8',   // Lighter indigo
+    dark: '#4f46e5',    // Darker indigo
   },
-  // Haikyuu inspired (team spirit)
-  victory: {
-    main: '#FFC107', // Haikyuu victory gold
-    light: '#FFD54F',
-    dark: '#FFA000',
-  },
-  // Utility colors - Updated with Naruto blue (Rasengan)
   accent: {
-    main: '#1565C0', // Rasengan blue
-    light: '#42A5F5',
-    dark: '#0D47A1',
+    main: '#0ea5e9',    // Sky blue
+    light: '#38bdf8',   // Lighter sky blue
+    dark: '#0284c7',    // Darker sky blue
+  },
+  victory: {
+    main: '#14b8a6',    // Teal
+    light: '#2dd4bf',   // Lighter teal
+    dark: '#0d9488',    // Darker teal
+  },
+  shadow: {
+    main: '#6b7280',    // Gray
+    light: '#9ca3af',   // Lighter gray
+    dark: '#4b5563',    // Darker gray
   },
   background: {
     dark: {
-      default: '#121212', // Dark theme background
-      paper: '#1E1E1E',
-      card: '#2D2D2D',
+      default: '#111827',
+      paper: '#1f2937',
+      card: '#1f2937',
     },
     light: {
-      default: '#F5F5F5', // Light theme background
-      paper: '#FFFFFF',
-      card: '#FAFAFA',
+      default: '#f9fafb',
+      paper: '#ffffff',
+      card: '#ffffff',
     },
   },
 };
@@ -183,16 +178,13 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
               ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.energy.dark})`
               : `linear-gradient(135deg, ${animeColors.energy.light}, ${animeColors.energy.main})`,
             boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(255, 111, 0, 0.4)'
-              : 'rgba(255, 158, 64, 0.4)'}`,
+              ? 'rgba(37, 99, 235, 0.4)'
+              : 'rgba(96, 165, 250, 0.4)'}`,
             '&:hover': {
-              background: isDarkMode
-                ? `linear-gradient(135deg, ${animeColors.energy.dark}, ${animeColors.accent.dark})`
-                : `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.accent.main})`,
               transform: 'translateY(-2px)',
               boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(255, 111, 0, 0.5)'
-                : 'rgba(255, 158, 64, 0.5)'}`,
+                ? 'rgba(37, 99, 235, 0.5)'
+                : 'rgba(96, 165, 250, 0.5)'}`,
             },
           },
           containedSecondary: {
@@ -200,16 +192,16 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
               ? `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.accent.dark})`
               : `linear-gradient(135deg, ${animeColors.accent.light}, ${animeColors.accent.main})`,
             boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(21, 101, 192, 0.3)'
-              : 'rgba(66, 165, 245, 0.3)'}`,
+              ? 'rgba(14, 165, 233, 0.3)'
+              : 'rgba(56, 189, 248, 0.3)'}`,
             '&:hover': {
               background: isDarkMode
                 ? `linear-gradient(135deg, ${animeColors.accent.dark}, ${animeColors.power.dark})`
                 : `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.power.main})`,
               transform: 'translateY(-2px)',
               boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(21, 101, 192, 0.4)'
-                : 'rgba(66, 165, 245, 0.4)'}`,
+                ? 'rgba(14, 165, 233, 0.4)'
+                : 'rgba(56, 189, 248, 0.4)'}`,
             },
           },
         },
@@ -258,8 +250,8 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
             '&:hover': {
               transform: 'translateY(-5px)',
               boxShadow: isDarkMode
-                ? '0 10px 30px 0 rgba(0, 0, 0, 0.6)'
-                : '0 10px 30px 0 rgba(0, 0, 0, 0.15)',
+                ? '0 10px 30px 0 rgba(0, 0, 0, 0.3)'
+                : '0 10px 30px 0 rgba(0, 0, 0, 0.1)',
               '&::before': {
                 opacity: 1,
               },
@@ -308,13 +300,13 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
           },
           colorPrimary: {
             background: isDarkMode 
-              ? 'rgba(255, 134, 20, 0.2)'
-              : 'rgba(255, 166, 77, 0.2)',
+              ? 'rgba(37, 99, 235, 0.2)'
+              : 'rgba(96, 165, 250, 0.2)',
           },
           barColorPrimary: {
             background: `linear-gradient(90deg, 
               ${animeColors.energy.main}, 
-              ${animeColors.victory.main})`,
+              ${animeColors.power.main})`,
           },
           colorSecondary: {
             background: isDarkMode 
@@ -346,4 +338,4 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
 };
 
 // Re-export as getNarutoTheme for backward compatibility
-export const getNarutoTheme = getAnimeTheme; 
+export const getNarutoTheme = getAnimeTheme;

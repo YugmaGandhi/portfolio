@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme, Collapse } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardMedia, CardContent, Chip, Button, IconButton, useTheme, Collapse, Paper } from '@mui/material';
 import { GitHub, Launch, Work, Business, ExpandMore, ExpandLess, Architecture } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAppSelector } from '../hooks/redux';
@@ -48,18 +48,21 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
           position: 'relative',
           overflow: 'hidden',
           borderRadius: 2,
-          backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'blur(10px)',
-          transition: 'transform 0.3s',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           border: '1px solid',
           borderColor: isDarkMode
-            ? 'rgba(255, 111, 0, 0.2)'
-            : 'rgba(255, 158, 64, 0.2)',
+            ? 'rgba(37, 99, 235, 0.2)'
+            : 'rgba(96, 165, 250, 0.2)',
           '&:hover': {
             transform: 'translateY(-5px)',
             borderColor: isDarkMode
-              ? 'rgba(255, 111, 0, 0.5)'
-              : 'rgba(255, 158, 64, 0.5)',
+              ? 'rgba(37, 99, 235, 0.5)'
+              : 'rgba(96, 165, 250, 0.5)',
+            boxShadow: isDarkMode
+              ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+              : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
             '&::before': {
               opacity: 1,
             },
@@ -71,7 +74,7 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `radial-gradient(circle at 30% 20%, ${isDarkMode ? 'rgba(255, 111, 0, 0.05)' : 'rgba(255, 158, 64, 0.05)'}, transparent 50%)`,
+            backgroundImage: `radial-gradient(circle at 30% 20%, ${isDarkMode ? 'rgba(37, 99, 235, 0.08)' : 'rgba(96, 165, 250, 0.08)'}, transparent 50%)`,
             opacity: 0.5,
             zIndex: 0,
             transition: 'opacity 0.3s',
@@ -183,10 +186,23 @@ const ProjectCard = ({ name, description, tags, image, source_code_link, live_de
                 size="small"
                 sx={{
                   backgroundColor: isDarkMode
-                    ? 'rgba(255, 111, 0, 0.1)'
-                    : 'rgba(255, 158, 64, 0.1)',
-                  color: muiTheme.palette.primary.main,
+                    ? 'rgba(37, 99, 235, 0.1)'
+                    : 'rgba(96, 165, 250, 0.1)',
+                  color: isDarkMode 
+                    ? muiTheme.palette.primary.light 
+                    : muiTheme.palette.primary.main,
                   borderRadius: 1,
+                  border: '1px solid',
+                  borderColor: isDarkMode
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.2)'
+                      : 'rgba(96, 165, 250, 0.2)',
+                    transform: 'translateY(-1px)',
+                  },
                 }}
               />
             ))}
@@ -239,18 +255,21 @@ const ProfessionalProjectCard = ({ name, description, tags, image, company, tech
           position: 'relative',
           overflow: 'hidden',
           borderRadius: 2,
-          backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+          backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'blur(10px)',
-          transition: 'transform 0.3s',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           border: '1px solid',
           borderColor: isDarkMode
-            ? 'rgba(255, 111, 0, 0.2)'
-            : 'rgba(255, 158, 64, 0.2)',
+            ? 'rgba(37, 99, 235, 0.2)'
+            : 'rgba(96, 165, 250, 0.2)',
           '&:hover': {
             transform: 'translateY(-5px)',
             borderColor: isDarkMode
-              ? 'rgba(255, 111, 0, 0.5)'
-              : 'rgba(255, 158, 64, 0.5)',
+              ? 'rgba(37, 99, 235, 0.5)'
+              : 'rgba(96, 165, 250, 0.5)',
+            boxShadow: isDarkMode
+              ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+              : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
             '&::before': {
               opacity: 1,
             },
@@ -262,7 +281,7 @@ const ProfessionalProjectCard = ({ name, description, tags, image, company, tech
             left: 0,
             width: '100%',
             height: '100%',
-            backgroundImage: `radial-gradient(circle at 30% 20%, ${isDarkMode ? 'rgba(255, 111, 0, 0.05)' : 'rgba(255, 158, 64, 0.05)'}, transparent 50%)`,
+            backgroundImage: `radial-gradient(circle at 30% 20%, ${isDarkMode ? 'rgba(37, 99, 235, 0.08)' : 'rgba(96, 165, 250, 0.08)'}, transparent 50%)`,
             opacity: 0.5,
             zIndex: 0,
             transition: 'opacity 0.3s',
@@ -352,11 +371,26 @@ const ProfessionalProjectCard = ({ name, description, tags, image, company, tech
             <Button 
               onClick={handleArchitectureClick}
               size="small"
+              startIcon={<Architecture fontSize="small" />} // Added icon
               endIcon={showArchitecture ? <ExpandLess /> : <ExpandMore />}
               sx={{ 
                 textTransform: 'none',
                 color: muiTheme.palette.secondary.main,
-                mb: 1
+                borderRadius: 2,
+                px: 2,
+                py: 0.75,
+                backgroundColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.1)'
+                  : 'rgba(96, 165, 250, 0.1)',
+                border: '1px solid',
+                borderColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.2)'
+                  : 'rgba(96, 165, 250, 0.2)',
+                '&:hover': {
+                  backgroundColor: isDarkMode 
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                }
               }}
             >
               {showArchitecture ? "Hide Architecture" : "View Architecture"}
@@ -373,51 +407,145 @@ const ProfessionalProjectCard = ({ name, description, tags, image, company, tech
           </Box>
           
           {/* Expandable Tech Stack Section */}
-          <Box sx={{ mb: 1 }}>
+          <Box sx={{ mb: 2 }}>
             <Button 
               onClick={handleExpandClick}
               size="small"
+              startIcon={<Architecture fontSize="small" />}
               endIcon={expanded ? <ExpandLess /> : <ExpandMore />}
               sx={{ 
                 textTransform: 'none',
                 color: muiTheme.palette.primary.main,
-                mb: 1
+                borderRadius: 2,
+                px: 2,
+                py: 0.75,
+                backgroundColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.1)'
+                  : 'rgba(96, 165, 250, 0.1)',
+                border: '1px solid',
+                borderColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.2)'
+                  : 'rgba(96, 165, 250, 0.2)',
+                '&:hover': {
+                  backgroundColor: isDarkMode 
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                }
               }}
             >
-              {expanded ? "Hide Tech Stack" : "View Tech Stack"}
+              {expanded ? "Hide Technical Details" : "View Technical Details"}
             </Button>
             
             <Collapse in={expanded} timeout="auto" unmountOnExit>
               <Box sx={{ 
-                backgroundColor: isDarkMode ? 'rgba(30, 30, 30, 0.8)' : 'rgba(245, 245, 245, 0.8)',
-                borderRadius: 1,
-                p: 1.5,
-                mb: 2
+                mt: 2,
+                backgroundColor: isDarkMode 
+                  ? 'rgba(31, 41, 55, 0.4)'
+                  : 'rgba(255, 255, 255, 0.7)',
+                borderRadius: 3,
+                p: 3,
+                border: '1px solid',
+                borderColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.2)'
+                  : 'rgba(96, 165, 250, 0.2)',
+                transition: 'all 0.2s ease',
               }}>
-                {techStack.map((category, idx) => (
-                  <Box key={idx} sx={{ mb: idx < techStack.length - 1 ? 1.5 : 0 }}>
-                    <Typography variant="caption" fontWeight="bold" sx={{ color: muiTheme.palette.text.primary, display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                      <Architecture fontSize="small" sx={{ color: muiTheme.palette.primary.main }} />
-                      {category.category}
-                    </Typography>
-                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 0.5 }}>
-                      {category.items.map((item, itemIdx) => (
-                        <Chip
-                          key={itemIdx}
-                          label={item}
-                          size="small"
-                          sx={{
-                            backgroundColor: isDarkMode
-                              ? 'rgba(255, 111, 0, 0.15)'
-                              : 'rgba(255, 158, 64, 0.15)',
-                            color: muiTheme.palette.text.primary,
-                            fontSize: '0.7rem',
+                <Grid container spacing={3}>
+                  {techStack.map((category, idx) => (
+                    <Grid item xs={12} sm={6} md={4} key={idx}>
+                      <Paper
+                        elevation={0}
+                        sx={{
+                          p: 2,
+                          height: '100%',
+                          backgroundColor: isDarkMode 
+                            ? 'rgba(31, 41, 55, 0.6)'
+                            : 'rgba(255, 255, 255, 0.9)',
+                          borderRadius: 2,
+                          border: '1px solid',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.15)'
+                            : 'rgba(96, 165, 250, 0.15)',
+                          transition: 'all 0.2s ease',
+                          '&:hover': {
+                            backgroundColor: isDarkMode 
+                              ? 'rgba(31, 41, 55, 0.7)'
+                              : 'rgba(255, 255, 255, 1)',
+                            borderColor: isDarkMode
+                              ? 'rgba(37, 99, 235, 0.3)'
+                              : 'rgba(96, 165, 250, 0.3)',
+                            transform: 'translateY(-2px)',
+                          },
+                        }}
+                      >
+                        <Typography 
+                          variant="subtitle2" 
+                          fontWeight="bold" 
+                          sx={{ 
+                            color: isDarkMode 
+                              ? muiTheme.palette.primary.light 
+                              : muiTheme.palette.primary.main,
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 1,
+                            mb: 2,
+                            pb: 1,
+                            borderBottom: '1px solid',
+                            borderColor: isDarkMode
+                              ? 'rgba(37, 99, 235, 0.1)'
+                              : 'rgba(96, 165, 250, 0.1)',
                           }}
-                        />
-                      ))}
-                    </Box>
-                  </Box>
-                ))}
+                        >
+                          <Architecture fontSize="small" />
+                          {category.category}
+                        </Typography>
+                        <Box 
+                          sx={{ 
+                            display: 'flex', 
+                            flexWrap: 'wrap', 
+                            gap: 1,
+                            '& > *': { // This ensures even spacing between chips
+                              mb: 0.5,
+                              mr: 0.5,
+                              flexGrow: 0,
+                            }
+                          }}
+                        >
+                          {category.items.map((item, itemIdx) => (
+                            <Chip
+                              key={itemIdx}
+                              label={item}
+                              size="small"
+                              sx={{
+                                backgroundColor: isDarkMode
+                                  ? 'rgba(37, 99, 235, 0.1)'
+                                  : 'rgba(96, 165, 250, 0.1)',
+                                color: isDarkMode 
+                                  ? muiTheme.palette.primary.light 
+                                  : muiTheme.palette.primary.main,
+                                borderRadius: '6px',
+                                border: '1px solid',
+                                borderColor: isDarkMode
+                                  ? 'rgba(37, 99, 235, 0.2)'
+                                  : 'rgba(96, 165, 250, 0.2)',
+                                transition: 'all 0.2s ease',
+                                '&:hover': {
+                                  backgroundColor: isDarkMode
+                                    ? 'rgba(37, 99, 235, 0.2)'
+                                    : 'rgba(96, 165, 250, 0.2)',
+                                  transform: 'translateY(-1px)',
+                                  borderColor: isDarkMode
+                                    ? 'rgba(37, 99, 235, 0.3)'
+                                    : 'rgba(96, 165, 250, 0.3)',
+                                },
+                              }}
+                            />
+                          ))}
+                        </Box>
+                      </Paper>
+                    </Grid>
+                  ))}
+                </Grid>
               </Box>
             </Collapse>
           </Box>
@@ -431,10 +559,23 @@ const ProfessionalProjectCard = ({ name, description, tags, image, company, tech
                 size="small"
                 sx={{
                   backgroundColor: isDarkMode
-                    ? 'rgba(255, 111, 0, 0.1)'
-                    : 'rgba(255, 158, 64, 0.1)',
-                  color: muiTheme.palette.primary.main,
+                    ? 'rgba(37, 99, 235, 0.1)'
+                    : 'rgba(96, 165, 250, 0.1)',
+                  color: isDarkMode 
+                    ? muiTheme.palette.primary.light 
+                    : muiTheme.palette.primary.main,
                   borderRadius: 1,
+                  border: '1px solid',
+                  borderColor: isDarkMode
+                    ? 'rgba(37, 99, 235, 0.2)'
+                    : 'rgba(96, 165, 250, 0.2)',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    backgroundColor: isDarkMode
+                      ? 'rgba(37, 99, 235, 0.2)'
+                      : 'rgba(96, 165, 250, 0.2)',
+                    transform: 'translateY(-1px)',
+                  },
                 }}
               />
             ))}
@@ -518,8 +659,8 @@ const Projects = () => {
       sx={{
         py: 10,
         background: isDarkMode
-          ? 'linear-gradient(to bottom, #1A1A1A, #121212)'
-          : 'linear-gradient(to bottom, #F5F5F5, #FAFAFA)',
+          ? 'linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95))'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(255, 255, 255, 0.95))',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -530,8 +671,8 @@ const Projects = () => {
           right: 0,
           bottom: 0,
           backgroundImage: isDarkMode
-            ? 'radial-gradient(circle at 20% 30%, rgba(255, 111, 0, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 111, 0, 0.05) 0%, transparent 50%)'
-            : 'radial-gradient(circle at 20% 30%, rgba(255, 158, 64, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 158, 64, 0.05) 0%, transparent 50%)',
+            ? 'radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)'
+            : 'radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(129, 140, 248, 0.05) 0%, transparent 50%)',
           pointerEvents: 'none',
         },
         '&::after': {
@@ -544,7 +685,7 @@ const Projects = () => {
           height: '100%',
           backgroundImage: `url('/icons/anime-pattern.svg')`,
           backgroundSize: '600px',
-          opacity: 0.02,
+          opacity: 0.015,
           pointerEvents: 'none',
           animation: 'floatBackground 60s linear infinite',
         },
@@ -677,9 +818,22 @@ const Projects = () => {
                 px: 4,
                 borderRadius: 2,
                 fontWeight: 'bold',
-                boxShadow: isDarkMode 
-                  ? '0 8px 20px rgba(255, 111, 0, 0.3)'
-                  : '0 8px 20px rgba(255, 158, 64, 0.3)',
+                background: isDarkMode
+                  ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                  : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
+                boxShadow: `0 4px 14px ${isDarkMode 
+                  ? 'rgba(37, 99, 235, 0.4)'
+                  : 'rgba(96, 165, 250, 0.4)'}`,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  background: isDarkMode
+                    ? `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.dark})`
+                    : `linear-gradient(135deg, ${muiTheme.palette.primary.light}, ${muiTheme.palette.primary.main})`,
+                  boxShadow: `0 6px 20px ${isDarkMode 
+                    ? 'rgba(37, 99, 235, 0.5)'
+                    : 'rgba(96, 165, 250, 0.5)'}`,
+                },
               }}
             >
               View More Projects
@@ -691,4 +845,4 @@ const Projects = () => {
   );
 };
 
-export default Projects; 
+export default Projects;

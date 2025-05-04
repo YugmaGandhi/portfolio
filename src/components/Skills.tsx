@@ -75,26 +75,40 @@ const SkillCard = ({ name, level, index }: SkillProps) => {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: isDarkMode 
-            ? 'rgba(35, 35, 35, 0.8)' 
+            ? 'rgba(31, 41, 55, 0.8)'
             : 'rgba(255, 255, 255, 0.8)',
           backdropFilter: 'blur(10px)',
           position: 'relative',
           overflow: 'hidden',
-          transition: 'transform 0.3s',
+          border: '1px solid',
+          borderColor: isDarkMode
+            ? 'rgba(37, 99, 235, 0.2)'
+            : 'rgba(96, 165, 250, 0.2)',
+          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
           '&:hover': {
             transform: 'translateY(-5px)',
+            borderColor: isDarkMode
+              ? 'rgba(37, 99, 235, 0.5)'
+              : 'rgba(96, 165, 250, 0.5)',
+            boxShadow: isDarkMode
+              ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+              : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
           },
           '&::before': {
             content: '""',
             position: 'absolute',
             top: 0,
             left: 0,
-            width: '100%',
+            right: 0,
             height: '4px',
             background: `linear-gradient(90deg, 
               ${muiTheme.palette.primary.main}, 
-              ${muiTheme.palette.primary.light})`,
-            zIndex: 1,
+              ${muiTheme.palette.secondary.main})`,
+            opacity: 0,
+            transition: 'opacity 0.3s ease',
+          },
+          '&:hover::before': {
+            opacity: 1,
           },
         }}
       >
@@ -222,8 +236,8 @@ const Skills = () => {
       sx={{
         py: 10,
         background: isDarkMode 
-          ? 'linear-gradient(to bottom, #252525, #1A1A1A)' 
-          : 'linear-gradient(to bottom, #FAFAFA, #F5F5F5)',
+          ? 'linear-gradient(to bottom, rgba(17, 24, 39, 0.95), rgba(31, 41, 55, 0.95))'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.95), rgba(255, 255, 255, 0.95))',
         position: 'relative',
         overflow: 'hidden',
         '&::before': {
@@ -234,8 +248,8 @@ const Skills = () => {
           right: 0,
           bottom: 0,
           backgroundImage: isDarkMode
-            ? 'radial-gradient(circle at 20% 30%, rgba(255, 111, 0, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 111, 0, 0.05) 0%, transparent 50%)'
-            : 'radial-gradient(circle at 20% 30%, rgba(255, 158, 64, 0.05) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255, 158, 64, 0.05) 0%, transparent 50%)',
+            ? 'radial-gradient(circle at 20% 30%, rgba(37, 99, 235, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.05) 0%, transparent 50%)'
+            : 'radial-gradient(circle at 20% 30%, rgba(96, 165, 250, 0.07) 0%, transparent 50%), radial-gradient(circle at 80% 70%, rgba(129, 140, 248, 0.05) 0%, transparent 50%)',
           pointerEvents: 'none',
         },
         '&::after': {
@@ -248,7 +262,7 @@ const Skills = () => {
           height: '100%',
           backgroundImage: `url('/icons/anime-pattern.svg')`,
           backgroundSize: '600px',
-          opacity: 0.02,
+          opacity: 0.015,
           pointerEvents: 'none',
           animation: 'floatBackground 60s linear infinite',
         },
@@ -372,22 +386,39 @@ const Skills = () => {
               mt: 6,
               p: 4,
               borderRadius: 2,
-              backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+              backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(255, 255, 255, 0.8)',
               backdropFilter: 'blur(10px)',
               position: 'relative',
               overflow: 'hidden',
+              border: '1px solid',
+              borderColor: isDarkMode
+                ? 'rgba(37, 99, 235, 0.2)'
+                : 'rgba(96, 165, 250, 0.2)',
+              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              '&:hover': {
+                borderColor: isDarkMode
+                  ? 'rgba(37, 99, 235, 0.5)'
+                  : 'rgba(96, 165, 250, 0.5)',
+                boxShadow: isDarkMode
+                  ? '0 10px 30px -10px rgba(37, 99, 235, 0.3)'
+                  : '0 10px 30px -10px rgba(96, 165, 250, 0.3)',
+              },
               '&::before': {
                 content: '""',
                 position: 'absolute',
                 top: 0,
-                right: 0,
-                bottom: 0,
                 left: 0,
-                background: isDarkMode
-                  ? 'radial-gradient(circle at top right, rgba(255, 134, 20, 0.1), transparent 70%)'
-                  : 'radial-gradient(circle at top right, rgba(230, 28, 43, 0.1), transparent 70%)',
-                zIndex: 0,
-              }
+                right: 0,
+                height: '4px',
+                background: `linear-gradient(90deg, 
+                  ${muiTheme.palette.primary.main}, 
+                  ${muiTheme.palette.secondary.main})`,
+                opacity: 0,
+                transition: 'opacity 0.3s ease',
+              },
+              '&:hover::before': {
+                opacity: 1,
+              },
             }}
           >
             <Box sx={{ position: 'relative', zIndex: 1 }}>
@@ -412,21 +443,38 @@ const Skills = () => {
                         sx={{
                           p: 2,
                           height: '100%',
-                          backgroundColor: isDarkMode ? 'rgba(35, 35, 35, 0.5)' : 'rgba(255, 255, 255, 0.7)',
+                          backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.5)' : 'rgba(255, 255, 255, 0.7)',
                           borderRadius: 2,
                           position: 'relative',
                           overflow: 'hidden',
+                          border: '1px solid',
+                          borderColor: isDarkMode
+                            ? 'rgba(37, 99, 235, 0.2)'
+                            : 'rgba(96, 165, 250, 0.2)',
+                          transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                          '&:hover': {
+                            borderColor: isDarkMode
+                              ? 'rgba(37, 99, 235, 0.5)'
+                              : 'rgba(96, 165, 250, 0.5)',
+                            boxShadow: isDarkMode
+                              ? '0 4px 12px -4px rgba(37, 99, 235, 0.3)'
+                              : '0 4px 12px -4px rgba(96, 165, 250, 0.3)',
+                          },
                           '&::before': {
                             content: '""',
                             position: 'absolute',
                             top: 0,
                             left: 0,
-                            width: '100%',
+                            right: 0,
                             height: '3px',
                             background: `linear-gradient(90deg, 
                               ${muiTheme.palette.primary.main}, 
-                              ${muiTheme.palette.primary.light})`,
-                            zIndex: 1,
+                              ${muiTheme.palette.secondary.main})`,
+                            opacity: 0,
+                            transition: 'opacity 0.3s ease',
+                          },
+                          '&:hover::before': {
+                            opacity: 1,
                           },
                         }}
                       >
@@ -448,10 +496,23 @@ const Skills = () => {
                                 px: 2,
                                 display: 'flex',
                                 alignItems: 'center',
-                                backgroundColor: isDarkMode ? 'rgba(40, 40, 40, 0.8)' : 'rgba(245, 245, 245, 0.8)',
+                                backgroundColor: isDarkMode 
+                                  ? 'rgba(31, 41, 55, 0.4)'
+                                  : 'rgba(255, 255, 255, 0.7)',
                                 borderRadius: 1,
                                 border: '1px solid',
-                                borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                                borderColor: isDarkMode
+                                  ? 'rgba(37, 99, 235, 0.1)'
+                                  : 'rgba(96, 165, 250, 0.1)',
+                                transition: 'all 0.2s ease',
+                                '&:hover': {
+                                  backgroundColor: isDarkMode 
+                                    ? 'rgba(31, 41, 55, 0.6)'
+                                    : 'rgba(255, 255, 255, 0.9)',
+                                  borderColor: isDarkMode
+                                    ? 'rgba(37, 99, 235, 0.3)'
+                                    : 'rgba(96, 165, 250, 0.3)',
+                                },
                               }}
                             >
                               <Typography 
@@ -481,9 +542,21 @@ const Skills = () => {
                     sx={{
                       py: 1.5,
                       px: 3,
-                      backgroundColor: muiTheme.palette.primary.main,
+                      background: isDarkMode
+                        ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                        : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
                       color: '#fff',
                       borderRadius: 6,
+                      boxShadow: `0 4px 14px ${isDarkMode 
+                        ? 'rgba(37, 99, 235, 0.4)'
+                        : 'rgba(96, 165, 250, 0.4)'}`,
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 6px 20px ${isDarkMode 
+                          ? 'rgba(37, 99, 235, 0.5)'
+                          : 'rgba(96, 165, 250, 0.5)'}`,
+                      },
                     }}
                   >
                     <Typography variant="body2" fontWeight="medium">
@@ -494,9 +567,21 @@ const Skills = () => {
                     sx={{
                       py: 1.5,
                       px: 3,
-                      backgroundColor: muiTheme.palette.primary.main,
+                      background: isDarkMode
+                        ? `linear-gradient(135deg, ${muiTheme.palette.primary.dark}, ${muiTheme.palette.primary.main})`
+                        : `linear-gradient(135deg, ${muiTheme.palette.primary.main}, ${muiTheme.palette.primary.light})`,
                       color: '#fff',
                       borderRadius: 6,
+                      boxShadow: `0 4px 14px ${isDarkMode 
+                        ? 'rgba(37, 99, 235, 0.4)'
+                        : 'rgba(96, 165, 250, 0.4)'}`,
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'translateY(-2px)',
+                        boxShadow: `0 6px 20px ${isDarkMode 
+                          ? 'rgba(37, 99, 235, 0.5)'
+                          : 'rgba(96, 165, 250, 0.5)'}`,
+                      },
                     }}
                   >
                     <Typography variant="body2" fontWeight="medium">
@@ -513,4 +598,4 @@ const Skills = () => {
   );
 };
 
-export default Skills; 
+export default Skills;
