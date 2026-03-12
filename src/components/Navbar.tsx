@@ -81,21 +81,42 @@ const Navbar = () => {
   return (
     <>
       <HideOnScroll>
-        <AppBar position="fixed" elevation={0}>
+        <AppBar 
+          position="fixed" 
+          elevation={0}
+          sx={{
+            background: isDarkMode
+              ? 'rgba(15, 23, 42, 0.95)'
+              : 'rgba(248, 249, 250, 0.95)',
+            backdropFilter: 'blur(10px)',
+            borderBottom: `1px solid ${isDarkMode ? 'rgba(167, 139, 250, 0.1)' : 'rgba(124, 58, 237, 0.1)'}`,
+          }}
+        >
           <Container maxWidth="lg">
-            <Toolbar disableGutters>
+            <Toolbar disableGutters sx={{ py: 1.5 }}>
               {/* Logo and Name */}
               <Box 
                 onClick={() => window.scrollTo(0, 0)} 
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 2 }}
               >
-                <Avatar sx={{ bgcolor: muiTheme.palette.primary.main, mr: 1 }}>
+                <Avatar 
+                  sx={{ 
+                    bgcolor: isDarkMode ? '#a78bfa' : '#7c3aed',
+                    mr: 1,
+                    fontWeight: 'bold',
+                    fontSize: '0.9rem',
+                  }}
+                >
                   YG
                 </Avatar>
                 <Typography
                   variant="h6"
                   component="div"
-                  sx={{ fontWeight: 'bold', display: { xs: 'none', sm: 'block' } }}
+                  sx={{ 
+                    fontWeight: 700, 
+                    display: { xs: 'none', sm: 'block' },
+                    color: isDarkMode ? '#ffffff' : '#0f172a',
+                  }}
                 >
                   Yugma Gandhi
                 </Typography>
@@ -105,12 +126,25 @@ const Navbar = () => {
               <Box sx={{ flexGrow: 1 }} />
 
               {/* Desktop Navigation */}
-              <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 2 }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 0.5, alignItems: 'center' }}>
                 {navLinks.map((link) => (
                   <Button
                     key={link.id}
                     color="inherit"
                     onClick={() => handleNavLinkClick(link.id)}
+                    sx={{
+                      px: 2,
+                      py: 1,
+                      fontSize: '0.95rem',
+                      fontWeight: 500,
+                      color: isDarkMode ? '#cbd5e1' : '#334155',
+                      transition: 'all 0.3s ease',
+                      borderRadius: '6px',
+                      '&:hover': {
+                        backgroundColor: isDarkMode ? 'rgba(167, 139, 250, 0.1)' : 'rgba(124, 58, 237, 0.08)',
+                        color: isDarkMode ? '#a78bfa' : '#7c3aed',
+                      },
+                    }}
                   >
                     {link.title}
                   </Button>
@@ -122,9 +156,11 @@ const Navbar = () => {
                     color="inherit"
                     onClick={handleToggleTheme}
                     sx={{
-                      ml: 1,
+                      ml: 2,
+                      color: isDarkMode ? '#cbd5e1' : '#334155',
                       transition: 'all 0.3s ease',
                       '&:hover': {
+                        color: isDarkMode ? '#a78bfa' : '#7c3aed',
                         transform: 'rotate(20deg) scale(1.1)',
                       },
                     }}
@@ -140,7 +176,11 @@ const Navbar = () => {
                 aria-label="open drawer"
                 edge="end"
                 onClick={handleDrawerToggle}
-                sx={{ ml: 1, display: { md: 'none' } }}
+                sx={{ 
+                  ml: 1, 
+                  display: { md: 'none' },
+                  color: isDarkMode ? '#cbd5e1' : '#334155',
+                }}
               >
                 <MenuIcon />
               </IconButton>

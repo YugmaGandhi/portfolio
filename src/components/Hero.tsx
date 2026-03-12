@@ -12,19 +12,29 @@ const Hero = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.1,
+        staggerChildren: 0.15,
+        delayChildren: 0.2,
       },
     },
   };
 
-  const itemVariants = {
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] },
+    },
+  };
+
+  const buttonVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: 'easeOut' },
+      transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1] },
     },
+    hover: { y: -3 },
   };
 
   return (
@@ -33,156 +43,175 @@ const Hero = () => {
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
-        background: muiTheme.palette.background.default,
+        justifyContent: 'center',
+        background: isDarkMode
+          ? 'linear-gradient(135deg, #0f172a 0%, #1a202c 100%)'
+          : 'linear-gradient(135deg, #f8f9fa 0%, #f0f4f8 100%)',
         position: 'relative',
         overflow: 'hidden',
-        pt: 8,
+        pt: 10,
+        pb: 10,
       }}
     >
-      {/* Animated gradient background elements */}
-      <>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '-5%',
-            right: '5%',
-            width: '500px',
-            height: '500px',
-            opacity: 0.15,
-            background: `radial-gradient(circle, ${muiTheme.palette.primary.main} 0%, transparent 70%)`,
-            zIndex: 0,
-            animation: 'float 6s ease-in-out infinite',
-            '@keyframes float': {
-              '0%, 100%': { transform: 'translate(0, 0)' },
-              '25%': { transform: 'translate(20px, -20px)' },
-              '50%': { transform: 'translate(10px, 30px)' },
-              '75%': { transform: 'translate(-20px, 10px)' },
-            },
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            bottom: '-10%',
-            left: '5%',
-            width: '400px',
-            height: '400px',
-            opacity: 0.1,
-            background: `radial-gradient(circle, ${muiTheme.palette.info.main} 0%, transparent 70%)`,
-            zIndex: 0,
-            animation: 'float 8s ease-in-out infinite reverse',
-          }}
-        />
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '10%',
-            width: '2px',
-            height: '200px',
-            background: `linear-gradient(180deg, transparent, ${muiTheme.palette.primary.main}, transparent)`,
-            opacity: 0.3,
-            zIndex: 0,
-          }}
-        />
-      </>
+      {/* Subtle background elements */}
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '-10%',
+          right: '-5%',
+          width: '600px',
+          height: '600px',
+          borderRadius: '50%',
+          background: isDarkMode
+            ? 'radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(167, 139, 250, 0.05) 0%, transparent 70%)',
+          zIndex: 0,
+          animation: 'float-slow 8s ease-in-out infinite',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '-5%',
+          left: '10%',
+          width: '400px',
+          height: '400px',
+          borderRadius: '50%',
+          background: isDarkMode
+            ? 'radial-gradient(circle, rgba(96, 165, 250, 0.05) 0%, transparent 70%)'
+            : 'radial-gradient(circle, rgba(96, 165, 250, 0.03) 0%, transparent 70%)',
+          zIndex: 0,
+          animation: 'float-slow 10s ease-in-out infinite reverse',
+        }}
+      />
 
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          sx={{ position: 'relative', zIndex: 1 }}
+          style={{ width: '100%', maxWidth: '720px' }}
         >
-          <motion.div variants={itemVariants}>
+          {/* Greeting text */}
+          <motion.div variants={textVariants}>
+            <Typography
+              sx={{
+                fontSize: { xs: '0.9rem', md: '1rem' },
+                fontWeight: 500,
+                color: isDarkMode ? '#a78bfa' : '#7c3aed',
+                mb: 2,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+              }}
+            >
+              Welcome to my portfolio
+            </Typography>
+          </motion.div>
+
+          {/* Main heading */}
+          <motion.div variants={textVariants}>
             <Typography
               variant="h1"
               component="h1"
               sx={{
-                fontSize: { xs: '3rem', md: '4.5rem' },
+                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
                 fontWeight: 800,
-                mb: 1,
-                letterSpacing: '-0.02em',
-                background: isDarkMode
-                  ? 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)'
-                  : 'linear-gradient(135deg, #ff6b35 0%, #f7931e 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                lineHeight: 1.2,
-              }}
-            >
-              Yugma Gandhi
-            </Typography>
-          </motion.div>
-
-          <motion.div variants={itemVariants}>
-            <Typography
-              variant="h3"
-              component="h2"
-              sx={{
-                fontSize: { xs: '1.5rem', md: '2.2rem' },
-                fontWeight: 600,
+                lineHeight: 1.15,
                 mb: 3,
-                background: isDarkMode
-                  ? 'linear-gradient(135deg, #fdb833 0%, #10b981 100%)'
-                  : 'linear-gradient(135deg, #f7931e 0%, #10b981 100%)',
-                backgroundClip: 'text',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: isDarkMode ? '#ffffff' : '#0f172a',
+                letterSpacing: '-0.02em',
               }}
             >
-              Full Stack Developer & Creative Problem Solver
+              <span style={{ color: '#a78bfa' }}>Yugma Gandhi</span>
+              <br />
+              Full Stack Developer
             </Typography>
           </motion.div>
 
-          <motion.div variants={itemVariants}>
+          {/* Description */}
+          <motion.div variants={textVariants}>
             <Typography
               variant="body1"
               sx={{
                 fontSize: { xs: '1rem', md: '1.125rem' },
                 mb: 5,
-                maxWidth: 600,
-                lineHeight: 1.7,
-                color: isDarkMode ? 'rgba(255,255,255,0.85)' : 'rgba(0,0,0,0.7)',
+                maxWidth: '500px',
+                lineHeight: 1.8,
+                color: isDarkMode ? '#cbd5e1' : '#334155',
+                fontWeight: 400,
               }}
             >
-              I craft engaging digital experiences with modern web technologies. Specialized in React, Node.js, and cloud architecture.
-              Let's build something amazing together.
+              Building beautiful, functional digital experiences with React, Node.js, and modern web technologies. I craft solutions that are both technically sound and visually compelling.
             </Typography>
           </motion.div>
 
+          {/* CTA Buttons */}
           <motion.div
-            variants={itemVariants}
-            sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}
+            variants={containerVariants}
+            sx={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}
           >
-            <Button
-              variant="contained"
-              size="large"
-              onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-              sx={{
-                px: 5,
-                py: 1.8,
-                fontSize: '1.1rem',
-                fontWeight: 700,
-              }}
-            >
-              View My Work
-            </Button>
+            <motion.div variants={buttonVariants} whileHover="hover">
+              <Button
+                variant="contained"
+                size="large"
+                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                sx={{
+                  px: 6,
+                  py: 1.75,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  background: isDarkMode
+                    ? 'linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)'
+                    : 'linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%)',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  boxShadow: isDarkMode
+                    ? '0 10px 40px rgba(167, 139, 250, 0.3)'
+                    : '0 10px 40px rgba(124, 58, 237, 0.25)',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  '&:hover': {
+                    boxShadow: isDarkMode
+                      ? '0 15px 50px rgba(167, 139, 250, 0.5)'
+                      : '0 15px 50px rgba(124, 58, 237, 0.4)',
+                    transform: 'translateY(-3px)',
+                  },
+                }}
+              >
+                View My Work
+              </Button>
+            </motion.div>
 
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              sx={{
-                px: 5,
-                py: 1.8,
-                fontSize: '1.1rem',
-                fontWeight: 700,
-              }}
-            >
-              Get In Touch
-            </Button>
+            <motion.div variants={buttonVariants} whileHover="hover">
+              <Button
+                variant="outlined"
+                size="large"
+                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                sx={{
+                  px: 6,
+                  py: 1.75,
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  color: isDarkMode ? '#a78bfa' : '#7c3aed',
+                  borderColor: isDarkMode ? '#a78bfa' : '#7c3aed',
+                  borderWidth: 2,
+                  borderRadius: '8px',
+                  textTransform: 'none',
+                  backgroundColor: 'transparent',
+                  transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  '&:hover': {
+                    backgroundColor: isDarkMode
+                      ? 'rgba(167, 139, 250, 0.1)'
+                      : 'rgba(124, 58, 237, 0.08)',
+                    borderColor: isDarkMode ? '#c4b5fd' : '#a78bfa',
+                    transform: 'translateY(-3px)',
+                  },
+                }}
+              >
+                Get In Touch
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
       </Container>

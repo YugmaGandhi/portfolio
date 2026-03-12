@@ -1,42 +1,42 @@
 import { createTheme, Theme } from '@mui/material/styles';
 
-// Unified Anime Theme Colors - Creative & Playful
+// Modern Portfolio Theme Colors
 const animeColors = {
   energy: {
-    main: '#ff6b35',    // Vibrant orange
-    light: '#ff8c5a',   // Lighter orange
-    dark: '#e55100',    // Darker orange
+    main: '#a78bfa',    // Elegant purple
+    light: '#c4b5fd',   // Lighter purple
+    dark: '#7c3aed',    // Darker purple
   },
   power: {
-    main: '#f7931e',    // Bright yellow-orange
-    light: '#fbb040',   // Lighter golden
-    dark: '#e68a0c',    // Darker golden
+    main: '#60a5fa',    // Soft blue
+    light: '#93c5fd',   // Lighter blue
+    dark: '#1e40af',    // Darker blue
   },
   accent: {
-    main: '#fdb833',    // Sunny yellow
-    light: '#fdc966',   // Lighter yellow
-    dark: '#f0a000',    // Darker yellow
+    main: '#f0f9ff',    // Almost white
+    light: '#ffffff',   // Pure white
+    dark: '#e0e7ff',    // Light gray-blue
   },
   victory: {
-    main: '#10b981',    // Fresh emerald
-    light: '#34d399',   // Lighter emerald
+    main: '#34d399',    // Soft emerald
+    light: '#6ee7b7',   // Lighter emerald
     dark: '#059669',    // Darker emerald
   },
   shadow: {
     main: '#64748b',    // Slate gray
     light: '#94a3b8',   // Lighter slate
-    dark: '#475569',    // Darker slate
+    dark: '#334155',    // Darker slate
   },
   background: {
     dark: {
       default: '#0f172a',
-      paper: '#1e293b',
-      card: '#1e293b',
+      paper: '#1a202c',
+      card: '#1a202c',
     },
     light: {
-      default: '#f8fafc',
+      default: '#f8f9fa',
       paper: '#ffffff',
-      card: '#f1f5f9',
+      card: '#f8f9fa',
     },
   },
 };
