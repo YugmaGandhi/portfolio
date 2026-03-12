@@ -1,42 +1,42 @@
 import { createTheme, Theme } from '@mui/material/styles';
 
-// Modern Portfolio Theme Colors
+// Neumorphism Theme Colors - Soft, Minimal, Elegant
 const animeColors = {
   energy: {
-    main: '#a78bfa',    // Elegant purple
-    light: '#c4b5fd',   // Lighter purple
-    dark: '#7c3aed',    // Darker purple
+    main: '#e0e5ec',    // Soft light gray - primary
+    light: '#f0f3f7',   // Very light gray
+    dark: '#c5cce0',    // Slightly darker gray
   },
   power: {
-    main: '#60a5fa',    // Soft blue
-    light: '#93c5fd',   // Lighter blue
-    dark: '#1e40af',    // Darker blue
+    main: '#e0e5ec',    // Same soft gray for cohesion
+    light: '#f0f3f7',   // Light variant
+    dark: '#c5cce0',    // Dark variant
   },
   accent: {
-    main: '#f0f9ff',    // Almost white
-    light: '#ffffff',   // Pure white
-    dark: '#e0e7ff',    // Light gray-blue
+    main: '#8b9aaf',    // Muted blue accent
+    light: '#b8c5d6',   // Light muted blue
+    dark: '#5a6b7f',    // Dark muted blue
   },
   victory: {
-    main: '#34d399',    // Soft emerald
-    light: '#6ee7b7',   // Lighter emerald
-    dark: '#059669',    // Darker emerald
+    main: '#8b9aaf',    // Same muted tone
+    light: '#b8c5d6',   // Light variant
+    dark: '#5a6b7f',    // Dark variant
   },
   shadow: {
-    main: '#64748b',    // Slate gray
-    light: '#94a3b8',   // Lighter slate
-    dark: '#334155',    // Darker slate
+    main: '#0000000d',  // Subtle soft shadow
+    light: '#00000005', // Very light shadow
+    dark: '#00000019',  // Deeper shadow
   },
   background: {
     dark: {
-      default: '#0f172a',
-      paper: '#1a202c',
-      card: '#1a202c',
+      default: '#e0e5ec',
+      paper: '#e8eef7',
+      card: '#e8eef7',
     },
     light: {
-      default: '#f8f9fa',
-      paper: '#ffffff',
-      card: '#f8f9fa',
+      default: '#e0e5ec',
+      paper: '#e8eef7',
+      card: '#e8eef7',
     },
   },
 };
@@ -121,99 +121,48 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundImage: isDarkMode 
-              ? `linear-gradient(90deg, 
-                  ${animeColors.energy.dark} 0%, 
-                  ${animeColors.accent.dark} 100%)`
-              : `linear-gradient(90deg, 
-                  ${animeColors.energy.light} 0%, 
-                  ${animeColors.accent.light} 100%)`,
-            boxShadow: isDarkMode
-              ? '0 4px 20px 0 rgba(0, 0, 0, 0.5)'
-              : '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+            backgroundColor: '#e0e5ec',
+            boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.8)',
             position: 'relative',
-            overflow: 'hidden',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              background: `linear-gradient(90deg, 
-                ${animeColors.energy.main}, 
-                ${animeColors.shadow.main}, 
-                ${animeColors.accent.main}, 
-                ${animeColors.victory.main})`,
-            },
           },
         },
       },
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 12,
+            borderRadius: 16,
             textTransform: 'none',
             fontWeight: 600,
-            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            transition: 'all 0.4s ease',
+            border: 'none',
+            padding: '12px 32px',
+            fontSize: '1rem',
+            letterSpacing: '0.5px',
             position: 'relative',
-            overflow: 'hidden',
-            letterSpacing: '0.3px',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.15)',
-              clipPath: 'circle(0% at center)',
-              transition: 'clip-path 0.6s ease',
-            },
-            '&:hover::before': {
-              clipPath: 'circle(100% at center)',
-            },
           },
           containedPrimary: {
-            background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.power.main})`
-              : `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.power.light})`,
-            boxShadow: `0 4px 20px 0 ${isDarkMode 
-              ? 'rgba(255, 107, 53, 0.4)'
-              : 'rgba(255, 107, 53, 0.3)'}`,
-            color: '#ffffff',
+            backgroundColor: '#e0e5ec',
+            color: '#5a6b7f',
+            boxShadow: '6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.8)',
             '&:hover': {
-              transform: 'translateY(-3px)',
-              boxShadow: `0 8px 30px 0 ${isDarkMode 
-                ? 'rgba(255, 107, 53, 0.6)'
-                : 'rgba(255, 107, 53, 0.5)'}`,
+              backgroundColor: '#e0e5ec',
+              boxShadow: '3px 3px 8px rgba(0, 0, 0, 0.06), -3px -3px 8px rgba(255, 255, 255, 0.7)',
+              transform: 'scale(1.02)',
+            },
+            '&:active': {
+              boxShadow: 'inset 4px 4px 8px rgba(0, 0, 0, 0.06), inset -4px -4px 8px rgba(255, 255, 255, 0.8)',
             },
           },
-          containedSecondary: {
-            background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.victory.main}, ${animeColors.victory.dark})`
-              : `linear-gradient(135deg, ${animeColors.victory.main}, ${animeColors.victory.light})`,
-            boxShadow: `0 4px 20px 0 ${isDarkMode 
-              ? 'rgba(16, 185, 129, 0.3)'
-              : 'rgba(16, 185, 129, 0.25)'}`,
-            color: '#ffffff',
+          outlined: {
+            backgroundColor: '#e0e5ec',
+            borderColor: '#c5cce0',
+            color: '#5a6b7f',
+            boxShadow: '6px 6px 12px rgba(0, 0, 0, 0.08), -6px -6px 12px rgba(255, 255, 255, 0.8)',
+            border: '1px solid rgba(139, 154, 175, 0.2)',
             '&:hover': {
-              transform: 'translateY(-3px)',
-              boxShadow: `0 8px 30px 0 ${isDarkMode 
-                ? 'rgba(16, 185, 129, 0.5)'
-                : 'rgba(16, 185, 129, 0.4)'}`,
-            },
-          },
-          outlinedPrimary: {
-            borderColor: animeColors.energy.main,
-            color: animeColors.energy.main,
-            borderWidth: 2,
-            '&:hover': {
-              backgroundColor: isDarkMode
-                ? 'rgba(255, 107, 53, 0.1)'
-                : 'rgba(255, 107, 53, 0.08)',
-              borderColor: animeColors.energy.main,
-              transform: 'translateY(-2px)',
+              backgroundColor: '#e0e5ec',
+              boxShadow: '3px 3px 8px rgba(0, 0, 0, 0.06), -3px -3px 8px rgba(255, 255, 255, 0.7)',
+              borderColor: '#8b9aaf',
             },
           },
         },
@@ -221,58 +170,39 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiPaper: {
         styleOverrides: {
           root: {
+            backgroundColor: '#e8eef7',
             backgroundImage: 'none',
-            transition: 'all 0.3s ease-in-out',
+            transition: 'all 0.4s ease',
+            boxShadow: 'none',
+          },
+          elevation0: {
+            boxShadow: 'none',
           },
           elevation1: {
-            boxShadow: isDarkMode
-              ? '0 2px 10px 0 rgba(0, 0, 0, 0.5)'
-              : '0 2px 10px 0 rgba(0, 0, 0, 0.1)',
+            boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.8)',
           },
           elevation2: {
-            boxShadow: isDarkMode
-              ? '0 4px 20px 0 rgba(0, 0, 0, 0.5)'
-              : '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+            boxShadow: '10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.8)',
           },
         },
       },
       MuiCard: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode 
-              ? animeColors.background.dark.card
-              : animeColors.background.light.card,
-            borderRadius: 16,
+            backgroundColor: '#e8eef7',
+            borderRadius: 20,
             overflow: 'hidden',
             position: 'relative',
-            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-            border: isDarkMode
-              ? '1px solid rgba(255, 107, 53, 0.1)'
-              : '1px solid rgba(255, 107, 53, 0.08)',
-            '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '3px',
-              background: `linear-gradient(90deg, 
-                ${animeColors.energy.main}, 
-                ${animeColors.power.main})`,
-              opacity: 0,
-              transition: 'opacity 0.4s ease',
-            },
+            transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            border: 'none',
+            boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.8)',
             '&:hover': {
-              transform: 'translateY(-8px)',
-              boxShadow: isDarkMode
-                ? '0 20px 40px 0 rgba(0, 0, 0, 0.4)'
-                : '0 20px 40px 0 rgba(0, 0, 0, 0.12)',
-              borderColor: isDarkMode
-                ? 'rgba(255, 107, 53, 0.2)'
-                : 'rgba(255, 107, 53, 0.15)',
-              '&::before': {
-                opacity: 1,
-              },
+              transform: 'translateY(-4px)',
+              boxShadow: '12px 12px 24px rgba(0, 0, 0, 0.12), -12px -12px 24px rgba(255, 255, 255, 0.8)',
+            },
+            '&:active': {
+              boxShadow: 'inset 4px 4px 8px rgba(0, 0, 0, 0.08), inset -4px -4px 8px rgba(255, 255, 255, 0.7)',
+              transform: 'translateY(-2px)',
             },
           },
         },
