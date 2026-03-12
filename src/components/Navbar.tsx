@@ -118,7 +118,17 @@ const Navbar = () => {
 
                 {/* Dark Mode Toggle */}
                 <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
-                  <IconButton color="inherit" onClick={handleToggleTheme} sx={{ ml: 1 }}>
+                  <IconButton
+                    color="inherit"
+                    onClick={handleToggleTheme}
+                    sx={{
+                      ml: 1,
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        transform: 'rotate(20deg) scale(1.1)',
+                      },
+                    }}
+                  >
                     {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
                   </IconButton>
                 </Tooltip>

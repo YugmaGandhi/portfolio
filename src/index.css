@@ -3,9 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #3b82f6;
-  --accent-color: #60a5fa;
+  --primary-color: #ff6b35;
+  --secondary-color: #f7931e;
+  --accent-color: #fdb833;
+  --dark-bg: #0f172a;
+  --dark-surface: #1e293b;
+  --light-text: #f8fafc;
+  --muted-text: #cbd5e1;
+  --success-color: #10b981;
 }
 
 * {
@@ -15,6 +20,35 @@
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   color-scheme: dark;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hash-span {

@@ -1,42 +1,42 @@
 import { createTheme, Theme } from '@mui/material/styles';
 
-// Unified Anime Theme Colors
+// Unified Anime Theme Colors - Creative & Playful
 const animeColors = {
   energy: {
-    main: '#2563eb',    // Professional blue
-    light: '#60a5fa',   // Lighter blue
-    dark: '#1d4ed8',    // Darker blue
+    main: '#ff6b35',    // Vibrant orange
+    light: '#ff8c5a',   // Lighter orange
+    dark: '#e55100',    // Darker orange
   },
   power: {
-    main: '#6366f1',    // Indigo
-    light: '#818cf8',   // Lighter indigo
-    dark: '#4f46e5',    // Darker indigo
+    main: '#f7931e',    // Bright yellow-orange
+    light: '#fbb040',   // Lighter golden
+    dark: '#e68a0c',    // Darker golden
   },
   accent: {
-    main: '#0ea5e9',    // Sky blue
-    light: '#38bdf8',   // Lighter sky blue
-    dark: '#0284c7',    // Darker sky blue
+    main: '#fdb833',    // Sunny yellow
+    light: '#fdc966',   // Lighter yellow
+    dark: '#f0a000',    // Darker yellow
   },
   victory: {
-    main: '#14b8a6',    // Teal
-    light: '#2dd4bf',   // Lighter teal
-    dark: '#0d9488',    // Darker teal
+    main: '#10b981',    // Fresh emerald
+    light: '#34d399',   // Lighter emerald
+    dark: '#059669',    // Darker emerald
   },
   shadow: {
-    main: '#6b7280',    // Gray
-    light: '#9ca3af',   // Lighter gray
-    dark: '#4b5563',    // Darker gray
+    main: '#64748b',    // Slate gray
+    light: '#94a3b8',   // Lighter slate
+    dark: '#475569',    // Darker slate
   },
   background: {
     dark: {
-      default: '#111827',
-      paper: '#1f2937',
-      card: '#1f2937',
+      default: '#0f172a',
+      paper: '#1e293b',
+      card: '#1e293b',
     },
     light: {
-      default: '#f9fafb',
+      default: '#f8fafc',
       paper: '#ffffff',
-      card: '#ffffff',
+      card: '#f1f5f9',
     },
   },
 };
@@ -152,12 +152,13 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
+            borderRadius: 12,
             textTransform: 'none',
             fontWeight: 600,
-            transition: 'all 0.2s ease',
+            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
             position: 'relative',
             overflow: 'hidden',
+            letterSpacing: '0.3px',
             '&::before': {
               content: '""',
               position: 'absolute',
@@ -165,9 +166,9 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
               left: 0,
               width: '100%',
               height: '100%',
-              background: 'rgba(255, 255, 255, 0.1)',
+              background: 'rgba(255, 255, 255, 0.15)',
               clipPath: 'circle(0% at center)',
-              transition: 'clip-path 0.5s ease',
+              transition: 'clip-path 0.6s ease',
             },
             '&:hover::before': {
               clipPath: 'circle(100% at center)',
@@ -175,33 +176,44 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
           },
           containedPrimary: {
             background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.energy.dark})`
-              : `linear-gradient(135deg, ${animeColors.energy.light}, ${animeColors.energy.main})`,
-            boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(37, 99, 235, 0.4)'
-              : 'rgba(96, 165, 250, 0.4)'}`,
+              ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.power.main})`
+              : `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.power.light})`,
+            boxShadow: `0 4px 20px 0 ${isDarkMode 
+              ? 'rgba(255, 107, 53, 0.4)'
+              : 'rgba(255, 107, 53, 0.3)'}`,
+            color: '#ffffff',
             '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(37, 99, 235, 0.5)'
-                : 'rgba(96, 165, 250, 0.5)'}`,
+              transform: 'translateY(-3px)',
+              boxShadow: `0 8px 30px 0 ${isDarkMode 
+                ? 'rgba(255, 107, 53, 0.6)'
+                : 'rgba(255, 107, 53, 0.5)'}`,
             },
           },
           containedSecondary: {
             background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.accent.dark})`
-              : `linear-gradient(135deg, ${animeColors.accent.light}, ${animeColors.accent.main})`,
-            boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(14, 165, 233, 0.3)'
-              : 'rgba(56, 189, 248, 0.3)'}`,
+              ? `linear-gradient(135deg, ${animeColors.victory.main}, ${animeColors.victory.dark})`
+              : `linear-gradient(135deg, ${animeColors.victory.main}, ${animeColors.victory.light})`,
+            boxShadow: `0 4px 20px 0 ${isDarkMode 
+              ? 'rgba(16, 185, 129, 0.3)'
+              : 'rgba(16, 185, 129, 0.25)'}`,
+            color: '#ffffff',
             '&:hover': {
-              background: isDarkMode
-                ? `linear-gradient(135deg, ${animeColors.accent.dark}, ${animeColors.power.dark})`
-                : `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.power.main})`,
+              transform: 'translateY(-3px)',
+              boxShadow: `0 8px 30px 0 ${isDarkMode 
+                ? 'rgba(16, 185, 129, 0.5)'
+                : 'rgba(16, 185, 129, 0.4)'}`,
+            },
+          },
+          outlinedPrimary: {
+            borderColor: animeColors.energy.main,
+            color: animeColors.energy.main,
+            borderWidth: 2,
+            '&:hover': {
+              backgroundColor: isDarkMode
+                ? 'rgba(255, 107, 53, 0.1)'
+                : 'rgba(255, 107, 53, 0.08)',
+              borderColor: animeColors.energy.main,
               transform: 'translateY(-2px)',
-              boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(14, 165, 233, 0.4)'
-                : 'rgba(56, 189, 248, 0.4)'}`,
             },
           },
         },
@@ -233,25 +245,31 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
             borderRadius: 16,
             overflow: 'hidden',
             position: 'relative',
-            transition: 'all 0.3s ease',
+            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+            border: isDarkMode
+              ? '1px solid rgba(255, 107, 53, 0.1)'
+              : '1px solid rgba(255, 107, 53, 0.08)',
             '&::before': {
               content: '""',
               position: 'absolute',
               top: 0,
               left: 0,
               right: 0,
-              height: '4px',
+              height: '3px',
               background: `linear-gradient(90deg, 
                 ${animeColors.energy.main}, 
                 ${animeColors.power.main})`,
               opacity: 0,
-              transition: 'opacity 0.3s ease',
+              transition: 'opacity 0.4s ease',
             },
             '&:hover': {
-              transform: 'translateY(-5px)',
+              transform: 'translateY(-8px)',
               boxShadow: isDarkMode
-                ? '0 10px 30px 0 rgba(0, 0, 0, 0.3)'
-                : '0 10px 30px 0 rgba(0, 0, 0, 0.1)',
+                ? '0 20px 40px 0 rgba(0, 0, 0, 0.4)'
+                : '0 20px 40px 0 rgba(0, 0, 0, 0.12)',
+              borderColor: isDarkMode
+                ? 'rgba(255, 107, 53, 0.2)'
+                : 'rgba(255, 107, 53, 0.15)',
               '&::before': {
                 opacity: 1,
               },
