@@ -3,28 +3,27 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #e0e5ec;
-  --secondary-color: #8b9aaf;
-  --accent-color: #f0f3f7;
-  --dark-bg: #e0e5ec;
-  --dark-surface: #e8eef7;
-  --light-text: #5a6b7f;
-  --muted-text: #8b9aaf;
-  --success-color: #8b9aaf;
+  --primary-color: #ffffff;
+  --secondary-color: #1a1a1a;
+  --accent-color: #0066cc;
+  --dark-bg: #0a0e27;
+  --dark-surface: #1a1f3a;
+  --light-text: #ffffff;
+  --muted-text: #9ca3af;
+  --success-color: #0066cc;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   scroll-behavior: smooth;
-  color-scheme: light;
 }
 
 html, body {
-  background: linear-gradient(135deg, #e0e5ec 0%, #f0f3f7 100%);
-  color: #5a6b7f;
+  background: #0a0e27;
+  color: #e5e7eb;
 }
 
 @keyframes shimmer {

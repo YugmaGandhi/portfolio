@@ -2,24 +2,23 @@ import { Box, Typography, Button, Container } from '@mui/material';
 import { motion } from 'framer-motion';
 
 const Hero = () => {
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.3,
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
       },
     },
   };
 
-  const textVariants = {
-    hidden: { opacity: 0, y: 40 },
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.7, ease: 'easeOut' },
     },
   };
 
@@ -30,146 +29,107 @@ const Hero = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'linear-gradient(135deg, #e0e5ec 0%, #f0f3f7 100%)',
+        background: '#0a0e27',
         position: 'relative',
         overflow: 'hidden',
-        pt: 12,
-        pb: 12,
+        pt: { xs: 8, md: 0 },
+        pb: { xs: 8, md: 0 },
       }}
     >
-      {/* Neumorphic background decorations */}
+      {/* Subtle gradient background */}
       <Box
         sx={{
           position: 'absolute',
-          top: '10%',
-          right: '5%',
-          width: '300px',
-          height: '300px',
-          borderRadius: '50%',
-          background: '#f0f3f7',
-          boxShadow: '8px 8px 20px rgba(0, 0, 0, 0.08), -8px -8px 20px rgba(255, 255, 255, 0.9)',
-          opacity: 0.4,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'radial-gradient(ellipse at 20% 50%, rgba(0, 102, 204, 0.1) 0%, transparent 50%)',
           zIndex: 0,
-          animation: 'softFloat 6s ease-in-out infinite',
-        }}
-      />
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: '10%',
-          left: '10%',
-          width: '250px',
-          height: '250px',
-          borderRadius: '50%',
-          background: '#e8eef7',
-          boxShadow: 'inset 6px 6px 12px rgba(0, 0, 0, 0.06), inset -6px -6px 12px rgba(255, 255, 255, 0.8)',
-          opacity: 0.3,
-          zIndex: 0,
-          animation: 'softFloat 8s ease-in-out infinite reverse',
+          pointerEvents: 'none',
         }}
       />
 
-      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          style={{ width: '100%' }}
+          style={{ maxWidth: '700px' }}
         >
-          {/* Greeting */}
-          <motion.div variants={textVariants}>
+          {/* Small label */}
+          <motion.div variants={itemVariants}>
             <Typography
               sx={{
-                fontSize: { xs: '0.85rem', md: '0.95rem' },
-                fontWeight: 600,
-                color: '#8b9aaf',
-                mb: 1,
-                letterSpacing: '0.15em',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                color: '#0066cc',
+                mb: 2,
+                letterSpacing: '0.05em',
                 textTransform: 'uppercase',
               }}
             >
-              Hello, Welcome
+              Full Stack Developer
             </Typography>
           </motion.div>
 
-          {/* Main Heading */}
-          <motion.div variants={textVariants}>
+          {/* Main heading */}
+          <motion.div variants={itemVariants}>
             <Typography
               variant="h1"
               component="h1"
               sx={{
-                fontSize: { xs: '2.8rem', sm: '3.8rem', md: '5rem' },
-                fontWeight: 800,
-                lineHeight: 1.1,
+                fontSize: { xs: '2.5rem', sm: '3.5rem', md: '4.5rem' },
+                fontWeight: 700,
+                lineHeight: 1.2,
                 mb: 3,
-                color: '#5a6b7f',
-                letterSpacing: '-0.02em',
+                color: '#ffffff',
+                letterSpacing: '-0.015em',
               }}
             >
-              I'm <Box component="span" sx={{ color: '#8b9aaf', fontWeight: 900 }}>Yugma Gandhi</Box>
+              Yugma Gandhi
             </Typography>
           </motion.div>
 
           {/* Subtitle */}
-          <motion.div variants={textVariants}>
+          <motion.div variants={itemVariants}>
             <Typography
               sx={{
-                fontSize: { xs: '1.1rem', md: '1.4rem' },
-                fontWeight: 500,
-                color: '#8b9aaf',
+                fontSize: { xs: '1.1rem', md: '1.25rem' },
+                fontWeight: 400,
+                color: '#d1d5db',
                 mb: 4,
                 lineHeight: 1.6,
+                maxWidth: '600px',
               }}
             >
-              Full Stack Developer • Creative Problem Solver
-            </Typography>
-          </motion.div>
-
-          {/* Description */}
-          <motion.div variants={textVariants}>
-            <Typography
-              variant="body1"
-              sx={{
-                fontSize: { xs: '1rem', md: '1.1rem' },
-                mb: 6,
-                maxWidth: '550px',
-                lineHeight: 1.8,
-                color: '#7a8da0',
-                fontWeight: 400,
-              }}
-            >
-              I create elegant, functional digital experiences using modern technologies. Specializing in React, Node.js, and full-stack solutions that blend technical excellence with beautiful design.
+              Building robust full-stack applications with React, Node.js, and modern web technologies. Focused on clean code, scalability, and exceptional user experiences.
             </Typography>
           </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
             variants={containerVariants}
-            sx={{ display: 'flex', gap: 2.5, flexWrap: 'wrap' }}
+            sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mt: 5 }}
           >
-            <motion.div variants={textVariants}>
+            <motion.div variants={itemVariants}>
               <Button
                 variant="contained"
                 size="large"
                 onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
                 sx={{
-                  px: 5,
-                  py: 1.8,
+                  px: 4,
+                  py: 1.5,
                   fontSize: '1rem',
-                  fontWeight: 700,
-                  backgroundColor: '#e0e5ec',
-                  color: '#5a6b7f',
-                  boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.8)',
-                  borderRadius: '16px',
-                  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  fontWeight: 600,
+                  backgroundColor: '#0066cc',
+                  color: '#ffffff',
+                  borderRadius: '6px',
+                  textTransform: 'none',
                   border: 'none',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: '#e0e5ec',
-                    boxShadow: '6px 6px 12px rgba(0, 0, 0, 0.06), -6px -6px 12px rgba(255, 255, 255, 0.7)',
-                    transform: 'translateY(-4px)',
-                  },
-                  '&:active': {
-                    boxShadow: 'inset 4px 4px 8px rgba(0, 0, 0, 0.08), inset -4px -4px 8px rgba(255, 255, 255, 0.8)',
+                    backgroundColor: '#0052a3',
                     transform: 'translateY(-2px)',
                   },
                 }}
@@ -178,35 +138,29 @@ const Hero = () => {
               </Button>
             </motion.div>
 
-            <motion.div variants={textVariants}>
+            <motion.div variants={itemVariants}>
               <Button
                 variant="outlined"
                 size="large"
                 onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                 sx={{
-                  px: 5,
-                  py: 1.8,
+                  px: 4,
+                  py: 1.5,
                   fontSize: '1rem',
-                  fontWeight: 700,
-                  color: '#5a6b7f',
-                  borderColor: '#c5cce0',
-                  backgroundColor: '#e0e5ec',
-                  boxShadow: '8px 8px 16px rgba(0, 0, 0, 0.08), -8px -8px 16px rgba(255, 255, 255, 0.8)',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(139, 154, 175, 0.2)',
-                  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  fontWeight: 600,
+                  color: '#ffffff',
+                  borderColor: '#374151',
+                  borderRadius: '6px',
+                  textTransform: 'none',
+                  transition: 'all 0.3s ease',
                   '&:hover': {
-                    backgroundColor: '#e0e5ec',
-                    borderColor: '#8b9aaf',
-                    boxShadow: '6px 6px 12px rgba(0, 0, 0, 0.06), -6px -6px 12px rgba(255, 255, 255, 0.7)',
-                    transform: 'translateY(-4px)',
-                  },
-                  '&:active': {
-                    boxShadow: 'inset 4px 4px 8px rgba(0, 0, 0, 0.08), inset -4px -4px 8px rgba(255, 255, 255, 0.8)',
+                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                    borderColor: '#0066cc',
+                    color: '#0066cc',
                   },
                 }}
               >
-                Get In Touch
+                Contact Me
               </Button>
             </motion.div>
           </motion.div>
