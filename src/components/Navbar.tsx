@@ -33,7 +33,6 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const navLinks = [
   { id: 'about', title: 'About' },
-  { id: 'experience', title: 'Experience' },
   { id: 'skills', title: 'Skills' },
   { id: 'projects', title: 'Projects' },
   { id: 'contact', title: 'Contact' },

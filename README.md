@@ -4,14 +4,13 @@ A modern, Naruto-themed portfolio website built with React, Redux, TypeScript, a
 
 ## Features
 
-- ✨ Modern UI design with Naruto-inspired theme
-- 🌗 Light/Dark mode with Naruto color palette
-- 📱 Fully responsive design
-- 🔄 State management with Redux Toolkit
-- 📄 Resume Download feature with HR and Technical variants
-- 🎯 Form handling with React Hook Form
-- 💅 Styling with Material UI
-- 🔤 TypeScript for type safety
+- Modern UI design with Naruto-inspired theme
+- Light/Dark mode with Naruto color palette
+- Fully responsive design
+- State management with Redux Toolkit
+- Form handling with React Hook Form
+- Styling with Material UI
+- TypeScript for type safety
 
 ## Installation
 
@@ -47,25 +46,14 @@ A modern, Naruto-themed portfolio website built with React, Redux, TypeScript, a
   - `/types` - TypeScript type definitions
   - `/assets` - Static assets
   - `/public/images` - Public images including project images
-  - `/public/assets/resumes` - Pre-generated resume PDFs
 
 ## Portfolio Sections
 
 - **Hero** - Animated introduction with Naruto theme
 - **About** - Personal information with Naruto-inspired design
-- **Experience** - Work experience timeline
 - **Skills** - Skills displayed as scrolling cards with Naruto-themed certification badges
 - **Projects** - Featured projects with consistent card sizing and proper image display
 - **Contact** - Contact form with animations
-
-## Resume Download
-
-The portfolio provides downloadable resume options tailored for different audiences:
-
-- **HR Resume**: ATS-friendly resume focused on achievements and soft skills
-- **Technical Resume**: Detailed technical resume emphasizing technical skills and project specifics
-
-Users can select their role to download the most appropriate resume version. The pre-generated PDFs are stored in the `/public/assets/resumes` directory.
 
 ## Customization
 
@@ -83,4 +71,4 @@ MIT
 
 ---
 
-Made with ❤️ by Yugma Gandhi
+Made with love by Yugma Gandhi

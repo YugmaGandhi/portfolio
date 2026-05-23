@@ -121,22 +121,6 @@ const Footer = () => {
               <Box component="li" sx={{ mb: 1 }}>
                 <Typography
                   component="a"
-                  href="#experience"
-                  sx={{
-                    color: muiTheme.palette.text.secondary,
-                    textDecoration: 'none',
-                    transition: 'color 0.2s',
-                    '&:hover': {
-                      color: muiTheme.palette.primary.main,
-                    },
-                  }}
-                >
-                  Experience
-                </Typography>
-              </Box>
-              <Box component="li" sx={{ mb: 1 }}>
-                <Typography
-                  component="a"
                   href="#skills"
                   sx={{
                     color: muiTheme.palette.text.secondary,
