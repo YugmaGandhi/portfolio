@@ -1,9 +1,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// Vercel serves from the domain root. For a GitHub Pages deploy use:
+//   npm run build -- --base=/portfolio/
 export default defineConfig({
   plugins: [react()],
-  base: '/portfolio/',
+  base: '/',
   build: {
     rollupOptions: {
       output: {
