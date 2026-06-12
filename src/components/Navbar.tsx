@@ -1,7 +1,4 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { useAppSelector } from '../hooks/redux';
-import { ThemeState, toggleDarkMode } from '../redux/slices/themeSlice';
+import { useEffect, useState } from 'react';
 
 // Material UI imports
 import {
@@ -21,22 +18,15 @@ import {
   ListItemText,
   ListItemButton,
   Divider,
-  useTheme,
   Tooltip,
 } from '@mui/material';
 
 // Material UI icons
 import MenuIcon from '@mui/icons-material/Menu';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
 import CloseIcon from '@mui/icons-material/Close';
 
-const navLinks = [
-  { id: 'about', title: 'About' },
-  { id: 'skills', title: 'Skills' },
-  { id: 'projects', title: 'Projects' },
-  { id: 'contact', title: 'Contact' },
-];
+import { colors, fonts, pixelShadow } from '../theme/tokens';
+import { site, navLinks, scrollToSection } from '../data/site';
 
 // Hide AppBar on scroll down
 function HideOnScroll(props: { children: React.ReactElement }) {
@@ -51,28 +41,36 @@ function HideOnScroll(props: { children: React.ReactElement }) {
 }
 
 const Navbar = () => {
-  const dispatch = useDispatch();
-  const { isDarkMode } = useAppSelector((state) => state.theme) as ThemeState;
-  const muiTheme = useTheme();
-  
-  // State for mobile menu
   const [mobileOpen, setMobileOpen] = useState(false);
-  
-  // Scroll to section when clicking on nav links
+  const [activeSection, setActiveSection] = useState('hero');
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible?.target.id) {
+          setActiveSection(visible.target.id);
+        }
+      },
+      { rootMargin: '-35% 0px -50% 0px', threshold: [0.1, 0.25, 0.5] }
+    );
+
+    navLinks.forEach((link) => {
+      const element = document.getElementById(link.id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleNavLinkClick = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+    scrollToSection(id);
     setMobileOpen(false);
   };
-  
-  // Toggle dark/light mode
-  const handleToggleTheme = () => {
-    dispatch(toggleDarkMode());
-  };
-  
-  // Toggle mobile drawer
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -80,23 +78,46 @@ const Navbar = () => {
   return (
     <>
       <HideOnScroll>
-        <AppBar position="fixed" elevation={0}>
+        <AppBar
+          position="fixed"
+          elevation={0}
+          sx={{
+            background: 'rgba(8, 11, 22, 0.88)',
+            color: colors.text,
+            borderBottom: `3px solid ${colors.border}`,
+            backdropFilter: 'blur(8px)',
+            boxShadow: `0 4px 0 ${colors.shadow}`,
+            '&::after': { display: 'none' },
+          }}
+        >
           <Container maxWidth="lg">
-            <Toolbar disableGutters>
+            <Toolbar disableGutters sx={{ minHeight: { xs: 68, md: 76 } }}>
               {/* Logo and Name */}
-              <Box 
-                onClick={() => window.scrollTo(0, 0)} 
+              <Box
+                onClick={() => window.scrollTo(0, 0)}
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', mr: 2 }}
               >
-                <Avatar sx={{ bgcolor: muiTheme.palette.primary.main, mr: 1 }}>
-                  YG
+                <Avatar
+                  sx={{
+                    bgcolor: colors.cyan,
+                    color: colors.shadow,
+                    mr: 1.25,
+                    width: 42,
+                    height: 42,
+                    fontWeight: 800,
+                    borderRadius: 0,
+                    border: `2px solid ${colors.text}`,
+                    boxShadow: pixelShadow(4),
+                  }}
+                >
+                  {site.initials}
                 </Avatar>
                 <Typography
                   variant="h6"
                   component="div"
-                  sx={{ fontWeight: 'bold', display: { xs: 'none', sm: 'block' } }}
+                  sx={{ fontWeight: 800, display: { xs: 'none', sm: 'block' }, letterSpacing: 0, textTransform: 'uppercase' }}
                 >
-                  Yugma Gandhi
+                  {site.name}
                 </Typography>
               </Box>
 
@@ -110,16 +131,41 @@ const Navbar = () => {
                     key={link.id}
                     color="inherit"
                     onClick={() => handleNavLinkClick(link.id)}
+                    sx={{
+                      px: 1.5,
+                      color: activeSection === link.id ? colors.shadow : colors.muted,
+                      border: '1px solid',
+                      borderColor: activeSection === link.id ? colors.yellow : 'transparent',
+                      borderRadius: 0,
+                      backgroundColor: activeSection === link.id ? colors.yellow : 'transparent',
+                      '&:hover': {
+                        color: activeSection === link.id ? colors.shadow : colors.yellow,
+                        borderColor: colors.yellow,
+                        backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(255, 204, 0, 0.08)',
+                      },
+                    }}
                   >
                     {link.title}
                   </Button>
                 ))}
 
-                {/* Dark Mode Toggle */}
-                <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
-                  <IconButton color="inherit" onClick={handleToggleTheme} sx={{ ml: 1 }}>
-                    {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
-                  </IconButton>
+                <Tooltip title="Arcade theme locked">
+                  <Box
+                    sx={{
+                      ml: 1,
+                      px: 1.25,
+                      py: 0.75,
+                      borderRadius: 0,
+                      border: `1px solid ${colors.border}`,
+                      backgroundColor: 'rgba(0, 229, 255, 0.08)',
+                      color: colors.cyan,
+                      boxShadow: pixelShadow(3),
+                      fontSize: 12,
+                      fontWeight: 800,
+                    }}
+                  >
+                    ARCADE MODE
+                  </Box>
                 </Tooltip>
               </Box>
 
@@ -144,44 +190,94 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         sx={{
-          '& .MuiDrawer-paper': { 
-            width: 240,
-            backgroundColor: muiTheme.palette.background.default,
-            color: muiTheme.palette.text.primary,
+          '& .MuiDrawer-paper': {
+            width: 260,
+            backgroundColor: colors.bg,
+            color: colors.text,
+            borderLeft: `3px solid ${colors.border}`,
+            backgroundImage:
+              'linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
           },
         }}
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2 }}>
-          <Typography variant="h6">Menu</Typography>
-          <IconButton color="inherit" onClick={handleDrawerToggle}>
-            <CloseIcon />
+          <Typography
+            sx={{
+              fontFamily: fonts.pixel,
+              fontSize: '0.7rem',
+              color: colors.yellow,
+              textTransform: 'uppercase',
+            }}
+          >
+            Pause Menu
+          </Typography>
+          <IconButton
+            color="inherit"
+            onClick={handleDrawerToggle}
+            aria-label="close menu"
+            sx={{
+              borderRadius: 0,
+              border: `2px solid ${colors.border}`,
+              boxShadow: pixelShadow(3),
+              '&:hover': { borderColor: colors.yellow, color: colors.yellow },
+            }}
+          >
+            <CloseIcon fontSize="small" />
           </IconButton>
         </Box>
-        <Divider />
-        <List>
+        <Divider sx={{ borderColor: colors.border }} />
+        <List sx={{ px: 2, py: 2.5, display: 'grid', gap: 1.25 }}>
           {navLinks.map((link) => (
             <ListItem key={link.id} disablePadding>
-              <ListItemButton onClick={() => handleNavLinkClick(link.id)}>
-                <ListItemText primary={link.title} />
+              <ListItemButton
+                onClick={() => handleNavLinkClick(link.id)}
+                sx={{
+                  border: '2px solid',
+                  borderColor: activeSection === link.id ? colors.yellow : colors.border,
+                  backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(16, 22, 41, 0.92)',
+                  boxShadow: pixelShadow(4),
+                  '&:hover': {
+                    backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(255, 204, 0, 0.08)',
+                    borderColor: colors.yellow,
+                  },
+                }}
+              >
+                <ListItemText
+                  primary={activeSection === link.id ? `▸ ${link.title}` : link.title}
+                  primaryTypographyProps={{
+                    sx: {
+                      fontFamily: fonts.pixel,
+                      fontSize: '0.65rem',
+                      lineHeight: 1.8,
+                      textTransform: 'uppercase',
+                      color: activeSection === link.id ? colors.shadow : colors.text,
+                    },
+                  }}
+                />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          <ListItem disablePadding>
-            <ListItemButton onClick={handleToggleTheme}>
-              <ListItemText primary={isDarkMode ? 'Light Mode' : 'Dark Mode'} />
-              {isDarkMode ? <Brightness7Icon sx={{ ml: 1 }} /> : <Brightness4Icon sx={{ ml: 1 }} />}
-            </ListItemButton>
-          </ListItem>
-        </List>
+        <Divider sx={{ borderColor: colors.border }} />
+        <Box
+          sx={{
+            m: 2,
+            p: 1.5,
+            color: colors.cyan,
+            fontFamily: fonts.pixel,
+            fontSize: '0.6rem',
+            textTransform: 'uppercase',
+            border: `1px solid ${colors.border}`,
+            backgroundColor: 'rgba(0, 229, 255, 0.08)',
+            boxShadow: pixelShadow(3),
+          }}
+        >
+          Arcade Mode
+        </Box>
       </Drawer>
-
-      {/* Toolbar placeholder to push content below AppBar */}
-      {/* <Toolbar /> */}
     </>
   );
 };
 
-export default Navbar; 
+export default Navbar;

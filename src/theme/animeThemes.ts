@@ -1,150 +1,128 @@
 import { createTheme, Theme } from '@mui/material/styles';
+import { colors, fonts } from './tokens';
 
-// Unified Anime Theme Colors
+const FONT_PIXEL = fonts.pixel;
+const FONT_MONO = fonts.mono;
+
+// Map design tokens onto the arcade palette roles
 const animeColors = {
   energy: {
-    main: '#2563eb',    // Professional blue
-    light: '#60a5fa',   // Lighter blue
-    dark: '#1d4ed8',    // Darker blue
+    main: colors.cyan,
+    light: colors.cyanLight,
+    dark: colors.cyanDark,
   },
   power: {
-    main: '#6366f1',    // Indigo
-    light: '#818cf8',   // Lighter indigo
-    dark: '#4f46e5',    // Darker indigo
+    main: colors.pink,
+    light: colors.pinkLight,
+    dark: colors.pinkDark,
   },
   accent: {
-    main: '#0ea5e9',    // Sky blue
-    light: '#38bdf8',   // Lighter sky blue
-    dark: '#0284c7',    // Darker sky blue
+    main: colors.yellow,
+    light: colors.yellowLight,
+    dark: colors.yellowDark,
   },
   victory: {
-    main: '#14b8a6',    // Teal
-    light: '#2dd4bf',   // Lighter teal
-    dark: '#0d9488',    // Darker teal
-  },
-  shadow: {
-    main: '#6b7280',    // Gray
-    light: '#9ca3af',   // Lighter gray
-    dark: '#4b5563',    // Darker gray
+    main: colors.green,
+    light: colors.greenLight,
+    dark: colors.greenDark,
   },
   background: {
-    dark: {
-      default: '#111827',
-      paper: '#1f2937',
-      card: '#1f2937',
-    },
-    light: {
-      default: '#f9fafb',
-      paper: '#ffffff',
-      card: '#ffffff',
-    },
+    default: colors.bg,
+    paper: colors.surface,
+    card: colors.card,
   },
 };
 
-// Create anime theme with light/dark mode
-export const getAnimeTheme = (isDarkMode: boolean): Theme => {
+const pixelHeading = (fontSize: string) => ({
+  fontFamily: FONT_PIXEL,
+  fontWeight: 400, // Press Start 2P has a single weight
+  fontSize,
+  lineHeight: 1.35,
+  letterSpacing: 0,
+});
+
+// The portfolio ships dark-only: the arcade design language (hard shadows,
+// scanlines, neon palette) has no light counterpart.
+export const getAnimeTheme = (): Theme => {
   return createTheme({
     palette: {
-      mode: isDarkMode ? 'dark' : 'light',
+      mode: 'dark',
       primary: {
         main: animeColors.energy.main,
         light: animeColors.energy.light,
         dark: animeColors.energy.dark,
-        contrastText: '#000000',
+        contrastText: '#020617',
       },
       secondary: {
         main: animeColors.power.main,
         light: animeColors.power.light,
         dark: animeColors.power.dark,
-        contrastText: '#FFFFFF',
+        contrastText: '#020617',
       },
       error: {
-        main: animeColors.shadow.main,
-        light: animeColors.shadow.light,
-        dark: animeColors.shadow.dark,
+        main: '#ef4444',
+        light: '#f87171',
+        dark: '#b91c1c',
       },
       warning: {
-        main: animeColors.victory.main,
-        light: animeColors.victory.light,
-        dark: animeColors.victory.dark,
-      },
-      info: {
         main: animeColors.accent.main,
         light: animeColors.accent.light,
         dark: animeColors.accent.dark,
       },
+      info: {
+        main: animeColors.energy.main,
+        light: animeColors.energy.light,
+        dark: animeColors.energy.dark,
+      },
       success: {
-        main: '#43A047',
-        light: '#66BB6A',
-        dark: '#2E7D32',
+        main: animeColors.victory.main,
+        light: animeColors.victory.light,
+        dark: animeColors.victory.dark,
       },
       background: {
-        default: isDarkMode ? animeColors.background.dark.default : animeColors.background.light.default,
-        paper: isDarkMode ? animeColors.background.dark.paper : animeColors.background.light.paper,
+        default: animeColors.background.default,
+        paper: animeColors.background.paper,
       },
       text: {
-        primary: isDarkMode ? '#FFFFFF' : '#212121',
-        secondary: isDarkMode ? '#B0B0B0' : '#757575',
+        primary: '#f8fafc',
+        secondary: '#9fb3c8',
       },
     },
     typography: {
-      fontFamily: "'Poppins', 'Roboto', sans-serif",
-      h1: {
-        fontWeight: 700,
-        letterSpacing: '-0.01em',
-      },
-      h2: {
-        fontWeight: 600,
-        letterSpacing: '-0.005em',
-      },
-      h3: {
-        fontWeight: 600,
-      },
-      h4: {
-        fontWeight: 600,
-      },
+      fontFamily: FONT_MONO,
+      h1: pixelHeading('2rem'),
+      h2: pixelHeading('1.6rem'),
+      h3: pixelHeading('1.15rem'),
+      h4: pixelHeading('0.9rem'),
       h5: {
-        fontWeight: 500,
+        fontWeight: 700,
+        letterSpacing: 0,
       },
       h6: {
-        fontWeight: 500,
+        fontWeight: 700,
+        letterSpacing: 0,
       },
       button: {
-        fontWeight: 600,
-        textTransform: 'none',
+        fontFamily: FONT_PIXEL,
+        fontWeight: 400,
+        fontSize: '0.65rem',
+        lineHeight: 1.8,
+        textTransform: 'uppercase' as const,
       },
     },
     shape: {
-      borderRadius: 12,
+      borderRadius: 0,
     },
     components: {
       MuiAppBar: {
         styleOverrides: {
           root: {
-            backgroundImage: isDarkMode 
-              ? `linear-gradient(90deg, 
-                  ${animeColors.energy.dark} 0%, 
-                  ${animeColors.accent.dark} 100%)`
-              : `linear-gradient(90deg, 
-                  ${animeColors.energy.light} 0%, 
-                  ${animeColors.accent.light} 100%)`,
-            boxShadow: isDarkMode
-              ? '0 4px 20px 0 rgba(0, 0, 0, 0.5)'
-              : '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+            backgroundImage: 'none',
+            boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.5)',
             position: 'relative',
             overflow: 'hidden',
             '&::after': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '2px',
-              background: `linear-gradient(90deg, 
-                ${animeColors.energy.main}, 
-                ${animeColors.shadow.main}, 
-                ${animeColors.accent.main}, 
-                ${animeColors.victory.main})`,
+              display: 'none',
             },
           },
         },
@@ -152,56 +130,35 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
-            textTransform: 'none',
-            fontWeight: 600,
-            transition: 'all 0.2s ease',
+            borderRadius: 0,
+            letterSpacing: 0,
+            transition: 'all 0.15s ease',
             position: 'relative',
             overflow: 'hidden',
+            border: '2px solid currentColor',
+            boxShadow: '4px 4px 0 #020617',
             '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              background: 'rgba(255, 255, 255, 0.1)',
-              clipPath: 'circle(0% at center)',
-              transition: 'clip-path 0.5s ease',
+              display: 'none',
             },
-            '&:hover::before': {
-              clipPath: 'circle(100% at center)',
+            '&:hover': {
+              transform: 'translate(2px, 2px)',
+              boxShadow: '2px 2px 0 #020617',
             },
           },
           containedPrimary: {
-            background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.energy.dark})`
-              : `linear-gradient(135deg, ${animeColors.energy.light}, ${animeColors.energy.main})`,
-            boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(37, 99, 235, 0.4)'
-              : 'rgba(96, 165, 250, 0.4)'}`,
+            background: animeColors.energy.main,
+            color: '#020617',
             '&:hover': {
-              transform: 'translateY(-2px)',
-              boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(37, 99, 235, 0.5)'
-                : 'rgba(96, 165, 250, 0.5)'}`,
+              background: animeColors.accent.main,
+              color: '#020617',
             },
           },
           containedSecondary: {
-            background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.accent.dark})`
-              : `linear-gradient(135deg, ${animeColors.accent.light}, ${animeColors.accent.main})`,
-            boxShadow: `0 4px 14px 0 ${isDarkMode 
-              ? 'rgba(14, 165, 233, 0.3)'
-              : 'rgba(56, 189, 248, 0.3)'}`,
+            background: animeColors.accent.main,
+            color: '#020617',
             '&:hover': {
-              background: isDarkMode
-                ? `linear-gradient(135deg, ${animeColors.accent.dark}, ${animeColors.power.dark})`
-                : `linear-gradient(135deg, ${animeColors.accent.main}, ${animeColors.power.main})`,
-              transform: 'translateY(-2px)',
-              boxShadow: `0 6px 20px 0 ${isDarkMode 
-                ? 'rgba(14, 165, 233, 0.4)'
-                : 'rgba(56, 189, 248, 0.4)'}`,
+              background: animeColors.energy.main,
+              color: '#020617',
             },
           },
         },
@@ -210,51 +167,30 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
         styleOverrides: {
           root: {
             backgroundImage: 'none',
-            transition: 'all 0.3s ease-in-out',
+            transition: 'all 0.18s ease-in-out',
           },
           elevation1: {
-            boxShadow: isDarkMode
-              ? '0 2px 10px 0 rgba(0, 0, 0, 0.5)'
-              : '0 2px 10px 0 rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 2px 10px 0 rgba(0, 0, 0, 0.5)',
           },
           elevation2: {
-            boxShadow: isDarkMode
-              ? '0 4px 20px 0 rgba(0, 0, 0, 0.5)'
-              : '0 4px 20px 0 rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 4px 20px 0 rgba(0, 0, 0, 0.5)',
           },
         },
       },
       MuiCard: {
         styleOverrides: {
           root: {
-            backgroundColor: isDarkMode 
-              ? animeColors.background.dark.card
-              : animeColors.background.light.card,
-            borderRadius: 16,
+            backgroundColor: animeColors.background.card,
+            borderRadius: 0,
             overflow: 'hidden',
             position: 'relative',
             transition: 'all 0.3s ease',
             '&::before': {
-              content: '""',
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              right: 0,
-              height: '4px',
-              background: `linear-gradient(90deg, 
-                ${animeColors.energy.main}, 
-                ${animeColors.power.main})`,
-              opacity: 0,
-              transition: 'opacity 0.3s ease',
+              display: 'none',
             },
             '&:hover': {
               transform: 'translateY(-5px)',
-              boxShadow: isDarkMode
-                ? '0 10px 30px 0 rgba(0, 0, 0, 0.3)'
-                : '0 10px 30px 0 rgba(0, 0, 0, 0.1)',
-              '&::before': {
-                opacity: 1,
-              },
+              boxShadow: '0 10px 30px 0 rgba(0, 0, 0, 0.3)',
             },
           },
         },
@@ -262,17 +198,13 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiChip: {
         styleOverrides: {
           root: {
-            borderRadius: 8,
-            fontWeight: 500,
+            borderRadius: 0,
+            fontWeight: 700,
             '&.MuiChip-colorPrimary': {
-              background: isDarkMode
-                ? `linear-gradient(135deg, ${animeColors.energy.dark}, ${animeColors.energy.main})`
-                : `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.energy.light})`,
+              background: animeColors.energy.main,
             },
             '&.MuiChip-colorSecondary': {
-              background: isDarkMode
-                ? `linear-gradient(135deg, ${animeColors.power.dark}, ${animeColors.power.main})`
-                : `linear-gradient(135deg, ${animeColors.power.main}, ${animeColors.power.light})`,
+              background: animeColors.power.main,
             },
           },
         },
@@ -280,43 +212,31 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
       MuiAvatar: {
         styleOverrides: {
           root: {
-            boxShadow: isDarkMode
-              ? '0 2px 10px 0 rgba(0, 0, 0, 0.4)'
-              : '0 2px 10px 0 rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 2px 10px 0 rgba(0, 0, 0, 0.4)',
           },
           colorDefault: {
-            background: isDarkMode
-              ? `linear-gradient(135deg, ${animeColors.energy.main}, ${animeColors.power.main})`
-              : `linear-gradient(135deg, ${animeColors.energy.light}, ${animeColors.power.light})`,
+            background: animeColors.energy.main,
           },
         },
       },
       MuiLinearProgress: {
         styleOverrides: {
           root: {
-            borderRadius: 4,
+            borderRadius: 0,
             overflow: 'hidden',
             height: 6,
           },
           colorPrimary: {
-            background: isDarkMode 
-              ? 'rgba(37, 99, 235, 0.2)'
-              : 'rgba(96, 165, 250, 0.2)',
+            background: 'rgba(0, 229, 255, 0.15)',
           },
           barColorPrimary: {
-            background: `linear-gradient(90deg, 
-              ${animeColors.energy.main}, 
-              ${animeColors.power.main})`,
+            background: animeColors.energy.main,
           },
           colorSecondary: {
-            background: isDarkMode 
-              ? 'rgba(103, 58, 183, 0.2)'
-              : 'rgba(149, 117, 205, 0.2)',
+            background: 'rgba(255, 79, 216, 0.15)',
           },
           barColorSecondary: {
-            background: `linear-gradient(90deg, 
-              ${animeColors.power.main}, 
-              ${animeColors.accent.main})`,
+            background: animeColors.power.main,
           },
         },
       },
@@ -325,9 +245,7 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
           root: {
             '&.MuiDivider-middle': {
               '&::before, &::after': {
-                borderColor: isDarkMode 
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(0, 0, 0, 0.1)',
+                borderColor: 'rgba(255, 255, 255, 0.1)',
               },
             },
           },
@@ -336,6 +254,3 @@ export const getAnimeTheme = (isDarkMode: boolean): Theme => {
     },
   });
 };
-
-// Re-export as getNarutoTheme for backward compatibility
-export const getNarutoTheme = getAnimeTheme;

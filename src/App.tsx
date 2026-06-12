@@ -1,7 +1,6 @@
-import { useAppSelector } from './hooks/redux'
 import { ThemeProvider, CssBaseline } from '@mui/material'
+import { MotionConfig } from 'framer-motion'
 import { getAnimeTheme } from './theme/animeThemes'
-import { ThemeState } from './redux/slices/themeSlice'
 
 // Import components
 import Navbar from './components/Navbar'
@@ -13,21 +12,22 @@ import Contact from './components/Contact'
 import Footer from './components/Footer'
 
 function App() {
-  const { isDarkMode } = useAppSelector((state) => state.theme) as ThemeState
-  const theme = getAnimeTheme(isDarkMode)
+  const theme = getAnimeTheme()
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <div className="app-container">
-        <Navbar />
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-        <Footer />
-      </div>
+      <MotionConfig reducedMotion="user">
+        <div className="app-container">
+          <Navbar />
+          <Hero />
+          <About />
+          <Skills />
+          <Projects />
+          <Contact />
+          <Footer />
+        </div>
+      </MotionConfig>
     </ThemeProvider>
   )
 }
