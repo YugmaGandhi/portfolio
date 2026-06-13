@@ -822,13 +822,47 @@ body::before {
   position: fixed;
   left: 0;
   bottom: 14px;
-  z-index: 1139;
+  z-index: 1140;
   width: 12px;
   height: 12px;
   background: var(--retro-yellow);
   border: 2px solid var(--retro-shadow);
   box-shadow: 2px 2px 0 var(--retro-shadow);
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* generous invisible hit area so the tiny ball is easy to grab */
+.pixel-pet__ball::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+}
+
+.pixel-pet__ball:active {
+  cursor: grabbing;
+}
+
+/* BYTE is holding it out for you — pulse so the visitor notices */
+.pixel-pet__ball--offered {
+  animation: pet-ball-offer 0.85s ease-in-out infinite;
+}
+
+@keyframes pet-ball-offer {
+  0%,
+  100% {
+    box-shadow: 2px 2px 0 var(--retro-shadow), 0 0 0 0 rgba(255, 209, 102, 0.5);
+  }
+  50% {
+    box-shadow: 2px 2px 0 var(--retro-shadow), 0 0 0 6px rgba(255, 209, 102, 0.35);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-pet__ball--offered {
+    animation: none;
+  }
 }
 
 .pixel-pet__bubble {
