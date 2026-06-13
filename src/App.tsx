@@ -10,6 +10,7 @@ import Skills from './components/Skills'
 import Projects from './components/Projects'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
+import PixelPet from './components/pet/PixelPet'
 
 function App() {
   const theme = getAnimeTheme()
@@ -26,6 +27,7 @@ function App() {
           <Projects />
           <Contact />
           <Footer />
+          <PixelPet />
         </div>
       </MotionConfig>
     </ThemeProvider>
