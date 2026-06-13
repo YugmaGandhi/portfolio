@@ -136,9 +136,20 @@ export const PET_INTENTS: PetIntent[] = [
   },
 ];
 
-/** Score a message against an intent: number of pattern hits. */
+const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+/**
+ * Score a message against an intent by summing the lengths of the patterns that
+ * appear in it as whole words/phrases. Word boundaries stop short keywords from
+ * matching inside other words (e.g. 'hi' must not match "him"); weighting by
+ * length lets a meaningful keyword ('contact') outrank an incidental pronoun
+ * ('him') when both appear, instead of an arbitrary list-order tie-break.
+ */
 const scoreIntent = (message: string, intent: PetIntent): number =>
-  intent.patterns.reduce((score, pattern) => (message.includes(pattern) ? score + 1 : score), 0);
+  intent.patterns.reduce((score, pattern) => {
+    const re = new RegExp(`\\b${escapeRegExp(pattern)}\\b`, 'i');
+    return re.test(message) ? score + pattern.length : score;
+  }, 0);
 
 export const matchIntent = (rawMessage: string): PetIntent | null => {
   const message = rawMessage.toLowerCase().trim();

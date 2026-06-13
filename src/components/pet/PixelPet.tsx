@@ -37,6 +37,13 @@ const SPIN_MS = 950;
 const HOWL_MS = 1_600;
 const CROUCH_MS = 380;
 const BUBBLE_MS = 1_600;
+const OFFER_MS = 9_000;
+
+const BALL_SIZE = 12;
+const BALL_GROUND_OFFSET = 20; // bottom:14 + half the ball — its centre above the viewport floor
+const THROW_SPEED_CAP = 760;
+const THROW_TRIGGER_SPEED = 90; // below this a release is a gentle drop, not a throw
+const THROW_SAMPLE_MS = 110;
 
 const PET_HOVER_DELAY_MS = 450;
 const PAMPER_HEART_EVERY_TICKS = 4;
@@ -113,6 +120,10 @@ interface Projectile {
   resting: boolean;
   /** Already retrieved (e.g. the ball he just dropped at his feet) — not worth chasing again. */
   claimed?: boolean;
+  /** BYTE has carried it back and is holding it out for the visitor to take. */
+  offered?: boolean;
+  /** The visitor is currently dragging it — physics paused, position is hand-driven. */
+  grabbed?: boolean;
 }
 
 const SECTION_BARKS: Record<string, string> = {
@@ -124,6 +135,8 @@ const SECTION_BARKS: Record<string, string> = {
 
 const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max);
 const clampPetX = (x: number) => clamp(x, EDGE_PADDING, window.innerWidth - PET_WIDTH - EDGE_PADDING);
+const isAirborneActivity = (k: Activity['kind']) =>
+  k === 'held' || k === 'falling' || k === 'parachute' || k === 'pounce';
 
 const PixelPet = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -151,6 +164,12 @@ const PixelPet = () => {
   const activityRef = useRef<Activity>({ kind: 'idle' });
   const ballPhysRef = useRef<Projectile | null>(null);
   const treatPhysRef = useRef<Projectile | null>(null);
+  const ballDragRef = useRef<{ samples: { t: number; x: number; y: number }[] } | null>(null);
+  const offerTimerRef = useRef<number | null>(null);
+  /** Fetch was asked for while BYTE was busy eating — honour it once he's free. */
+  const pendingFetchRef = useRef(false);
+  /** Latest offerBall, callable from the behaviour loop without a stale closure. */
+  const offerBallRef = useRef<() => void>(() => {});
   const stepToggleRef = useRef(false);
   const heartIdRef = useRef(0);
   const heartCountRef = useRef(profile.hearts);
@@ -179,6 +198,7 @@ const PixelPet = () => {
   const [crumbs, setCrumbs] = useState<Particle[]>([]);
   const [heartCount, setHeartCount] = useState(profile.hearts);
   const [ballVisible, setBallVisible] = useState(false);
+  const [ballOffered, setBallOffered] = useState(false);
   const [treatVisible, setTreatVisible] = useState(false);
   const [doingTrick, setDoingTrick] = useState(false);
   const [struggling, setStruggling] = useState(false);
@@ -462,6 +482,10 @@ const PixelPet = () => {
     return () => window.removeEventListener('resize', onResize);
   }, [applyTransform]);
 
+  useEffect(() => () => {
+    if (offerTimerRef.current) window.clearTimeout(offerTimerRef.current);
+  }, []);
+
   // Greet on arrival / tab return — shy on a first visit, by name for regulars
   useEffect(() => {
     if (reducedMotion) return;
@@ -493,7 +517,7 @@ const PixelPet = () => {
     let last = performance.now();
 
     const simulate = (proj: Projectile, dt: number) => {
-      if (proj.resting) return;
+      if (proj.resting || proj.grabbed) return;
       proj.x += proj.vx * dt;
       proj.y += proj.vy * dt;
       proj.vy -= GRAVITY * dt;
@@ -511,16 +535,13 @@ const PixelPet = () => {
       }
     };
 
-    const isAirborneKind = (k: Activity['kind']) =>
-      k === 'held' || k === 'falling' || k === 'parachute' || k === 'pounce';
-
     const step = (now: number) => {
       const dt = Math.min((now - last) / 1000, 0.05);
       last = now;
       let activity = activityRef.current;
 
       // Safety net: never leave him hanging mid-air in a grounded state
-      if (liftYRef.current < 0 && !isAirborneKind(activity.kind) && activity.kind !== 'crouch') {
+      if (liftYRef.current < 0 && !isAirborneActivity(activity.kind) && activity.kind !== 'crouch') {
         fallVyRef.current = 0;
         const rescue: Activity =
           -liftYRef.current > PARACHUTE_MIN_DROP_PX ? { kind: 'parachute' } : { kind: 'falling' };
@@ -533,7 +554,7 @@ const PixelPet = () => {
         const wasResting = ball.resting;
         simulate(ball, dt);
         ballRef.current.style.transform = `translate(${ball.x}px, ${-ball.y}px)`;
-        if (ball.resting && !wasResting && !isAirborneKind(activity.kind)) {
+        if (ball.resting && !wasResting && !isAirborneActivity(activity.kind)) {
           facingRef.current = ball.x > posXRef.current + PET_WIDTH / 2 ? 'right' : 'left';
           setActivity({ kind: 'fetchRun', targetX: clampPetX(ball.x - PET_WIDTH / 2 + 7) });
         }
@@ -544,7 +565,7 @@ const PixelPet = () => {
         const wasResting = treat.resting;
         simulate(treat, dt);
         treatRef.current.style.transform = `translate(${treat.x}px, ${-treat.y}px)`;
-        if (treat.resting && !wasResting && !isAirborneKind(activity.kind)) {
+        if (treat.resting && !wasResting && !isAirborneActivity(activity.kind)) {
           facingRef.current = treat.x > posXRef.current + PET_WIDTH / 2 ? 'right' : 'left';
           setActivity({ kind: 'eatRun', targetX: clampPetX(treat.x - PET_WIDTH / 2 + 7) });
         }
@@ -612,28 +633,50 @@ const PixelPet = () => {
           if (activity.kind === 'fetchRun') {
             ballPhysRef.current = null;
             setBallVisible(false);
+            setBallOffered(false);
+            if (offerTimerRef.current) window.clearTimeout(offerTimerRef.current);
             playSound('squeak');
             // shake the prize, then bring it to wherever the visitor's cursor is
             const returnX = clampPetX(cursorRef.current.x - PET_WIDTH / 2);
             setActivity({ kind: 'shakeToy', until: Date.now() + SHAKE_TOY_MS, returnX });
             setSpec({ mouth: 'ball', eyes: 'closed' });
           } else if (activity.kind === 'carry') {
-            const dropX = clamp(
+            // BYTE holds the ball out at his muzzle for the visitor to take
+            const offerX = clamp(
               posXRef.current + (facingRef.current === 'right' ? PET_WIDTH + 2 : -16),
               EDGE_PADDING,
-              window.innerWidth - EDGE_PADDING - 14
+              window.innerWidth - EDGE_PADDING - BALL_SIZE
             );
-            ballPhysRef.current = { x: dropX, y: 0, vx: 0, vy: 0, resting: true, claimed: true };
+            ballPhysRef.current = {
+              x: offerX,
+              y: 0,
+              vx: 0,
+              vy: 0,
+              resting: true,
+              claimed: true,
+              offered: true,
+            };
             setBallVisible(true);
+            setBallOffered(true);
             if (ballRef.current) {
-              ballRef.current.style.transform = `translate(${dropX}px, 0px)`;
+              ballRef.current.style.transform = `translate(${offerX}px, 0px)`;
             }
-            window.setTimeout(() => {
-              ballPhysRef.current = null;
-              setBallVisible(false);
-            }, 1400);
             homeXRef.current = posXRef.current;
-            celebrate('AGAIN?');
+            facingRef.current = offerX > posXRef.current ? 'right' : 'left';
+            setActivity({ kind: 'happy', until: Date.now() + HAPPY_MS });
+            setSpec({ mouth: 'tongue', eyes: 'wide' });
+            say('GRAB & THROW IT! 🎾 (tap me to stop)', 3600);
+            playSound('squeak');
+            // If the visitor never takes it, he sheepishly tidies it away
+            if (offerTimerRef.current) window.clearTimeout(offerTimerRef.current);
+            offerTimerRef.current = window.setTimeout(() => {
+              if (ballPhysRef.current?.offered) {
+                ballPhysRef.current = null;
+                setBallVisible(false);
+                setBallOffered(false);
+                say('no? ok... *flops*', 1600);
+              }
+            }, OFFER_MS);
           } else if (activity.kind === 'eatRun') {
             setActivity({ kind: 'sniff', until: Date.now() + SNIFF_MS });
             setSpec({ eyes: 'closed', ears: 'normal' });
@@ -762,7 +805,13 @@ const PixelPet = () => {
           return;
         case 'lick':
           if (now > activity.until) {
-            celebrate('MORE?');
+            // Done eating — if a ball was requested mid-snack, go fetch it now.
+            if (pendingFetchRef.current && !ballPhysRef.current) {
+              pendingFetchRef.current = false;
+              offerBallRef.current();
+            } else {
+              celebrate('MORE?');
+            }
             return;
           }
           setSpec({ mouth: 'tongue', eyes: 'closed' });
@@ -832,6 +881,17 @@ const PixelPet = () => {
         setSpec(sideStep());
         return;
       }
+
+      // Treat's done — honour a fetch that was asked for mid-snack. If a ball is
+      // already lying around, the resume logic below retrieves it instead.
+      if (pendingFetchRef.current) {
+        pendingFetchRef.current = false;
+        if (!ballPhysRef.current) {
+          offerBallRef.current();
+          return;
+        }
+      }
+
       const waitingBall = ballPhysRef.current;
       if (waitingBall?.resting && !waitingBall.claimed) {
         facingRef.current = waitingBall.x > posXRef.current ? 'right' : 'left';
@@ -934,6 +994,16 @@ const PixelPet = () => {
 
   // ------------------------------------------------- drag / click / hover
 
+  // Cleanly end ball play — clears the ball, its drag/offer state and timer.
+  const stowBall = useCallback(() => {
+    if (offerTimerRef.current) window.clearTimeout(offerTimerRef.current);
+    offerTimerRef.current = null;
+    ballPhysRef.current = null;
+    ballDragRef.current = null;
+    setBallVisible(false);
+    setBallOffered(false);
+  }, []);
+
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLButtonElement>) => {
       if (reducedMotion) return;
@@ -1006,6 +1076,14 @@ const PixelPet = () => {
     const kind = activityRef.current.kind;
     if (kind === 'falling' || kind === 'parachute' || kind === 'held' || kind === 'pounce') return;
     lastActivityRef.current = Date.now();
+    // While a ball is out, a tap ends fetch and puts it away (rather than opening chat).
+    if (ballPhysRef.current && !chatOpenRef.current) {
+      stowBall();
+      setActivity({ kind: 'happy', until: Date.now() + HAPPY_MS });
+      setSpec({ mouth: 'tongue' });
+      say('GOOD GAME! WOOF!', 1600);
+      return;
+    }
     setChatOpen((open) => {
       const next = !open;
       chatOpenRef.current = next;
@@ -1016,7 +1094,7 @@ const PixelPet = () => {
       }
       return next;
     });
-  }, [say, setActivity]);
+  }, [say, setActivity, stowBall]);
 
   const handleMouseEnter = useCallback(() => {
     if (liftYRef.current < 0) return;
@@ -1030,30 +1108,182 @@ const PixelPet = () => {
     }
   }, [setActivity]);
 
+  // ---------------------------------------------------- grab & throw the ball
+
+  const handleBallPointerDown = useCallback(
+    (e: React.PointerEvent<HTMLSpanElement>) => {
+      if (reducedMotion) return;
+      const ball = ballPhysRef.current;
+      if (!ball) return;
+      e.preventDefault();
+      e.stopPropagation();
+      (e.target as HTMLElement).setPointerCapture(e.pointerId);
+      if (offerTimerRef.current) window.clearTimeout(offerTimerRef.current);
+      ball.grabbed = true;
+      ball.resting = false;
+      ball.offered = false;
+      ball.claimed = false;
+      ball.vx = 0;
+      ball.vy = 0;
+      setBallOffered(false);
+      ballDragRef.current = { samples: [{ t: performance.now(), x: ball.x, y: ball.y }] };
+      // BYTE locks on, hungry for the throw
+      setActivity({ kind: 'anticipate' });
+      setSpec({ eyes: 'wide', mouth: 'open' });
+      say('GIMME GIMME!', 1200);
+      playSound('squeak');
+    },
+    [reducedMotion, say, setActivity]
+  );
+
+  const handleBallPointerMove = useCallback((e: React.PointerEvent<HTMLSpanElement>) => {
+    const drag = ballDragRef.current;
+    const ball = ballPhysRef.current;
+    if (!drag || !ball) return;
+    e.preventDefault();
+    ball.x = clamp(e.clientX - BALL_SIZE / 2, EDGE_PADDING, window.innerWidth - EDGE_PADDING - BALL_SIZE);
+    ball.y = Math.max(0, window.innerHeight - e.clientY - BALL_GROUND_OFFSET);
+    const now = performance.now();
+    drag.samples.push({ t: now, x: ball.x, y: ball.y });
+    while (drag.samples.length > 2 && now - drag.samples[0].t > THROW_SAMPLE_MS) drag.samples.shift();
+    if (ballRef.current) ballRef.current.style.transform = `translate(${ball.x}px, ${-ball.y}px)`;
+  }, []);
+
+  const handleBallPointerUp = useCallback(
+    (e: React.PointerEvent<HTMLSpanElement>) => {
+      const drag = ballDragRef.current;
+      const ball = ballPhysRef.current;
+      ballDragRef.current = null;
+      if (!drag || !ball) return;
+      e.stopPropagation();
+      const samples = drag.samples;
+      const first = samples[0];
+      const last = samples[samples.length - 1];
+      const dt = Math.max((last.t - first.t) / 1000, 0.016);
+      let vx = clamp((last.x - first.x) / dt, -THROW_SPEED_CAP, THROW_SPEED_CAP);
+      let vy = clamp((last.y - first.y) / dt, -THROW_SPEED_CAP, THROW_SPEED_CAP);
+      const speed = Math.hypot(vx, vy);
+      ball.grabbed = false;
+      ball.claimed = false;
+      ball.offered = false;
+      if (speed < THROW_TRIGGER_SPEED) {
+        // barely a flick — set it down rather than launch it
+        vx = 0;
+        vy = 0;
+      } else {
+        say('FETCH!!', 1100);
+        playSound('boing');
+      }
+      ball.vx = vx;
+      ball.vy = vy;
+      ball.resting = false; // physics takes over; he chases the moment it lands
+      if (isAirborneActivity(activityRef.current.kind) || liftYRef.current < 0) {
+        say('I GET IT AFTER LANDING! 🎾', 1800);
+      } else {
+        setActivity({ kind: 'anticipate' });
+        setSpec({ eyes: 'wide' });
+      }
+    },
+    [say, setActivity]
+  );
+
   // ----------------------------------------------------------- chat actions
 
-  const throwBall = useCallback(() => {
-    if (ballPhysRef.current || treatPhysRef.current || reducedMotion) return;
-    homeXRef.current = posXRef.current;
-    const fromX = posXRef.current + PET_WIDTH / 2;
-    const direction = fromX > window.innerWidth / 2 ? -1 : 1;
+  const placeBallOnGround = useCallback((message?: string) => {
+    if (offerTimerRef.current) {
+      window.clearTimeout(offerTimerRef.current);
+      offerTimerRef.current = null;
+    }
+
+    const fallbackX = posXRef.current + PET_WIDTH / 2 - BALL_SIZE / 2;
+    const cursorBallX = cursorRef.current.x > 0 ? cursorRef.current.x - BALL_SIZE / 2 : fallbackX;
+    const ballX = clamp(cursorBallX, EDGE_PADDING, window.innerWidth - EDGE_PADDING - BALL_SIZE);
+
+    ballDragRef.current = null;
     ballPhysRef.current = {
-      x: fromX,
-      y: 36,
-      vx: direction * (260 + Math.random() * 160),
-      vy: 300 + Math.random() * 80,
-      resting: false,
+      x: ballX,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      resting: true,
+      claimed: false,
+      offered: false,
     };
     setBallVisible(true);
-    setActivity({ kind: 'anticipate' });
-    setSpec({ eyes: 'wide' });
-  }, [reducedMotion, setActivity]);
+    setBallOffered(false);
+    if (ballRef.current) {
+      ballRef.current.style.transform = `translate(${ballX}px, 0px)`;
+    }
+    facingRef.current = ballX > posXRef.current + PET_WIDTH / 2 ? 'right' : 'left';
+    if (message) say(message, 2200);
+    playSound('squeak');
+  }, [say]);
 
-  const dropTreat = useCallback(() => {
-    if (treatPhysRef.current || ballPhysRef.current || reducedMotion) {
-      if (reducedMotion) celebrate();
+  // Unconditionally produce a ball and trot it over to hand to the visitor.
+  // (Guards live in offerBall; this is the raw action, safe to call internally.)
+  const spawnOfferedBall = useCallback(() => {
+    homeXRef.current = posXRef.current;
+    const returnX = clampPetX(cursorRef.current.x - PET_WIDTH / 2);
+    // carries a (still-hidden) ball in his mouth toward the visitor
+    ballPhysRef.current = {
+      x: posXRef.current + PET_WIDTH / 2,
+      y: 0,
+      vx: 0,
+      vy: 0,
+      resting: true,
+      claimed: true,
+    };
+    setBallVisible(false);
+    setBallOffered(false);
+    facingRef.current = returnX > posXRef.current ? 'right' : 'left';
+    setActivity({ kind: 'carry', targetX: returnX });
+    setSpec(sideStep({ mouth: 'ball' }));
+    playSound('squeak');
+  }, [setActivity, sideStep]);
+
+  // Keep the loop-callable ref pointed at the freshest spawner.
+  offerBallRef.current = spawnOfferedBall;
+
+  // BYTE produces a ball — unless he's mid-snack, in which case he finishes first.
+  const offerBall = useCallback(() => {
+    if (reducedMotion) return;
+    const k = activityRef.current.kind;
+    const airborne = liftYRef.current < 0 || isAirborneActivity(k);
+    if (airborne) {
+      if (ballPhysRef.current) {
+        say('I GET IT WHEN I LAND! 🎾', 1800);
+        return;
+      }
+      placeBallOnGround('LANDING FIRST, THEN FETCH! 🎾');
       return;
     }
+
+    const eating = treatPhysRef.current !== null || k === 'eatRun' || k === 'sniff' || k === 'eat' || k === 'lick';
+    if (eating) {
+      // Finish the treat first like a real dog, then come back for the ball.
+      pendingFetchRef.current = true;
+      say('FINISHING MY TREAT — BALL NEXT! 🎾', 2400);
+      return;
+    }
+    if (ballPhysRef.current) {
+      say('I STILL GOT A BALL! THROW IT! 🎾', 1800);
+      return;
+    }
+    spawnOfferedBall();
+  }, [placeBallOnGround, reducedMotion, say, spawnOfferedBall]);
+
+  const dropTreat = useCallback(() => {
+    if (reducedMotion) {
+      celebrate();
+      return;
+    }
+    // Already munching a treat — let him finish rather than dropping a second.
+    if (treatPhysRef.current) {
+      say('STILL NOMMING! ONE SEC!', 1400);
+      return;
+    }
+    // A ball can stay on the ground — food just takes priority, then he fetches it.
+    if (ballPhysRef.current) say('TREAT FIRST, THEN THE BALL!', 1600);
     const side = posXRef.current > window.innerWidth / 2 ? -1 : 1;
     treatPhysRef.current = {
       x: clamp(
@@ -1067,7 +1297,7 @@ const PixelPet = () => {
       resting: false,
     };
     setTreatVisible(true);
-  }, [celebrate, reducedMotion]);
+  }, [celebrate, reducedMotion, say]);
 
   const handleChatAction = useCallback(
     (action: PetAction) => {
@@ -1080,7 +1310,7 @@ const PixelPet = () => {
           }
           break;
         case 'fetch':
-          throwBall();
+          offerBall();
           break;
         case 'treat':
           dropTreat();
@@ -1090,7 +1320,7 @@ const PixelPet = () => {
           break;
       }
     },
-    [dropTreat, reducedMotion, setActivity, throwBall]
+    [dropTreat, offerBall, reducedMotion, setActivity]
   );
 
   const closeChat = useCallback(() => {
@@ -1187,7 +1417,22 @@ const PixelPet = () => {
         </button>
       </div>
 
-      {ballVisible && <span ref={ballRef} className="pixel-pet__ball" aria-hidden="true" />}
+      {ballVisible && (
+        <span
+          ref={ballRef}
+          className={`pixel-pet__ball${ballOffered ? ' pixel-pet__ball--offered' : ''}`}
+          style={
+            ballPhysRef.current
+              ? { transform: `translate(${ballPhysRef.current.x}px, ${-ballPhysRef.current.y}px)` }
+              : undefined
+          }
+          onPointerDown={handleBallPointerDown}
+          onPointerMove={handleBallPointerMove}
+          onPointerUp={handleBallPointerUp}
+          onPointerCancel={handleBallPointerUp}
+          aria-hidden="true"
+        />
+      )}
       {treatVisible && <span ref={treatRef} className="pixel-pet__treat" aria-hidden="true" />}
       {crumbs.map((crumb) => (
         <span
