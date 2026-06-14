@@ -26,6 +26,7 @@ export const colors = {
   card: '#151d35',
   border: '#26395f',
   shadow: '#020617',
+  screen: '#050816', // recessed "screen black" behind images, terminals, and logs
 
   // text
   text: '#f8fafc',
@@ -37,6 +38,19 @@ export const fonts = {
   pixel: "'Press Start 2P', 'Courier New', monospace",
   mono: "'Space Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
 } as const;
+
+/**
+ * Translucent variant of a token color — keeps alpha fills on-palette
+ * instead of hand-written rgba() literals.
+ * withAlpha(colors.cyan, 0.08) -> 'rgba(0, 229, 255, 0.08)'
+ */
+export const withAlpha = (hex: string, alpha: number): string => {
+  const h = hex.replace('#', '');
+  const r = parseInt(h.slice(0, 2), 16);
+  const g = parseInt(h.slice(2, 4), 16);
+  const b = parseInt(h.slice(4, 6), 16);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+};
 
 /** Hard offset shadow used across panels, buttons, and chips. */
 export const pixelShadow = (px = 4) => `${px}px ${px}px 0 ${colors.shadow}`;

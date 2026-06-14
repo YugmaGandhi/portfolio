@@ -25,7 +25,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { colors, fonts, pixelShadow } from '../theme/tokens';
+import { colors, fonts, pixelShadow, withAlpha } from '../theme/tokens';
 import { site, navLinks, scrollToSection } from '../data/site';
 
 // Hide AppBar on scroll down
@@ -82,7 +82,7 @@ const Navbar = () => {
           position="fixed"
           elevation={0}
           sx={{
-            background: 'rgba(8, 11, 22, 0.88)',
+            background: withAlpha(colors.bg, 0.88),
             color: colors.text,
             borderBottom: `3px solid ${colors.border}`,
             backdropFilter: 'blur(8px)',
@@ -141,7 +141,7 @@ const Navbar = () => {
                       '&:hover': {
                         color: activeSection === link.id ? colors.shadow : colors.yellow,
                         borderColor: colors.yellow,
-                        backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(255, 204, 0, 0.08)',
+                        backgroundColor: activeSection === link.id ? colors.yellow : withAlpha(colors.yellow, 0.08),
                       },
                     }}
                   >
@@ -157,7 +157,7 @@ const Navbar = () => {
                       py: 0.75,
                       borderRadius: 0,
                       border: `1px solid ${colors.border}`,
-                      backgroundColor: 'rgba(0, 229, 255, 0.08)',
+                      backgroundColor: withAlpha(colors.cyan, 0.08),
                       color: colors.cyan,
                       boxShadow: pixelShadow(3),
                       fontSize: 12,
@@ -196,7 +196,7 @@ const Navbar = () => {
             color: colors.text,
             borderLeft: `3px solid ${colors.border}`,
             backgroundImage:
-              'linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px)',
+              `linear-gradient(${withAlpha(colors.cyan, 0.03)} 1px, transparent 1px), linear-gradient(90deg, ${withAlpha(colors.cyan, 0.03)} 1px, transparent 1px)`,
             backgroundSize: '24px 24px',
           },
         }}
@@ -235,10 +235,10 @@ const Navbar = () => {
                 sx={{
                   border: '2px solid',
                   borderColor: activeSection === link.id ? colors.yellow : colors.border,
-                  backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(16, 22, 41, 0.92)',
+                  backgroundColor: activeSection === link.id ? colors.yellow : withAlpha(colors.surface, 0.92),
                   boxShadow: pixelShadow(4),
                   '&:hover': {
-                    backgroundColor: activeSection === link.id ? colors.yellow : 'rgba(255, 204, 0, 0.08)',
+                    backgroundColor: activeSection === link.id ? colors.yellow : withAlpha(colors.yellow, 0.08),
                     borderColor: colors.yellow,
                   },
                 }}
@@ -269,7 +269,7 @@ const Navbar = () => {
             fontSize: '0.6rem',
             textTransform: 'uppercase',
             border: `1px solid ${colors.border}`,
-            backgroundColor: 'rgba(0, 229, 255, 0.08)',
+            backgroundColor: withAlpha(colors.cyan, 0.08),
             boxShadow: pixelShadow(3),
           }}
         >

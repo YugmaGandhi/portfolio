@@ -1,5 +1,5 @@
 import { createTheme, Theme } from '@mui/material/styles';
-import { colors, fonts } from './tokens';
+import { colors, fonts, withAlpha } from './tokens';
 
 const FONT_PIXEL = fonts.pixel;
 const FONT_MONO = fonts.mono;
@@ -51,16 +51,16 @@ export const getAnimeTheme = (): Theme => {
         main: animeColors.energy.main,
         light: animeColors.energy.light,
         dark: animeColors.energy.dark,
-        contrastText: '#020617',
+        contrastText: colors.shadow,
       },
       secondary: {
         main: animeColors.power.main,
         light: animeColors.power.light,
         dark: animeColors.power.dark,
-        contrastText: '#020617',
+        contrastText: colors.shadow,
       },
       error: {
-        main: '#ef4444',
+        main: colors.red,
         light: '#f87171',
         dark: '#b91c1c',
       },
@@ -84,8 +84,8 @@ export const getAnimeTheme = (): Theme => {
         paper: animeColors.background.paper,
       },
       text: {
-        primary: '#f8fafc',
-        secondary: '#9fb3c8',
+        primary: colors.text,
+        secondary: colors.muted,
       },
     },
     typography: {
@@ -136,29 +136,29 @@ export const getAnimeTheme = (): Theme => {
             position: 'relative',
             overflow: 'hidden',
             border: '2px solid currentColor',
-            boxShadow: '4px 4px 0 #020617',
+            boxShadow: `4px 4px 0 ${colors.shadow}`,
             '&::before': {
               display: 'none',
             },
             '&:hover': {
               transform: 'translate(2px, 2px)',
-              boxShadow: '2px 2px 0 #020617',
+              boxShadow: `2px 2px 0 ${colors.shadow}`,
             },
           },
           containedPrimary: {
             background: animeColors.energy.main,
-            color: '#020617',
+            color: colors.shadow,
             '&:hover': {
               background: animeColors.accent.main,
-              color: '#020617',
+              color: colors.shadow,
             },
           },
           containedSecondary: {
             background: animeColors.accent.main,
-            color: '#020617',
+            color: colors.shadow,
             '&:hover': {
               background: animeColors.energy.main,
-              color: '#020617',
+              color: colors.shadow,
             },
           },
         },
@@ -227,13 +227,13 @@ export const getAnimeTheme = (): Theme => {
             height: 6,
           },
           colorPrimary: {
-            background: 'rgba(0, 229, 255, 0.15)',
+            background: withAlpha(colors.cyan, 0.15),
           },
           barColorPrimary: {
             background: animeColors.energy.main,
           },
           colorSecondary: {
-            background: 'rgba(255, 79, 216, 0.15)',
+            background: withAlpha(colors.pink, 0.15),
           },
           barColorSecondary: {
             background: animeColors.power.main,
