@@ -11,10 +11,13 @@ Specialties: React, TypeScript, Node.js, Express, Material UI, Azure (DevOps, St
 Cosmos DB, MongoDB, semantic search, CI/CD pipelines, and 3D visualization with Babylon.js.
 Certifications: AZ-900 Azure Fundamentals, AZ-104 Azure Administrator.
 Projects (called "missions" on the site):
-1. Document Semantic Search — natural-language document discovery with semantic matching (React, MUI, NLP).
-2. Money Management App — budgets, expense categories, finance charts (React, TypeScript, MUI).
-3. Cloud Play Creator — cloud media workflow with asset handling (React, cloud, media).
-4. Portfolio Website — this retro arcade site (React, Vite, MUI, Framer Motion).
+- FEATURED: Griffon — self-hosted, open-source authentication service. Production-grade identity & access
+  management with no vendor lock-in: email/password (Argon2id), OAuth2 (Google/GitHub/Microsoft), TOTP MFA,
+  RS256 JWT with refresh rotation, RBAC, scoped API keys, multi-org, webhooks, audit logs, Prometheus metrics
+  (TypeScript, Node.js 20, PostgreSQL, Redis, Docker). Currently in build.
+1. Bidify — real-time bidding & auction platform with a live bid engine (Next.js frontend, Node/Express/Prisma/
+   PostgreSQL backend, split across bidify-frontend and bidify-backend repos).
+2. Portfolio Website — this retro arcade site (React, Vite, MUI, Framer Motion).
 Contact: yugmagandhi1805@gmail.com, phone +91 9586063713, GitHub github.com/YugmaGandhi,
 LinkedIn linkedin.com/in/yugma18.
 Page sections: About ("Character Profile"), Skills ("Skill Tree"), Projects ("Mission Select"),

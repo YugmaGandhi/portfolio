@@ -61,7 +61,7 @@ export const PET_INTENTS: PetIntent[] = [
     id: 'projects',
     patterns: ['project', 'projects', 'work', 'portfolio', 'missions', 'mission', 'built', 'apps', 'show'],
     replies: [
-      'OOH! THE MISSIONS! *runs in a circle* He built a semantic document search, a money manager, a cloud media tool, and this very site. FOLLOW ME! 🦴',
+      'OOH! THE MISSIONS! *runs in a circle* His big build is GRIFFON — a self-hosted auth service! He also made BIDIFY, a live auction platform, and this very site. FOLLOW ME! 🦴',
     ],
     action: { type: 'scroll', target: 'projects' },
   },
