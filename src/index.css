@@ -463,6 +463,206 @@ body::before {
   gap: 8px;
 }
 
+/* Featured project spotlight */
+.featured-card {
+  width: 100%;
+  margin-bottom: 48px;
+  padding: 0 !important;
+  border: 2px solid var(--retro-cyan) !important;
+  box-shadow: 10px 10px 0 var(--retro-shadow) !important;
+}
+
+.featured-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  background: var(--retro-cyan);
+  color: var(--retro-shadow);
+  border-bottom: 2px solid var(--retro-shadow);
+}
+
+.featured-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  line-height: 1.8;
+  text-transform: uppercase;
+}
+
+.featured-card__header .mission-card__status {
+  font-family: var(--font-pixel);
+  font-size: 0.6rem;
+}
+
+.featured-card__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.featured-card__visual {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 22px;
+  background: #050816;
+  border-bottom: 2px solid var(--retro-border);
+}
+
+.featured-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px;
+  min-width: 0;
+}
+
+.featured-card__title {
+  color: var(--retro-text);
+  font-weight: 800 !important;
+  text-transform: uppercase;
+  line-height: 1 !important;
+}
+
+.featured-card__tagline {
+  color: var(--retro-cyan) !important;
+  font-family: var(--font-pixel);
+  font-size: 0.65rem !important;
+  line-height: 1.9 !important;
+  text-transform: uppercase;
+}
+
+.featured-card__features {
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+}
+
+.featured-card__features li {
+  position: relative;
+  padding-left: 18px;
+  color: var(--retro-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.featured-card__features li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--retro-green);
+}
+
+@media (min-width: 900px) {
+  .featured-card__body {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  }
+
+  .featured-card__visual {
+    border-bottom: 0;
+    border-right: 2px solid var(--retro-border);
+  }
+}
+
+/* Faux terminal used as a screenshot stand-in */
+.project-terminal {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  background: var(--retro-shadow);
+  border: 2px solid var(--retro-border);
+  box-shadow: 4px 4px 0 var(--retro-shadow);
+}
+
+.project-terminal__bar {
+  display: flex;
+  gap: 7px;
+  padding: 8px 10px;
+  background: var(--retro-surface-2);
+  border-bottom: 2px solid var(--retro-border);
+}
+
+.project-terminal__dot {
+  width: 10px;
+  height: 10px;
+  border: 2px solid var(--retro-shadow);
+  background: var(--retro-yellow);
+}
+
+.project-terminal__dot:nth-child(2) { background: var(--retro-cyan); }
+.project-terminal__dot:nth-child(3) { background: var(--retro-pink); }
+
+.project-terminal__body {
+  padding: 16px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+
+.project-terminal__line {
+  white-space: pre;
+}
+
+.project-terminal__line.is-cmd { color: var(--retro-yellow); font-weight: 700; }
+.project-terminal__line.is-ok { color: var(--retro-green); }
+.project-terminal__line.is-out { color: var(--retro-cyan); }
+.project-terminal__line.is-info { color: var(--retro-muted); }
+
+/* Divider between the featured build and the rest of the grid */
+.missions-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 0 32px;
+}
+
+.missions-divider::before,
+.missions-divider::after {
+  content: "";
+  flex: 1;
+  height: 2px;
+  background: var(--retro-border);
+}
+
+.missions-divider span {
+  font-family: var(--font-pixel);
+  font-size: 0.65rem;
+  color: var(--retro-yellow);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 600px) {
+  .featured-card {
+    box-shadow: 6px 6px 0 var(--retro-shadow) !important;
+  }
+
+  .featured-card__header {
+    flex-wrap: wrap;
+    row-gap: 4px;
+  }
+
+  .featured-card__visual,
+  .featured-card__content {
+    padding: 16px;
+  }
+
+  .featured-card__title {
+    font-size: 1.7rem !important;
+  }
+
+  .project-terminal__body {
+    font-size: 0.74rem;
+  }
+}
+
 .comms-panel {
   height: 100%;
   display: flex;
