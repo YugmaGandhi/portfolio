@@ -1,7 +1,7 @@
 import { Box, Typography, Button, Container, Chip, Stack } from '@mui/material';
 import { ArrowForward, Code, GitHub, LinkedIn, Storage, Terminal } from '@mui/icons-material';
 import { motion } from 'framer-motion';
-import { colors, pixelShadow } from '../theme/tokens';
+import { colors, pixelShadow, withAlpha } from '../theme/tokens';
 import { site, scrollToSection } from '../data/site';
 
 const questLog = [
@@ -27,7 +27,7 @@ const Hero = () => (
         position: 'absolute',
         inset: 0,
         backgroundImage:
-          'linear-gradient(rgba(0,229,255,0.055) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,255,0.055) 1px, transparent 1px)',
+          `linear-gradient(${withAlpha(colors.cyan, 0.055)} 1px, transparent 1px), linear-gradient(90deg, ${withAlpha(colors.cyan, 0.055)} 1px, transparent 1px)`,
         backgroundSize: '32px 32px',
         opacity: 0.72,
         zIndex: 0,
@@ -58,7 +58,7 @@ const Hero = () => (
               sx={{
                 borderRadius: 0,
                 color: colors.green,
-                backgroundColor: 'rgba(57, 255, 136, 0.1)',
+                backgroundColor: withAlpha(colors.green, 0.1),
               }}
             />
           </Stack>
@@ -141,7 +141,7 @@ const Hero = () => (
                 className="pixel-chip"
                 sx={{
                   borderRadius: 0,
-                  backgroundColor: 'rgba(0, 229, 255, 0.08)',
+                  backgroundColor: withAlpha(colors.cyan, 0.08),
                   color: colors.text,
                 }}
               />
@@ -162,10 +162,10 @@ const Hero = () => (
               border: '1px solid',
               borderColor: colors.border,
               boxShadow: `0 0 0 2px ${colors.shadow}, ${pixelShadow(10)}`,
-              backgroundColor: 'rgba(16, 22, 41, 0.92)',
+              backgroundColor: withAlpha(colors.surface, 0.92),
             }}
           >
-            <Box sx={{ position: 'absolute', inset: 0, backgroundColor: 'rgba(8, 11, 22, 0.82)' }} />
+            <Box sx={{ position: 'absolute', inset: 0, backgroundColor: withAlpha(colors.bg, 0.82) }} />
 
             <Box
               sx={{
@@ -195,7 +195,7 @@ const Hero = () => (
                     key={item.title}
                     sx={{
                       p: 2.25,
-                      backgroundColor: 'rgba(8, 11, 22, 0.72)',
+                      backgroundColor: withAlpha(colors.bg, 0.72),
                       border: `2px solid ${colors.border}`,
                       boxShadow: pixelShadow(4),
                       display: 'flex',
