@@ -726,6 +726,7 @@ body::before {
   background: transparent;
   cursor: pointer;
   line-height: 0;
+  touch-action: none;
 }
 
 .pixel-pet__body:focus-visible {
