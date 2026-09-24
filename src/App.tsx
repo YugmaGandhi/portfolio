@@ -21,11 +21,13 @@ function App() {
       <MotionConfig reducedMotion="user">
         <div className="app-container">
           <Navbar />
-          <Hero />
-          <About />
-          <Skills />
-          <Projects />
-          <Contact />
+          <main>
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Contact />
+          </main>
           <Footer />
           <PixelPet />
         </div>
