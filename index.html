@@ -2,26 +2,91 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Yugma Gandhi - Software Developer Portfolio | React | Node.js | Babylon.js" />
-    <meta name="keywords" content="software developer, portfolio, react, node.js, babylon.js, frontend, fullstack" />
+    <title>Yugma Gandhi | Full Stack Developer (React, Node.js, Azure)</title>
+    <meta name="description" content="Yugma Gandhi is a Full Stack Developer in Gujarat, India building fast, reliable web apps with React, Node.js, TypeScript, and Azure. See projects, skills, and contact details." />
     <meta name="author" content="Yugma Gandhi" />
-    <meta property="og:title" content="Yugma Gandhi - Software Developer Portfolio" />
-    <meta property="og:description" content="Software Developer specializing in React, Node.js, and Azure" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://yugmagandhi.github.io/portfolio/" />
-    <meta property="og:image" content="https://yugmagandhi.github.io/portfolio/images/projects/portfolio.png" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#080b16" />
+    <link rel="canonical" href="https://yugma-gandhi.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph (LinkedIn, Slack, WhatsApp, Facebook) -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content="Yugma Gandhi" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://yugma-gandhi.vercel.app/" />
+    <meta property="og:title" content="Yugma Gandhi | Full Stack Developer" />
+    <meta property="og:description" content="Full Stack Developer building fast, reliable web apps with React, Node.js, TypeScript, and Azure." />
+    <meta property="og:image" content="https://yugma-gandhi.vercel.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Yugma Gandhi, Full Stack Developer: React, Node.js, TypeScript, Azure" />
+    <meta property="profile:first_name" content="Yugma" />
+    <meta property="profile:last_name" content="Gandhi" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Yugma Gandhi | Full Stack Developer" />
+    <meta name="twitter:description" content="Full Stack Developer building fast, reliable web apps with React, Node.js, TypeScript, and Azure." />
+    <meta name="twitter:image" content="https://yugma-gandhi.vercel.app/og-image.png" />
+    <meta name="twitter:image:alt" content="Yugma Gandhi, Full Stack Developer: React, Node.js, TypeScript, Azure" />
+
+    <!-- Structured data: lets search engines show name, role, and profile links -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://yugma-gandhi.vercel.app/#website",
+            "url": "https://yugma-gandhi.vercel.app/",
+            "name": "Yugma Gandhi",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "ProfilePage",
+            "@id": "https://yugma-gandhi.vercel.app/#profile",
+            "url": "https://yugma-gandhi.vercel.app/",
+            "name": "Yugma Gandhi | Full Stack Developer",
+            "isPartOf": { "@id": "https://yugma-gandhi.vercel.app/#website" },
+            "mainEntity": { "@id": "https://yugma-gandhi.vercel.app/#person" }
+          },
+          {
+            "@type": "Person",
+            "@id": "https://yugma-gandhi.vercel.app/#person",
+            "name": "Yugma Gandhi",
+            "alternateName": "Yugma N. Gandhi",
+            "jobTitle": "Full Stack Developer",
+            "url": "https://yugma-gandhi.vercel.app/",
+            "image": "https://yugma-gandhi.vercel.app/og-image.png",
+            "address": {
+              "@type": "PostalAddress",
+              "addressRegion": "Gujarat",
+              "addressCountry": "IN"
+            },
+            "knowsAbout": ["React", "Node.js", "TypeScript", "Azure", "PostgreSQL", "Full Stack Development", "Search Systems"],
+            "sameAs": [
+              "https://github.com/YugmaGandhi",
+              "https://www.linkedin.com/in/yugma18/"
+            ]
+          }
+        ]
+      }
+    </script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <title>Yugma Gandhi | Software Developer</title>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Yugma Gandhi, Full Stack Developer</h1>
+      <p>I design and ship fast, reliable web apps with React, Node.js, TypeScript, and Azure. This site needs JavaScript for its interactive arcade theme.</p>
+      <p>Find me on <a href="https://github.com/YugmaGandhi">GitHub</a> or <a href="https://www.linkedin.com/in/yugma18/">LinkedIn</a>.</p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
